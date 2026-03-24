@@ -1,0 +1,44 @@
+{
+  "title": "第1章：はじまりの日",
+  "commands": [
+    { "type": "fade", "value": "out", "duration": 0.01 },
+    { "type": "show_bg", "image": "bg_room" },
+    { "type": "show_title", "text": "第1章：はじまりの日", "duration": 3.0 },
+    { "type": "fade", "value": "in", "duration": 1.0 },
+
+    { "type": "say", "text": "――春の午後、見知らぬ少女と目が合った。" },
+    { "type": "show_char", "character": "alice", "position": "center" },
+    { "type": "say", "character": "アリス", "text": "…あの、もしかして転校生さん？" },
+
+    { "type": "choice", "choices": [
+      { "text": "うん、そうだよ",     "target": "route_friendly", "set_flag": "friendly", "flag_value": "true" },
+      { "text": "…別に関係ないでしょ", "target": "route_cold" }
+    ]},
+
+    { "type": "label", "label": "route_friendly" },
+    { "type": "say", "character": "アリス", "text": "よかった！　私、アリスっていうの。よろしくね！" },
+    { "type": "flash", "value": "white", "duration": 0.4 },
+    { "type": "say", "character": "アリス", "text": "何でも聞いてね。案内するよ。" },
+    { "type": "jump", "target": "ch1_end" },
+
+    { "type": "label", "label": "route_cold" },
+    { "type": "say", "character": "アリス", "text": "あ…ご、ごめんなさい。余計なお世話だったね。" },
+    { "type": "shake", "duration": 0.3, "value": "8" },
+    { "type": "hide_char", "character": "alice" },
+    { "type": "say", "text": "彼女は静かに立ち去った。" },
+
+    { "type": "label", "label": "ch1_end" },
+    { "type": "jump_if", "label": "friendly", "target": "ch1_friendly_end" },
+    { "type": "say", "text": "――こうして、孤独な春が始まった。" },
+    { "type": "jump", "target": "ch1_next" },
+
+    { "type": "label", "label": "ch1_friendly_end" },
+    { "type": "say", "text": "――こうして、ひとつの出会いが生まれた。" },
+
+    { "type": "label", "label": "ch1_next" },
+    { "type": "hide_char", "character": "alice" },
+    { "type": "say", "text": "――数日後。" },
+    { "type": "fade", "value": "out", "duration": 1.0 },
+    { "type": "next_script", "target": "Scripts/chapter02" }
+  ]
+}

@@ -1,0 +1,209 @@
+{
+  "title": "コマンドデモ：全機能ショーケース",
+  "commands": [
+    { "type": "fade", "value": "out", "duration": 0.01 },
+
+    { "type": "show_title", "text": "コマンドデモ：全機能ショーケース", "duration": 3.0 },
+
+    { "type": "show_bg", "image": "bg_room" },
+    { "type": "fade", "value": "in", "duration": 1.0 },
+
+    { "type": "say", "text": "これはNovellaエンジンの全コマンドデモです。" },
+
+    { "type": "say", "text": "【テキスト演出】{w:1.0}ウェイト1秒後に表示。{s:0.3}ゆっくり表示…{sr}通常速度に戻りました。" },
+    { "type": "say", "text": "【テキスト演出2】{s:3.0}高速表示モード！！！{sr}{w:0.5}…ウェイト後に通常速度。" },
+
+    { "type": "say", "text": "【リッチテキスト装飾】{b}太字{/b}、{i}斜体{/i}、{c:red}赤文字{/c}、{c:#00FF00}緑文字{/c}、{size:60}大きい{/size}文字。" },
+    { "type": "say", "text": "【リッチテキスト複合】{b}{c:#FF6600}太字オレンジ{/c}{/b}や{i}{c:blue}斜体青{/c}{/i}も可能です。" },
+
+    { "type": "say", "text": "【立ち絵モーション：slide_left】" },
+    { "type": "show_char", "character": "alice", "position": "left", "value": "slide_left" },
+    { "type": "say", "character": "アリス", "text": "左からスライドインしたよ！" },
+    { "type": "hide_char", "character": "alice", "value": "slide_left" },
+
+    { "type": "say", "text": "【立ち絵モーション：slide_right】" },
+    { "type": "show_char", "character": "alice", "position": "right", "value": "slide_right" },
+    { "type": "say", "character": "アリス", "text": "右からスライドイン！" },
+    { "type": "hide_char", "character": "alice", "value": "slide_right" },
+
+    { "type": "say", "text": "【立ち絵モーション：slide_up】" },
+    { "type": "show_char", "character": "alice", "position": "center", "value": "slide_up" },
+    { "type": "say", "character": "アリス", "text": "下からスライドイン！" },
+
+    { "type": "say", "text": "【立ち絵モーション：bounce】" },
+    { "type": "hide_char", "character": "alice" },
+    { "type": "show_char", "character": "alice", "position": "center", "value": "bounce" },
+    { "type": "say", "character": "アリス", "text": "バウンスで登場！" },
+    { "type": "hide_char", "character": "alice", "value": "slide_down" },
+
+    { "type": "say", "text": "【画面演出：shake（画面揺れ）】" },
+    { "type": "shake", "duration": 0.5, "value": "12" },
+    { "type": "say", "text": "画面が揺れました。" },
+
+    { "type": "say", "text": "【画面演出：flash（白フラッシュ）】" },
+    { "type": "flash", "value": "white", "duration": 0.4 },
+    { "type": "say", "text": "白くフラッシュしました。" },
+
+    { "type": "say", "text": "【画面演出：flash（黒フラッシュ）】" },
+    { "type": "flash", "value": "black", "duration": 0.5 },
+    { "type": "say", "text": "黒くフラッシュしました。" },
+
+    { "type": "say", "text": "【画面演出：fade（暗転→明転）】" },
+    { "type": "fade", "value": "out", "duration": 0.8 },
+    { "type": "wait", "duration": 0.5 },
+    { "type": "fade", "value": "in", "duration": 0.8 },
+    { "type": "say", "text": "暗転して明転しました。" },
+
+    { "type": "say", "text": "【画面演出：fade white（白暗転→白明転）】" },
+    { "type": "fade", "value": "out", "target": "white", "duration": 0.8 },
+    { "type": "wait", "duration": 0.5 },
+    { "type": "fade", "value": "in", "target": "white", "duration": 0.8 },
+    { "type": "say", "text": "白で暗転/明転しました。" },
+
+    { "type": "say", "text": "【背景トランジション：crossfade（デフォルト）】" },
+    { "type": "show_bg", "image": "bg_room", "duration": 1.0 },
+    { "type": "say", "text": "クロスフェードで背景を表示。" },
+
+    { "type": "say", "text": "【背景トランジション：wipe_left】" },
+    { "type": "show_bg", "image": "bg_room", "duration": 1.0, "value": "wipe_left" },
+    { "type": "say", "text": "左方向ワイプ。" },
+
+    { "type": "say", "text": "【背景トランジション：wipe_right】" },
+    { "type": "show_bg", "image": "bg_room", "duration": 1.0, "value": "wipe_right" },
+    { "type": "say", "text": "右方向ワイプ。" },
+
+    { "type": "say", "text": "【背景トランジション：slide_left】" },
+    { "type": "show_bg", "image": "bg_room", "duration": 1.0, "value": "slide_left" },
+    { "type": "say", "text": "左方向スライド。" },
+
+    { "type": "say", "text": "【背景トランジション：slide_right】" },
+    { "type": "show_bg", "image": "bg_room", "duration": 1.0, "value": "slide_right" },
+    { "type": "say", "text": "右方向スライド。" },
+
+    { "type": "say", "text": "【背景トランジション：fade_white】" },
+    { "type": "show_bg", "image": "bg_room", "duration": 1.5, "value": "fade_white" },
+    { "type": "say", "text": "白フェード経由。" },
+
+    { "type": "say", "text": "【背景トランジション：fade_black】" },
+    { "type": "show_bg", "image": "bg_room", "duration": 1.5, "value": "fade_black" },
+    { "type": "say", "text": "黒フェード経由。" },
+
+    { "type": "say", "text": "【フラグ・選択肢・ジャンプ】" },
+    { "type": "set_flag", "label": "demo_flag", "value": true },
+    { "type": "say", "text": "フラグ 'demo_flag' を true にセットしました。" },
+
+    { "type": "choice", "choices": [
+      { "text": "Aルート", "target": "demo_route_a", "set_flag": "demo_choice", "flag_value": "a" },
+      { "text": "Bルート", "target": "demo_route_b", "set_flag": "demo_choice", "flag_value": "b" }
+    ]},
+
+    { "type": "label", "label": "demo_route_a" },
+    { "type": "say", "text": "Aルートを選びました。" },
+    { "type": "jump", "target": "demo_after_choice" },
+
+    { "type": "label", "label": "demo_route_b" },
+    { "type": "say", "text": "Bルートを選びました。" },
+
+    { "type": "label", "label": "demo_after_choice" },
+    { "type": "jump_if", "label": "demo_flag", "target": "demo_flag_true" },
+    { "type": "say", "text": "（ここには到達しません）" },
+    { "type": "jump", "target": "demo_final" },
+
+    { "type": "label", "label": "demo_flag_true" },
+    { "type": "say", "text": "jump_if: demo_flag が true なのでここにジャンプしました。" },
+
+    { "type": "label", "label": "demo_final" },
+    { "type": "show_char", "character": "alice", "position": "center", "value": "bounce" },
+    { "type": "say", "character": "アリス", "text": "デモは以上です！{w:0.5}お疲れさまでした！" },
+    { "type": "hide_char", "character": "alice", "value": "slide_down" },
+    { "type": "fade", "value": "out", "duration": 1.0 },
+
+    { "type": "say", "text": "【補足】ボイス関連コマンドは音声ファイルが必要です：" },
+    { "type": "say", "text": "play_voice: Resources/Audio/Voice/ にクリップを配置" },
+    { "type": "say", "text": "say + clip: セリフと同時にボイス再生" },
+    { "type": "say", "text": "stop_voice: 再生中のボイスを停止" },
+    { "type": "say", "text": "next_script: 別のスクリプトにチェインで遷移" },
+
+    { "type": "fade", "value": "in", "duration": 0.5 },
+
+    { "type": "say", "text": "【パーティクルエフェクト：桜】" },
+    { "type": "play_particle", "value": "sakura" },
+    { "type": "say", "text": "桜の花びらが舞い散る..." },
+    { "type": "stop_particle", "value": "sakura", "duration": 1.0 },
+
+    { "type": "say", "text": "【パーティクルエフェクト：雪】" },
+    { "type": "play_particle", "value": "snow" },
+    { "type": "say", "text": "しんしんと雪が降り始めた..." },
+    { "type": "stop_particle", "value": "snow", "duration": 1.0 },
+
+    { "type": "say", "text": "【パーティクルエフェクト：蛍】" },
+    { "type": "play_particle", "value": "firefly" },
+    { "type": "say", "text": "夜空に蛍が飛んでいる..." },
+    { "type": "stop_particle", "duration": 1.0 },
+
+    { "type": "say", "text": "【テキスト入力コマンド】" },
+    { "type": "input_text", "target": "player_name", "text": "あなたの名前を入力してください" },
+    { "type": "say", "text": "こんにちは、{player_name}さん！" },
+    { "type": "say", "text": "フラグ展開のテスト: あなたの名前は「{player_name}」ですね。" },
+
+    { "type": "say", "text": "【ルビ（振り仮名）】" },
+    { "type": "say", "text": "{rb:漢字,かんじ}にルビを振ることができます。{rb:薔薇,ばら}の{rb:花,はな}が{rb:咲,さ}いた。" },
+    { "type": "say", "text": "{rb:Novella,ノベラ}エンジンの{rb:機能,きのう}デモです。" },
+
+    { "type": "say", "text": "【演算コマンド：calc】" },
+    { "type": "calc", "target": "demo_score", "value": "=100" },
+    { "type": "say", "text": "demo_score を 100 にセット。" },
+    { "type": "calc", "target": "demo_score", "value": "+50" },
+    { "type": "say", "text": "+50 で demo_score = {demo_score}" },
+    { "type": "calc", "target": "demo_score", "value": "*2" },
+    { "type": "say", "text": "*2 で demo_score = {demo_score}" },
+
+    { "type": "say", "text": "【背景トランジション：dissolve】" },
+    { "type": "show_bg", "image": "bg_room", "value": "dissolve", "duration": 1.0 },
+    { "type": "say", "text": "ディゾルブで背景を切り替えました。" },
+
+    { "type": "say", "text": "【立ち絵モーション：zoom_in / zoom_out】" },
+    { "type": "show_char", "character": "alice", "position": "center", "value": "zoom_in", "duration": 0.4 },
+    { "type": "say", "character": "アリス", "text": "ズームインで登場！" },
+    { "type": "hide_char", "character": "alice", "value": "zoom_out" },
+
+    { "type": "say", "text": "【レイヤー順制御】layer パラメータで立ち絵の前後関係を制御できます。" },
+    { "type": "show_char", "character": "alice", "position": "left", "layer": "back" },
+    { "type": "show_char", "character": "alice", "position": "right", "expression": "happy", "layer": "front" },
+    { "type": "say", "text": "alice(left)=back, alice(right)=front で前後が制御されています。" },
+    { "type": "hide_char", "character": "alice" },
+
+    { "type": "say", "text": "【ムービー再生】play_movie はムービーファイルがあれば全画面再生されます。（スキップ: クリック/Enter/Space）" },
+
+    { "type": "say", "text": "【画面履歴スクロール】マウスホイール下で既読部分を高速送りできます。試してみてください。" },
+
+    { "type": "say", "text": "【ADV/NVLモード切替】set_modeコマンドで表示モードを切り替えます。" },
+    { "type": "set_mode", "value": "nvl" },
+    { "type": "say", "character": "アリス", "text": "これはNVLモードです。テキストが画面全体に蓄積表示されます。" },
+    { "type": "say", "character": "ボブ", "text": "会話が続くと、前のテキストが残ったまま新しいテキストが追加されます。" },
+    { "type": "say", "text": "ナレーションもこのように表示されます。ノベルゲームの地の文に最適です。" },
+    { "type": "clear" },
+    { "type": "say", "text": "clearコマンドでテキストをリセットできます。ページ送りのように使えます。" },
+    { "type": "set_mode", "value": "adv" },
+    { "type": "say", "text": "set_mode advでADVモードに戻りました。通常のメッセージウィンドウ表示です。" },
+
+    { "type": "say", "text": "【BGMフェード】fade_bgmで再生中BGMの音量をフェードできます。（BGMファイルが必要）" },
+    { "type": "say", "text": "fade_bgm: value=0.3, duration=2.0 で音量30%に2秒かけてフェード。" },
+    { "type": "say", "text": "play_bgm + value=fade_in: フェードインで再生開始。" },
+
+    { "type": "say", "text": "【SE停止】stop_seで再生中のSEを即時停止できます。" },
+
+    { "type": "say", "text": "【音量制御】set_volumeでチャンネル別に音量を設定できます。" },
+    { "type": "say", "text": "set_volume: target=bgm/se/voice, value=0.0~1.0" },
+
+    { "type": "say", "text": "【Ken Burnsエフェクト】背景をゆっくりズーム＆パンするスチル演出です。" },
+    { "type": "ken_burns", "value": "1.3", "position": "right", "duration": 6.0 },
+    { "type": "say", "text": "右側にゆっくりズームインしています...（非ブロッキング）" },
+    { "type": "say", "text": "セリフと並行してKen Burns演出が進行します。" },
+    { "type": "stop_ken_burns", "duration": 1.0 },
+    { "type": "say", "text": "stop_ken_burnsで元に戻しました。" },
+
+    { "type": "say", "text": "――デモ終了――" },
+    { "type": "end", "label": "Demo Complete" }
+  ]
+}

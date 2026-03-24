@@ -1,0 +1,74 @@
+using TMPro;
+using UnityEngine;
+
+namespace Novella.Core
+{
+    /// <summary>
+    /// UIの見た目を一括で変更できるテーマ設定。
+    /// Assets > Create > Novella > UI Theme で作成し、NovellaEngine にアタッチする。
+    /// </summary>
+    [CreateAssetMenu(fileName = "NovellaUITheme", menuName = "Novella/UI Theme")]
+    public class NovellaUITheme : ScriptableObject
+    {
+        [Header("Font")]
+        public TMP_FontAsset Font;
+
+        [Header("Message Window")]
+        [Tooltip("メッセージウィンドウの背景画像（未設定なら色のみ）")]
+        public Sprite MessageWindowImage;
+        public Color MessageWindowBackground = new Color(0f, 0f, 0.1f, 0.8f);
+        public Color MessageTextColor = Color.white;
+        public Color ReadTextColor = new Color(0.7f, 0.7f, 0.7f, 1f);
+        public Color CharacterNameColor = new Color(1f, 0.9f, 0.5f, 1f);
+        [Range(16, 48)] public float FontSize = 24f;
+        [Range(10, 100)] public float TextSpeed = 40f;
+
+        [Header("Choice Buttons")]
+        [Tooltip("選択肢ボタンの背景画像（未設定なら色のみ）")]
+        public Sprite ChoiceButtonImage;
+        public Color ChoiceButtonColor = new Color(0.2f, 0.3f, 0.5f, 0.9f);
+        public Color ChoiceButtonHoverColor = new Color(0.3f, 0.4f, 0.7f, 1f);
+        public Color ChoiceTextColor = Color.white;
+
+        [Header("HUD / Menu")]
+        [Tooltip("HUDボタンの背景画像（未設定なら色のみ）")]
+        public Sprite HUDButtonImage;
+        public Color HUDButtonColor = new Color(0.15f, 0.15f, 0.2f, 0.8f);
+        public Color HUDTextColor = Color.white;
+        [Tooltip("メニューパネルの背景画像（未設定なら色のみ）")]
+        public Sprite MenuPanelImage;
+        public Color MenuPanelColor = new Color(0.1f, 0.1f, 0.15f, 0.95f);
+
+        [Header("Backlog")]
+        [Tooltip("バックログパネルの背景画像（未設定なら色のみ）")]
+        public Sprite BacklogPanelImage;
+        public Color BacklogBackground = new Color(0f, 0f, 0.05f, 0.9f);
+        public Color BacklogEntryColor = new Color(0.15f, 0.15f, 0.2f, 0.8f);
+
+        [Header("Save / Load")]
+        [Tooltip("セーブ/ロードパネルの背景画像（未設定なら色のみ）")]
+        public Sprite SavePanelImage;
+
+        [Header("Settings")]
+        [Tooltip("設定パネルの背景画像（未設定なら色のみ）")]
+        public Sprite SettingsPanelImage;
+
+        [Header("Title Display")]
+        [Range(32, 96)] public float TitleFontSize = 64f;
+        public Color TitleTextColor = Color.white;
+
+        [Header("Title Screen")]
+        [Tooltip("タイトル画面の背景画像")]
+        public Sprite TitleBackgroundImage;
+        [Tooltip("タイトル画面のロゴ画像（画面上部に表示）")]
+        public Sprite TitleLogoImage;
+        [Tooltip("タイトル画面のBGM（Resources/Audio/BGM/ 内のクリップ名）")]
+        public string TitleBGM;
+        [Tooltip("タイトル画面のボタン色")]
+        public Color TitleButtonColor = new Color(0.2f, 0.2f, 0.3f, 0.9f);
+        [Tooltip("タイトル画面のボタンテキスト色")]
+        public Color TitleButtonTextColor = Color.white;
+        [Tooltip("タイトル画面のボタン背景画像（未設定なら色のみ）")]
+        public Sprite TitleButtonImage;
+    }
+}
