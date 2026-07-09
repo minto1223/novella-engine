@@ -2,6 +2,17 @@
 
 Unity 6 向けのビジュアルノベルエンジンです。JSON/CSV スクリプトでシナリオを記述し、43種のコマンドで演出を制御できます。
 
+## 目次
+
+- [特徴](#特徴)
+- [動作要件](#動作要件)
+- [インストール](#インストール)
+- [クイックスタート](#クイックスタート)
+- [コマンド一覧](#コマンド一覧)
+- [サンプル](#サンプル)
+- [Editorメニュー（Novella）](#editorメニューnovella) — 全29項目の早見表と詳細
+- [ライセンス](#ライセンス)
+
 ## 特徴
 
 - **JSON/CSV 両対応** — スクリプトをテキストエディタで書ける
@@ -35,13 +46,13 @@ Unity 6 向けのビジュアルノベルエンジンです。JSON/CSV スクリ
 3. 以下の URL を入力:
 
 ```
-https://github.com/<your-username>/novella-engine.git
+https://github.com/minto1223/novella-engine.git
 ```
 
 特定バージョンを指定する場合:
 
 ```
-https://github.com/<your-username>/novella-engine.git#v1.0.0
+https://github.com/minto1223/novella-engine.git#v1.1.0
 ```
 
 ## クイックスタート
@@ -116,6 +127,40 @@ Package Manager からインストール後、`Samples` タブの `Demo Project`
 ## Editorメニュー（Novella）
 
 Unity Editor上部のメニューバーに **Novella** メニューが表示されます。各項目はUI要素の自動生成・配線を行うビルダーや、開発支援ツールです。
+
+### 早見表
+
+| カテゴリ | メニュー項目 | 用途 |
+|---------|------------|------|
+| UI構築系 | [Build HUD](#novella--build-hud) | ミニHUDパネル生成 |
+| | [Rebuild Backlog Prefab](#novella--rebuild-backlog-prefab) | バックログカードPrefab再構築 |
+| | [Rebuild Backlog Search Bar](#novella--rebuild-backlog-search-bar) | バックログ検索バー生成 |
+| | [Rebuild Settings Panel](#novella--rebuild-settings-panel) | 設定パネル再構築 |
+| | [Build CG Gallery](#novella--build-cg-gallery) | CGギャラリーパネル生成 |
+| | [Build BGM Gallery](#novella--build-bgm-gallery) | BGM回想パネル生成 |
+| | [Build Scene Recollection](#novella--build-scene-recollection) | シーン回想パネル生成 |
+| | [Build Chapter Select](#novella--build-chapter-select) | チャプター選択パネル生成 |
+| | [Create Chapter List](#novella--create-chapter-list) | ChapterListアセット自動生成 |
+| | [Rebuild Save Panels](#novella--rebuild-save-panels) | セーブ/ロードパネル再構築 |
+| | [Build Ending List](#novella--build-ending-list) | エンディングリストパネル生成 |
+| | [Button Builder](#novella--button-builder) | ボタン自由追加ウィンドウ |
+| UI修正・パッチ系 | [Add Save Panel Paging](#novella--add-save-panel-paging) | セーブ/ロードにページ切替追加 |
+| | [Patch Title: Add Reset Button](#novella--patch-title-add-reset-button) | タイトルにリセットボタン追加 |
+| | [Patch Menu: Add Title Button](#novella--patch-menu-add-title-button) | メニューにタイトル戻るボタン追加 |
+| 開発ツール系 | [Script Editor](#novella--script-editor) | JSONシナリオ編集ウィンドウ |
+| | [Flag Debug Window](#novella--flag-debug-window) | フラグ確認・編集ウィンドウ |
+| | [Flowchart](#novella--flowchart) | 分岐構造の可視化ウィンドウ |
+| | [Auto Import Assets](#novella--auto-import-assets) | アセットインポート設定一括最適化 |
+| | [Convert CSV to JSON](#novella--convert-csv-to-json) | CSV→JSON変換 |
+| | [Convert JSON to CSV](#novella--convert-json-to-csv) | JSON→CSV変換 |
+| | [Validate Scripts](#novella--validate-scripts) | シナリオ一括検証 |
+| ビルド系 | [Build Windows](#novella--build-windows) | Windowsスタンドアロンビルド |
+| | [Configure WebGL Settings](#novella--configure-webgl-settings) | WebGL設定自動化 |
+| | [Build WebGL](#novella--build-webgl) | WebGLビルド |
+| | [Configure Android Settings](#novella--configure-android-settings) | Android設定自動化 |
+| | [Build Android](#novella--build-android) | Androidビルド |
+| | [Configure iOS Settings](#novella--configure-ios-settings) | iOS設定自動化 |
+| | [Build iOS](#novella--build-ios) | iOS用Xcodeプロジェクト生成 |
 
 ### UI構築系
 
