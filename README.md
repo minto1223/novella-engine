@@ -122,7 +122,15 @@ Assets/
 
 ## サンプル
 
-Package Manager からインストール後、`Samples` タブの `Demo Project` をインポートすると、全コマンドを使用したデモシナリオが追加されます。
+全43コマンドを使用したデモシナリオ（`Demo Project`）が同梱されています。**パッケージを追加しただけでは`Assets`に入らないため、以下の手順で別途インポートしてください。**
+
+1. Unity エディタで `Window > Package Manager` を開く
+2. 左側のパッケージ一覧から `Novella Visual Novel Engine` を選択
+3. 右側パネル上部の `Samples` タブをクリック
+4. `Demo Project` の行にある `Import` ボタンをクリック
+5. `Assets/Samples/Novella Visual Novel Engine/<version>/Demo Project/` にシナリオ・立ち絵・BGM/ボイス一式がコピーされる
+
+> Import操作はパッケージキャッシュ内のファイルをコピーするだけなので、追加のダウンロードは発生しません。
 
 ## Editorメニュー（Novella）
 
