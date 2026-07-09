@@ -12,12 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1ccf3c4851bf701479befabb1f2a0f5f, type: 3}
   m_Name: ChapterList
   m_EditorClassIdentifier: 
-  Chapters:
-  - Title: "\u7B2C1\u7AE0\uFF1A\u306F\u3058\u307E\u308A\u306E\u65E5"
-    ScriptPath: Scripts/chapter01
-    ScriptAsset: {fileID: 4900000, guid: d3065e407f2e9fb4080f0b5ae77b1e32, type: 3}
-    Thumbnail: {fileID: 0}
-  - Title: "\u7B2C2\u7AE0\uFF1A\u3059\u308C\u9055\u3044\u306E\u653E\u8AB2\u5F8C"
-    ScriptPath: Scripts/chapter02
-    ScriptAsset: {fileID: 4900000, guid: 060fbd6af10748640a0d355e64afacf5, type: 3}
-    Thumbnail: {fileID: 0}
+  Chapters: []

@@ -1,322 +1,1289 @@
 {
   "title": "Novella Engine v1.0 - Full Command Showcase",
   "commands": [
-    { "type": "fade", "value": "out", "duration": 0.01 },
-
-    { "type": "show_title", "text": "Novella Engine v1.0\nFull Command Showcase", "duration": 3.0 },
-
-    { "type": "show_bg", "image": "bg_red" },
-    { "type": "fade", "value": "in", "duration": 1.0 },
-
-    { "type": "say", "text": "Novella Engine v1.0 -- 全43コマンドのショーケースデモへようこそ。" },
-    { "type": "say", "text": "このデモでは、全てのコマンドを実際に動かしながら紹介します。" },
-
-    { "type": "say", "text": "=== 1. 基本テキスト表示 (say) ===" },
-    { "type": "say", "text": "これは基本的なテキスト表示です。クリックで次に進みます。" },
-
-    { "type": "say", "text": "=== 2. インライン演出 (wait / speed) ===" },
-    { "type": "say", "text": "3...{w:0.8}2...{w:0.8}1...{w:0.5}表示！{s:0.2}ゆっくり表示モード...{sr}通常速度に戻りました。" },
-
-    { "type": "say", "text": "=== 3. リッチテキスト装飾 ===" },
-    { "type": "say", "text": "{b}太字{/b}、{i}斜体{/i}、{c:red}赤文字{/c}、{c:#00AAFF}水色{/c}、{size:50}大きい文字{/size}。" },
-    { "type": "say", "text": "{b}{c:#FF6600}太字オレンジ{/c}{/b}と{i}{c:blue}斜体ブルー{/c}{/i}の複合装飾も可能。" },
-
-    { "type": "say", "text": "=== 4. ルビ (振り仮名) ===" },
-    { "type": "say", "text": "{rb:Novella,ノベラ}エンジンで{rb:物語,ものがたり}を{rb:紡,つむ}ぐ。{rb:薔薇,ばら}の{rb:花,はな}が{rb:咲,さ}いた。" },
-
-    { "type": "say", "text": "=== 5. 背景表示 (show_bg) ===" },
-
-    { "type": "say", "text": "【crossfade (デフォルト)】" },
-    { "type": "show_bg", "image": "bg_blue", "duration": 1.0 },
-    { "type": "say", "text": "青の背景にクロスフェードしました。" },
-
-    { "type": "say", "text": "【wipe_left】" },
-    { "type": "show_bg", "image": "bg_green", "duration": 1.0, "value": "wipe_left" },
-    { "type": "say", "text": "緑の背景に左ワイプ。" },
-
-    { "type": "say", "text": "【wipe_right】" },
-    { "type": "show_bg", "image": "bg_red", "duration": 1.0, "value": "wipe_right" },
-    { "type": "say", "text": "赤の背景に右ワイプ。" },
-
-    { "type": "say", "text": "【slide_left】" },
-    { "type": "show_bg", "image": "bg_blue", "duration": 1.0, "value": "slide_left" },
-    { "type": "say", "text": "左スライド。" },
-
-    { "type": "say", "text": "【slide_right】" },
-    { "type": "show_bg", "image": "bg_green", "duration": 1.0, "value": "slide_right" },
-    { "type": "say", "text": "右スライド。" },
-
-    { "type": "say", "text": "【fade_white】" },
-    { "type": "show_bg", "image": "bg_red", "duration": 1.5, "value": "fade_white" },
-    { "type": "say", "text": "白フェード経由。" },
-
-    { "type": "say", "text": "【fade_black】" },
-    { "type": "show_bg", "image": "bg_blue", "duration": 1.5, "value": "fade_black" },
-    { "type": "say", "text": "黒フェード経由。" },
-
-    { "type": "say", "text": "【dissolve】" },
-    { "type": "show_bg", "image": "bg_green", "duration": 1.0, "value": "dissolve" },
-    { "type": "say", "text": "ディゾルブ。" },
-
-    { "type": "say", "text": "=== 6. 立ち絵表示 (show_char) ===" },
-
-    { "type": "say", "text": "【slide_left モーション】" },
-    { "type": "show_char", "character": "sakura", "position": "left", "value": "slide_left" },
-    { "type": "say", "character": "桜", "text": "左からスライドインしました！" },
-    { "type": "hide_char", "character": "sakura", "value": "slide_left" },
-
-    { "type": "say", "text": "【slide_right モーション】" },
-    { "type": "show_char", "character": "sakura", "expression": "b", "position": "right", "value": "slide_right" },
-    { "type": "say", "character": "桜", "text": "右からスライドイン！笑顔です。" },
-    { "type": "hide_char", "character": "sakura", "value": "slide_right" },
-
-    { "type": "say", "text": "【slide_up モーション】" },
-    { "type": "show_char", "character": "sakura", "expression": "c", "position": "center", "value": "slide_up" },
-    { "type": "say", "character": "桜", "text": "下からスライドイン！怒り顔です。" },
-    { "type": "hide_char", "character": "sakura" },
-
-    { "type": "say", "text": "【bounce モーション】" },
-    { "type": "show_char", "character": "sakura", "expression": "e", "position": "center", "value": "bounce" },
-    { "type": "say", "character": "桜", "text": "バウンスで登場！驚いてます！" },
-    { "type": "hide_char", "character": "sakura", "value": "slide_down" },
-
-    { "type": "say", "text": "【zoom_in モーション】" },
-    { "type": "show_char", "character": "sakura", "expression": "f", "position": "center", "value": "zoom_in" },
-    { "type": "say", "character": "桜", "text": "ズームインで登場...照れてます。" },
-    { "type": "hide_char", "character": "sakura", "value": "zoom_out" },
-
-    { "type": "say", "text": "=== 7. 立ち絵移動 (move_char) ===" },
-    { "type": "show_char", "character": "sakura", "position": "left" },
-    { "type": "say", "character": "桜", "text": "左にいます。これから右に移動します。" },
-    { "type": "move_char", "character": "sakura", "position": "right", "duration": 1.0 },
-    { "type": "say", "character": "桜", "text": "右に移動しました！" },
-    { "type": "move_char", "character": "sakura", "position": "center", "duration": 0.5 },
-
-    { "type": "say", "text": "=== 8. 表情差分の切り替え ===" },
-    { "type": "say", "character": "桜", "text": "表情を切り替えていきます。まずは通常顔。" },
-    { "type": "show_char", "character": "sakura", "expression": "b", "position": "center" },
-    { "type": "say", "character": "桜", "text": "笑顔 (expression: b)" },
-    { "type": "show_char", "character": "sakura", "expression": "c", "position": "center" },
-    { "type": "say", "character": "桜", "text": "怒り顔 (expression: c)" },
-    { "type": "show_char", "character": "sakura", "expression": "d", "position": "center" },
-    { "type": "say", "character": "桜", "text": "悲しみ顔 (expression: d)" },
-    { "type": "show_char", "character": "sakura", "expression": "e", "position": "center" },
-    { "type": "say", "character": "桜", "text": "驚き顔 (expression: e)" },
-    { "type": "show_char", "character": "sakura", "expression": "f", "position": "center" },
-    { "type": "say", "character": "桜", "text": "照れ顔 (expression: f)" },
-    { "type": "show_char", "character": "sakura", "expression": "g", "position": "center" },
-    { "type": "say", "character": "桜", "text": "ジト目 (expression: g)" },
-    { "type": "show_char", "character": "sakura", "expression": "h", "position": "center" },
-    { "type": "say", "character": "桜", "text": "目閉じ (expression: h)" },
-    { "type": "hide_char", "character": "sakura" },
-
-    { "type": "say", "text": "=== 9. レイヤー順制御 (layer) ===" },
-    { "type": "say", "text": "layerパラメータで立ち絵の前後関係を制御できます。front/middle/back が指定可能。" },
-    { "type": "show_char", "character": "sakura", "expression": "d", "position": "left", "layer": "back" },
-    { "type": "say", "text": "左に悲しみ顔をlayer=backで配置。複数キャラクター使用時にfront/backで前後を制御します。" },
-    { "type": "hide_char", "character": "sakura" },
-
-    { "type": "say", "text": "=== 10. 画面演出 ===" },
-
-    { "type": "say", "text": "【shake (画面揺れ)】" },
-    { "type": "shake", "duration": 0.5, "value": "12" },
-    { "type": "say", "text": "画面が揺れました。" },
-
-    { "type": "say", "text": "【flash - 白フラッシュ】" },
-    { "type": "flash", "value": "white", "duration": 0.4 },
-    { "type": "say", "text": "白くフラッシュしました。" },
-
-    { "type": "say", "text": "【flash - 黒フラッシュ】" },
-    { "type": "flash", "value": "black", "duration": 0.5 },
-    { "type": "say", "text": "黒くフラッシュしました。" },
-
-    { "type": "say", "text": "【fade (暗転・明転)】" },
-    { "type": "fade", "value": "out", "duration": 0.8 },
-    { "type": "wait", "duration": 0.5 },
-    { "type": "fade", "value": "in", "duration": 0.8 },
-    { "type": "say", "text": "黒で暗転→明転しました。" },
-
-    { "type": "say", "text": "【fade white (白暗転・白明転)】" },
-    { "type": "fade", "value": "out", "target": "white", "duration": 0.8 },
-    { "type": "wait", "duration": 0.5 },
-    { "type": "fade", "value": "in", "target": "white", "duration": 0.8 },
-    { "type": "say", "text": "白で暗転→明転しました。" },
-
-    { "type": "say", "text": "=== 11. カメラ演出 ===" },
-
-    { "type": "say", "text": "【zoom (画面ズーム)】" },
-    { "type": "zoom", "value": "1.5", "duration": 1.0, "position": "right" },
-    { "type": "say", "text": "右側に1.5倍ズーム。" },
-
-    { "type": "say", "text": "【pan (画面パン)】" },
-    { "type": "pan", "value": "-100,0", "duration": 0.8 },
-    { "type": "say", "text": "左にパン移動。" },
-
-    { "type": "say", "text": "【reset_camera (カメラリセット)】" },
-    { "type": "reset_camera", "duration": 0.5 },
-    { "type": "say", "text": "カメラをリセットしました。" },
-
-    { "type": "say", "text": "=== 12. Ken Burns エフェクト ===" },
-    { "type": "ken_burns", "value": "1.3", "position": "top_right", "duration": 8.0 },
-    { "type": "say", "text": "Ken Burns開始: 右上にゆっくりズーム中...（非ブロッキング）" },
-    { "type": "say", "text": "セリフと並行して背景がゆっくり動いています。" },
-    { "type": "stop_ken_burns", "duration": 1.0 },
-    { "type": "say", "text": "Ken Burnsを停止・リセットしました。" },
-
-    { "type": "say", "text": "=== 13. パーティクルエフェクト ===" },
-
-    { "type": "say", "text": "【桜 (sakura)】" },
-    { "type": "play_particle", "value": "sakura" },
-    { "type": "say", "text": "桜の花びらが舞い散る..." },
-    { "type": "stop_particle", "value": "sakura", "duration": 1.0 },
-
-    { "type": "say", "text": "【雪 (snow)】" },
-    { "type": "play_particle", "value": "snow" },
-    { "type": "say", "text": "しんしんと雪が降る..." },
-    { "type": "stop_particle", "value": "snow", "duration": 1.0 },
-
-    { "type": "say", "text": "【蛍 (firefly)】" },
-    { "type": "play_particle", "value": "firefly" },
-    { "type": "say", "text": "蛍が夜空を舞う..." },
-    { "type": "stop_particle", "duration": 1.0 },
-
-    { "type": "say", "text": "=== 14. フラグ・変数システム ===" },
-
-    { "type": "say", "text": "【set_flag】フラグ demo_flag を true にセット。" },
-    { "type": "set_flag", "label": "demo_flag", "value": "true" },
-
-    { "type": "say", "text": "【calc】演算コマンドでスコアを計算します。" },
-    { "type": "calc", "target": "score", "value": "=100" },
-    { "type": "say", "text": "score = {score} (=100)" },
-    { "type": "calc", "target": "score", "value": "+50" },
-    { "type": "say", "text": "score = {score} (+50)" },
-    { "type": "calc", "target": "score", "value": "*2" },
-    { "type": "say", "text": "score = {score} (*2)" },
-
-    { "type": "say", "text": "【add_flag】数値フラグに加算。" },
-    { "type": "add_flag", "target": "affection", "value": "5" },
-    { "type": "say", "text": "affection = {affection}" },
-
-    { "type": "say", "text": "=== 15. テキスト入力 (input_text) ===" },
-    { "type": "input_text", "target": "player_name", "text": "あなたの名前を入力してください" },
-    { "type": "say", "text": "こんにちは、{player_name}さん！ようこそNovellaの世界へ。" },
-
-    { "type": "say", "text": "=== 16. 選択肢・分岐 ===" },
-
-    { "type": "show_char", "character": "sakura", "expression": "g", "position": "center", "value": "bounce" },
-    { "type": "say", "character": "桜", "text": "{player_name}さん、このデモどうですか？" },
-
-    { "type": "choice", "choices": [
-      { "text": "すごい！", "target": "choice_great", "set_flag": "reaction", "flag_value": "great" },
-      { "text": "まあまあ", "target": "choice_ok", "set_flag": "reaction", "flag_value": "ok" },
-      { "text": "もっと見たい", "target": "choice_more", "set_flag": "reaction", "flag_value": "more" }
-    ]},
-
-    { "type": "label", "label": "choice_great" },
-    { "type": "show_char", "character": "sakura", "expression": "b", "position": "center" },
-    { "type": "say", "character": "桜", "text": "ありがとうございます！嬉しいです！" },
-    { "type": "jump", "target": "after_choice" },
-
-    { "type": "label", "label": "choice_ok" },
-    { "type": "show_char", "character": "sakura", "expression": "g", "position": "center" },
-    { "type": "say", "character": "桜", "text": "そうですか...もっと頑張ります。" },
-    { "type": "jump", "target": "after_choice" },
-
-    { "type": "label", "label": "choice_more" },
-    { "type": "show_char", "character": "sakura", "expression": "f", "position": "center" },
-    { "type": "say", "character": "桜", "text": "え、まだまだありますよ！" },
-
-    { "type": "label", "label": "after_choice" },
-
-    { "type": "say", "text": "=== 17. 条件ジャンプ ===" },
-
-    { "type": "say", "text": "【jump_if】demo_flag が true ならジャンプ。" },
-    { "type": "jump_if", "label": "demo_flag", "target": "flag_is_true" },
-    { "type": "say", "text": "(ここには来ないはず)" },
-    { "type": "jump", "target": "after_jump_test" },
-
-    { "type": "label", "label": "flag_is_true" },
-    { "type": "say", "text": "jump_if 成功: demo_flag は true です。" },
-
-    { "type": "say", "text": "【jump_unless】demo_flag が false でなければスキップ。" },
-    { "type": "set_flag", "label": "false_flag", "value": "false" },
-    { "type": "jump_unless", "label": "false_flag", "target": "unless_skipped" },
-    { "type": "say", "text": "false_flag は false なのでこのテキストが表示されます。" },
-    { "type": "jump", "target": "after_jump_test" },
-
-    { "type": "label", "label": "unless_skipped" },
-    { "type": "say", "text": "(ここには来ないはず)" },
-
-    { "type": "label", "label": "after_jump_test" },
-
-    { "type": "hide_char", "character": "sakura" },
-
-    { "type": "say", "text": "=== 18. 音声コマンド ===" },
-    { "type": "say", "text": "【play_bgm / stop_bgm / fade_bgm】BGMコマンド（音声ファイルが必要）" },
-    { "type": "say", "text": "play_bgm: Resources/Audio/BGM/ にクリップを配置" },
-    { "type": "say", "text": "play_bgm + value=fade_in: フェードインで再生開始" },
-    { "type": "say", "text": "fade_bgm: 再生中BGMの音量をフェード" },
-    { "type": "say", "text": "stop_bgm: BGMを停止（duration指定でフェードアウト）" },
-
-    { "type": "say", "text": "【play_se / stop_se】SE コマンド（音声ファイルが必要）" },
-    { "type": "say", "text": "play_se: Resources/Audio/SE/ にクリップを配置" },
-    { "type": "say", "text": "stop_se: 再生中のSEを即時停止" },
-
-    { "type": "say", "text": "【play_voice / stop_voice】ボイスコマンド（音声ファイルが必要）" },
-    { "type": "say", "text": "play_voice: Resources/Audio/Voice/ にクリップを配置" },
-    { "type": "say", "text": "stop_voice: 再生中のボイスを即時停止" },
-
-    { "type": "say", "text": "【set_volume】チャンネル別音量設定" },
-    { "type": "say", "text": "set_volume: target=bgm/se/voice, value=0.0~1.0" },
-
-    { "type": "say", "text": "=== 19. ADV/NVL モード切替 ===" },
-
-    { "type": "set_mode", "value": "nvl" },
-    { "type": "show_char", "character": "sakura", "expression": "b", "position": "center" },
-    { "type": "say", "character": "桜", "text": "これはNVLモードです。テキストが画面全体に蓄積表示されます。" },
-    { "type": "say", "text": "ナレーションもこのようにそのまま続けて表示されます。小説のような雰囲気ですね。" },
-    { "type": "say", "character": "桜", "text": "前のテキストが残ったまま新しいテキストが追加されていくのが特徴です。" },
-    { "type": "clear" },
-    { "type": "say", "text": "clearコマンドでページ送り。テキストがリセットされました。" },
-    { "type": "set_mode", "value": "adv" },
-    { "type": "say", "text": "ADVモードに戻りました。通常のメッセージウィンドウ表示です。" },
-    { "type": "hide_char", "character": "sakura" },
-
-    { "type": "say", "text": "=== 20. 多言語対応 ===" },
-    { "type": "say", "text": "【set_language】言語切替コマンド。翻訳データがあれば対応テキストに切り替わります。" },
-
-    { "type": "say", "text": "=== 21. ムービー再生 ===" },
-    { "type": "say", "text": "【play_movie / stop_movie】ムービーファイルがあれば全画面再生されます。（クリック/Enter/Spaceでスキップ）" },
-
-    { "type": "say", "text": "=== 22. スクリプトチェイン ===" },
-    { "type": "say", "text": "【next_script】別のスクリプトファイルに遷移できます。章の切り替えに使用。" },
-
-    { "type": "say", "text": "=== 23. wait コマンド ===" },
-    { "type": "say", "text": "2秒間待ちます..." },
-    { "type": "wait", "duration": 2.0 },
-    { "type": "say", "text": "待機完了。" },
-
-    { "type": "say", "text": "=== フィナーレ ===" },
-
-    { "type": "show_bg", "image": "bg_blue", "duration": 1.5, "value": "fade_black" },
-    { "type": "ken_burns", "value": "1.15", "position": "center", "duration": 20.0 },
-
-    { "type": "show_char", "character": "sakura", "expression": "b", "position": "center", "value": "bounce" },
-    { "type": "say", "character": "桜", "text": "{player_name}さん、最後までご覧いただきありがとうございます！" },
-    { "type": "say", "character": "桜", "text": "Novella Engine v1.0 -- 全43コマンドのショーケースでした。" },
-    { "type": "say", "character": "桜", "text": "このエンジンで素敵な{rb:物語,ものがたり}を作ってくださいね！" },
-
-    { "type": "hide_char", "character": "sakura", "value": "slide_down" },
-    { "type": "stop_ken_burns", "duration": 1.5 },
-
-    { "type": "fade", "value": "out", "duration": 2.0 },
-
-    { "type": "say", "text": "=== Novella Engine v1.0 ===\nコマンド一覧 (43種):\nsay / ai_say / show_bg / show_char / hide_char / move_char\nwait / play_bgm / stop_bgm / fade_bgm / play_se / stop_se\nplay_voice / stop_voice / set_volume / set_flag / add_flag\nlabel / jump / jump_if / jump_unless / choice / next_script\nshake / flash / fade / show_title / zoom / pan / reset_camera\nken_burns / stop_ken_burns / input_text / play_particle / stop_particle\nset_language / play_movie / stop_movie / calc / set_mode / clear / end" },
-
-    { "type": "fade", "value": "in", "duration": 0.5 },
-
-    { "type": "say", "text": "Credit: 立ち絵素材 - わたおきば (wataokiba.net)" },
-
-    { "type": "end", "label": "Showcase Complete" }
+    {
+      "type": "fade",
+      "duration": 0.01,
+      "value": "out",
+      "order": -1
+    },
+    {
+      "type": "show_title",
+      "text": "Novella Engine v1.0\nFull Command Showcase",
+      "duration": 3.0,
+      "order": -1
+    },
+    {
+      "type": "show_bg",
+      "image": "bg_red",
+      "order": -1
+    },
+    {
+      "type": "fade",
+      "duration": 1.0,
+      "value": "in",
+      "order": -1
+    },
+    {
+      "type": "play_bgm",
+      "clip": "Nothing",
+      "volume": 0.7,
+      "order": -1
+    },
+    {
+      "type": "say",
+      "text": "Novella Engine v1.0 -- 全43コマンドのショーケースデモへようこそ。",
+      "order": -1
+    },
+    {
+      "type": "say",
+      "text": "このデモでは、全てのコマンドを実際に動かしながら紹介します。",
+      "order": -1
+    },
+    {
+      "type": "say",
+      "text": "=== 1. 基本テキスト表示 (say) ===",
+      "order": -1
+    },
+    {
+      "type": "say",
+      "text": "これは基本的なテキスト表示です。クリックで次に進みます。",
+      "order": -1
+    },
+    {
+      "type": "say",
+      "text": "=== 2. インライン演出 (wait / speed) ===",
+      "order": -1
+    },
+    {
+      "type": "say",
+      "text": "3...{w:0.8}2...{w:0.8}1...{w:0.5}表示！{s:0.2}ゆっくり表示モード...{sr}通常速度に戻りました。",
+      "order": -1
+    },
+    {
+      "type": "say",
+      "text": "=== 3. リッチテキスト装飾 ===",
+      "order": -1
+    },
+    {
+      "type": "say",
+      "text": "{b}太字{/b}、{i}斜体{/i}、{c:red}赤文字{/c}、{c:#00AAFF}水色{/c}、{size:50}大きい文字{/size}。",
+      "order": -1
+    },
+    {
+      "type": "say",
+      "text": "{b}{c:#FF6600}太字オレンジ{/c}{/b}と{i}{c:blue}斜体ブルー{/c}{/i}の複合装飾も可能。",
+      "order": -1
+    },
+    {
+      "type": "say",
+      "text": "=== 4. ルビ (振り仮名) ===",
+      "order": -1
+    },
+    {
+      "type": "say",
+      "text": "{rb:Novella,ノベラ}エンジンで{rb:物語,ものがたり}を{rb:紡,つむ}ぐ。{rb:薔薇,ばら}の{rb:花,はな}が{rb:咲,さ}いた。",
+      "order": -1
+    },
+    {
+      "type": "say",
+      "text": "=== 5. 背景表示 (show_bg) ===",
+      "order": -1
+    },
+    {
+      "type": "say",
+      "text": "【crossfade (デフォルト)】",
+      "order": -1
+    },
+    {
+      "type": "show_bg",
+      "image": "bg_blue",
+      "duration": 1.0,
+      "order": -1
+    },
+    {
+      "type": "say",
+      "text": "青の背景にクロスフェードしました。",
+      "order": -1
+    },
+    {
+      "type": "say",
+      "text": "【wipe_left】",
+      "order": -1
+    },
+    {
+      "type": "show_bg",
+      "image": "bg_green",
+      "duration": 1.0,
+      "value": "wipe_left",
+      "order": -1
+    },
+    {
+      "type": "say",
+      "text": "緑の背景に左ワイプ。",
+      "order": -1
+    },
+    {
+      "type": "say",
+      "text": "【wipe_right】",
+      "order": -1
+    },
+    {
+      "type": "show_bg",
+      "image": "bg_red",
+      "duration": 1.0,
+      "value": "wipe_right",
+      "order": -1
+    },
+    {
+      "type": "say",
+      "text": "赤の背景に右ワイプ。",
+      "order": -1
+    },
+    {
+      "type": "say",
+      "text": "【slide_left】",
+      "order": -1
+    },
+    {
+      "type": "show_bg",
+      "image": "bg_blue",
+      "duration": 1.0,
+      "value": "slide_left",
+      "order": -1
+    },
+    {
+      "type": "say",
+      "text": "左スライド。",
+      "order": -1
+    },
+    {
+      "type": "say",
+      "text": "【slide_right】",
+      "order": -1
+    },
+    {
+      "type": "show_bg",
+      "image": "bg_green",
+      "duration": 1.0,
+      "value": "slide_right",
+      "order": -1
+    },
+    {
+      "type": "say",
+      "text": "右スライド。",
+      "order": -1
+    },
+    {
+      "type": "say",
+      "text": "【fade_white】",
+      "order": -1
+    },
+    {
+      "type": "show_bg",
+      "image": "bg_red",
+      "duration": 1.5,
+      "value": "fade_white",
+      "order": -1
+    },
+    {
+      "type": "say",
+      "text": "白フェード経由。",
+      "order": -1
+    },
+    {
+      "type": "say",
+      "text": "【fade_black】",
+      "order": -1
+    },
+    {
+      "type": "show_bg",
+      "image": "bg_blue",
+      "duration": 1.5,
+      "value": "fade_black",
+      "order": -1
+    },
+    {
+      "type": "say",
+      "text": "黒フェード経由。",
+      "order": -1
+    },
+    {
+      "type": "say",
+      "text": "【dissolve】",
+      "order": -1
+    },
+    {
+      "type": "show_bg",
+      "image": "bg_green",
+      "duration": 1.0,
+      "value": "dissolve",
+      "order": -1
+    },
+    {
+      "type": "say",
+      "text": "ディゾルブ。",
+      "order": -1
+    },
+    {
+      "type": "say",
+      "text": "=== 6. 立ち絵表示 (show_char) ===",
+      "order": -1
+    },
+    {
+      "type": "say",
+      "text": "【slide_left モーション】",
+      "order": -1
+    },
+    {
+      "type": "show_char",
+      "character": "sakura",
+      "position": "left",
+      "value": "slide_left",
+      "order": -1
+    },
+    {
+      "type": "say",
+      "character": "桜",
+      "text": "左からスライドインしました！",
+      "clip": "demo_001",
+      "order": -1
+    },
+    {
+      "type": "hide_char",
+      "character": "sakura",
+      "value": "slide_left",
+      "order": -1
+    },
+    {
+      "type": "say",
+      "text": "【slide_right モーション】",
+      "order": -1
+    },
+    {
+      "type": "show_char",
+      "character": "sakura",
+      "position": "right",
+      "expression": "b",
+      "value": "slide_right",
+      "order": -1
+    },
+    {
+      "type": "say",
+      "character": "桜",
+      "text": "右からスライドイン！笑顔です。",
+      "clip": "demo_002",
+      "order": -1
+    },
+    {
+      "type": "hide_char",
+      "character": "sakura",
+      "value": "slide_right",
+      "order": -1
+    },
+    {
+      "type": "say",
+      "text": "【slide_up モーション】",
+      "order": -1
+    },
+    {
+      "type": "show_char",
+      "character": "sakura",
+      "position": "center",
+      "expression": "c",
+      "value": "slide_up",
+      "order": -1
+    },
+    {
+      "type": "say",
+      "character": "桜",
+      "text": "下からスライドイン！怒り顔です。",
+      "clip": "demo_003",
+      "order": -1
+    },
+    {
+      "type": "hide_char",
+      "character": "sakura",
+      "order": -1
+    },
+    {
+      "type": "say",
+      "text": "【bounce モーション】",
+      "order": -1
+    },
+    {
+      "type": "show_char",
+      "character": "sakura",
+      "position": "center",
+      "expression": "e",
+      "value": "bounce",
+      "order": -1
+    },
+    {
+      "type": "say",
+      "character": "桜",
+      "text": "バウンスで登場！驚いてます！",
+      "clip": "demo_004",
+      "order": -1
+    },
+    {
+      "type": "hide_char",
+      "character": "sakura",
+      "value": "slide_down",
+      "order": -1
+    },
+    {
+      "type": "say",
+      "text": "【zoom_in モーション】",
+      "order": -1
+    },
+    {
+      "type": "show_char",
+      "character": "sakura",
+      "position": "center",
+      "expression": "doya",
+      "value": "zoom_in",
+      "order": -1
+    },
+    {
+      "type": "say",
+      "character": "桜",
+      "text": "ズームインで登場...ドヤ顔です。",
+      "clip": "demo_005",
+      "order": -1
+    },
+    {
+      "type": "hide_char",
+      "character": "sakura",
+      "value": "zoom_out",
+      "order": -1
+    },
+    {
+      "type": "say",
+      "text": "=== 7. 立ち絵移動 (move_char) ===",
+      "order": -1
+    },
+    {
+      "type": "show_char",
+      "character": "sakura",
+      "position": "left",
+      "order": -1
+    },
+    {
+      "type": "say",
+      "character": "桜",
+      "text": "左にいます。これから右に移動します。",
+      "clip": "demo_006",
+      "order": -1
+    },
+    {
+      "type": "move_char",
+      "character": "sakura",
+      "position": "right",
+      "duration": 1.0,
+      "order": -1
+    },
+    {
+      "type": "say",
+      "character": "桜",
+      "text": "右に移動しました！",
+      "clip": "demo_007",
+      "order": -1
+    },
+    {
+      "type": "move_char",
+      "character": "sakura",
+      "position": "center",
+      "duration": 0.5,
+      "order": -1
+    },
+    {
+      "type": "say",
+      "text": "=== 8. 表情差分の切り替え ===",
+      "order": -1
+    },
+    {
+      "type": "say",
+      "character": "桜",
+      "text": "表情を切り替えていきます。まずは通常顔。",
+      "clip": "demo_008",
+      "order": -1
+    },
+    {
+      "type": "show_char",
+      "character": "sakura",
+      "position": "center",
+      "expression": "b",
+      "order": -1
+    },
+    {
+      "type": "say",
+      "character": "桜",
+      "text": "笑顔 (expression: b)",
+      "clip": "demo_009",
+      "order": -1
+    },
+    {
+      "type": "show_char",
+      "character": "sakura",
+      "position": "center",
+      "expression": "c",
+      "order": -1
+    },
+    {
+      "type": "say",
+      "character": "桜",
+      "text": "怒り顔 (expression: c)",
+      "clip": "demo_010",
+      "order": -1
+    },
+    {
+      "type": "show_char",
+      "character": "sakura",
+      "position": "center",
+      "expression": "d",
+      "order": -1
+    },
+    {
+      "type": "say",
+      "character": "桜",
+      "text": "悲しみ顔 (expression: d)",
+      "clip": "demo_011",
+      "order": -1
+    },
+    {
+      "type": "show_char",
+      "character": "sakura",
+      "position": "center",
+      "expression": "e",
+      "order": -1
+    },
+    {
+      "type": "say",
+      "character": "桜",
+      "text": "驚き顔 (expression: e)",
+      "clip": "demo_012",
+      "order": -1
+    },
+    {
+      "type": "show_char",
+      "character": "sakura",
+      "position": "center",
+      "expression": "doya",
+      "order": -1
+    },
+    {
+      "type": "say",
+      "character": "桜",
+      "text": "ドヤ顔 (expression: doya)",
+      "clip": "demo_013",
+      "order": -1
+    },
+    {
+      "type": "show_char",
+      "character": "sakura",
+      "position": "center",
+      "expression": "akire",
+      "order": -1
+    },
+    {
+      "type": "say",
+      "character": "桜",
+      "text": "呆れ顔 (expression: akire)",
+      "clip": "demo_014",
+      "order": -1
+    },
+    {
+      "type": "hide_char",
+      "character": "sakura",
+      "order": -1
+    },
+    {
+      "type": "say",
+      "text": "=== 9. レイヤー順制御 (layer) ===",
+      "order": -1
+    },
+    {
+      "type": "say",
+      "text": "layerパラメータで立ち絵の前後関係を制御できます。front/middle/back が指定可能。",
+      "order": -1
+    },
+    {
+      "type": "show_char",
+      "character": "sakura",
+      "position": "left",
+      "expression": "d",
+      "order": -1,
+      "layer": "back"
+    },
+    {
+      "type": "say",
+      "text": "左に悲しみ顔をlayer=backで配置。複数キャラクター使用時にfront/backで前後を制御します。",
+      "order": -1
+    },
+    {
+      "type": "hide_char",
+      "character": "sakura",
+      "order": -1
+    },
+    {
+      "type": "say",
+      "text": "=== 10. 画面演出 ===",
+      "order": -1
+    },
+    {
+      "type": "say",
+      "text": "【shake (画面揺れ)】",
+      "order": -1
+    },
+    {
+      "type": "shake",
+      "duration": 0.5,
+      "value": "12",
+      "order": -1
+    },
+    {
+      "type": "say",
+      "text": "画面が揺れました。",
+      "order": -1
+    },
+    {
+      "type": "say",
+      "text": "【flash - 白フラッシュ】",
+      "order": -1
+    },
+    {
+      "type": "flash",
+      "duration": 0.4,
+      "value": "white",
+      "order": -1
+    },
+    {
+      "type": "say",
+      "text": "白くフラッシュしました。",
+      "order": -1
+    },
+    {
+      "type": "say",
+      "text": "【flash - 黒フラッシュ】",
+      "order": -1
+    },
+    {
+      "type": "flash",
+      "duration": 0.5,
+      "value": "black",
+      "order": -1
+    },
+    {
+      "type": "say",
+      "text": "黒くフラッシュしました。",
+      "order": -1
+    },
+    {
+      "type": "say",
+      "text": "【fade (暗転・明転)】",
+      "order": -1
+    },
+    {
+      "type": "fade",
+      "duration": 0.8,
+      "value": "out",
+      "order": -1
+    },
+    {
+      "type": "wait",
+      "duration": 0.5,
+      "order": -1
+    },
+    {
+      "type": "fade",
+      "duration": 0.8,
+      "value": "in",
+      "order": -1
+    },
+    {
+      "type": "say",
+      "text": "黒で暗転→明転しました。",
+      "order": -1
+    },
+    {
+      "type": "say",
+      "text": "【fade white (白暗転・白明転)】",
+      "order": -1
+    },
+    {
+      "type": "fade",
+      "duration": 0.8,
+      "target": "white",
+      "value": "out",
+      "order": -1
+    },
+    {
+      "type": "wait",
+      "duration": 0.5,
+      "order": -1
+    },
+    {
+      "type": "fade",
+      "duration": 0.8,
+      "target": "white",
+      "value": "in",
+      "order": -1
+    },
+    {
+      "type": "say",
+      "text": "白で暗転→明転しました。",
+      "order": -1
+    },
+    {
+      "type": "say",
+      "text": "=== 11. カメラ演出 ===",
+      "order": -1
+    },
+    {
+      "type": "show_char",
+      "character": "sakura",
+      "text": "=== 11. カメラ演出 ===",
+      "position": "right",
+      "expression": "b",
+      "order": -1
+    },
+    {
+      "type": "say",
+      "text": "【zoom (画面ズーム)】",
+      "order": -1
+    },
+    {
+      "type": "zoom",
+      "position": "right",
+      "duration": 1.0,
+      "value": "1.5",
+      "order": -1
+    },
+    {
+      "type": "say",
+      "text": "右側に1.5倍ズーム。",
+      "order": -1
+    },
+    {
+      "type": "say",
+      "text": "【pan (画面パン)】",
+      "order": -1
+    },
+    {
+      "type": "pan",
+      "duration": 0.8,
+      "value": "-100,0",
+      "order": -1
+    },
+    {
+      "type": "say",
+      "text": "左にパン移動。",
+      "order": -1
+    },
+    {
+      "type": "say",
+      "text": "【reset_camera (カメラリセット)】",
+      "order": -1
+    },
+    {
+      "type": "reset_camera",
+      "duration": 0.5,
+      "order": -1
+    },
+    {
+      "type": "say",
+      "text": "カメラをリセットしました。",
+      "order": -1
+    },
+    {
+      "type": "say",
+      "text": "=== 12. Ken Burns エフェクト ===",
+      "order": -1
+    },
+    {
+      "type": "ken_burns",
+      "position": "top_right",
+      "duration": 8.0,
+      "value": "1.3",
+      "order": -1
+    },
+    {
+      "type": "say",
+      "text": "Ken Burns開始: 右上にゆっくりズーム中...（非ブロッキング）",
+      "order": -1
+    },
+    {
+      "type": "say",
+      "text": "セリフと並行して背景がゆっくり動いています。",
+      "order": -1
+    },
+    {
+      "type": "stop_ken_burns",
+      "duration": 1.0,
+      "order": -1
+    },
+    {
+      "type": "say",
+      "text": "Ken Burnsを停止・リセットしました。",
+      "order": -1
+    },
+    {
+      "type": "hide_char",
+      "character": "sakura",
+      "text": "カメラをリセットしました。",
+      "order": -1
+    },
+    {
+      "type": "say",
+      "text": "=== 14. フラグ・変数システム ===",
+      "order": -1
+    },
+    {
+      "type": "say",
+      "text": "【set_flag】フラグ demo_flag を true にセット。",
+      "order": -1
+    },
+    {
+      "type": "set_flag",
+      "label": "demo_flag",
+      "value": "true",
+      "order": -1
+    },
+    {
+      "type": "say",
+      "text": "【calc】演算コマンドでスコアを計算します。",
+      "order": -1
+    },
+    {
+      "type": "calc",
+      "target": "score",
+      "value": "=100",
+      "order": -1
+    },
+    {
+      "type": "say",
+      "text": "score = {score} (=100)",
+      "order": -1
+    },
+    {
+      "type": "calc",
+      "target": "score",
+      "value": "+50",
+      "order": -1
+    },
+    {
+      "type": "say",
+      "text": "score = {score} (+50)",
+      "order": -1
+    },
+    {
+      "type": "calc",
+      "target": "score",
+      "value": "*2",
+      "order": -1
+    },
+    {
+      "type": "say",
+      "text": "score = {score} (*2)",
+      "order": -1
+    },
+    {
+      "type": "say",
+      "text": "【add_flag】数値フラグに加算。",
+      "order": -1
+    },
+    {
+      "type": "add_flag",
+      "target": "affection",
+      "value": "5",
+      "order": -1
+    },
+    {
+      "type": "say",
+      "text": "affection = {affection}",
+      "order": -1
+    },
+    {
+      "type": "say",
+      "text": "=== 15. テキスト入力 (input_text) ===",
+      "order": -1
+    },
+    {
+      "type": "input_text",
+      "text": "あなたの名前を入力してください",
+      "target": "player_name",
+      "order": -1
+    },
+    {
+      "type": "say",
+      "text": "こんにちは、{player_name}さん！ようこそNovellaの世界へ。",
+      "order": -1
+    },
+    {
+      "type": "say",
+      "text": "=== 16. 選択肢・分岐 ===",
+      "order": -1
+    },
+    {
+      "type": "show_char",
+      "character": "sakura",
+      "position": "center",
+      "expression": "akire",
+      "value": "bounce",
+      "order": -1
+    },
+    {
+      "type": "say",
+      "character": "桜",
+      "text": "{player_name}さん、このデモどうですか？",
+      "clip": "demo_016",
+      "order": -1
+    },
+    {
+      "type": "choice",
+      "order": -1,
+      "choices": [
+        {
+          "text": "すごい！",
+          "target": "choice_great",
+          "set_flag": "reaction",
+          "flag_value": "great"
+        },
+        {
+          "text": "まあまあ",
+          "target": "choice_ok",
+          "set_flag": "reaction",
+          "flag_value": "ok"
+        },
+        {
+          "text": "もっと見たい",
+          "target": "choice_more",
+          "set_flag": "reaction",
+          "flag_value": "more"
+        }
+      ]
+    },
+    {
+      "type": "label",
+      "label": "choice_great",
+      "order": -1
+    },
+    {
+      "type": "show_char",
+      "character": "sakura",
+      "position": "center",
+      "expression": "b",
+      "order": -1
+    },
+    {
+      "type": "say",
+      "character": "桜",
+      "text": "ありがとうございます！嬉しいです！",
+      "clip": "demo_017",
+      "order": -1
+    },
+    {
+      "type": "jump",
+      "target": "after_choice",
+      "order": -1
+    },
+    {
+      "type": "label",
+      "label": "choice_ok",
+      "order": -1
+    },
+    {
+      "type": "show_char",
+      "character": "sakura",
+      "position": "center",
+      "expression": "akire",
+      "order": -1
+    },
+    {
+      "type": "say",
+      "character": "桜",
+      "text": "そうですか...もっと頑張ります。",
+      "clip": "demo_018",
+      "order": -1
+    },
+    {
+      "type": "jump",
+      "target": "after_choice",
+      "order": -1
+    },
+    {
+      "type": "label",
+      "label": "choice_more",
+      "order": -1
+    },
+    {
+      "type": "show_char",
+      "character": "sakura",
+      "position": "center",
+      "expression": "doya",
+      "order": -1
+    },
+    {
+      "type": "say",
+      "character": "桜",
+      "text": "え、まだまだありますよ！",
+      "clip": "demo_019",
+      "order": -1
+    },
+    {
+      "type": "label",
+      "label": "after_choice",
+      "order": -1
+    },
+    {
+      "type": "say",
+      "text": "=== 17. 条件ジャンプ ===",
+      "order": -1
+    },
+    {
+      "type": "say",
+      "text": "【jump_if】demo_flag が true ならジャンプ。",
+      "order": -1
+    },
+    {
+      "type": "jump_if",
+      "label": "demo_flag",
+      "target": "flag_is_true",
+      "order": -1
+    },
+    {
+      "type": "say",
+      "text": "(ここには来ないはず)",
+      "order": -1
+    },
+    {
+      "type": "jump",
+      "target": "after_jump_test",
+      "order": -1
+    },
+    {
+      "type": "label",
+      "label": "flag_is_true",
+      "order": -1
+    },
+    {
+      "type": "say",
+      "text": "jump_if 成功: demo_flag は true です。",
+      "order": -1
+    },
+    {
+      "type": "say",
+      "text": "【jump_unless】demo_flag が false でなければスキップ。",
+      "order": -1
+    },
+    {
+      "type": "set_flag",
+      "label": "false_flag",
+      "value": "false",
+      "order": -1
+    },
+    {
+      "type": "jump_unless",
+      "label": "false_flag",
+      "target": "unless_skipped",
+      "order": -1
+    },
+    {
+      "type": "say",
+      "text": "false_flag は false なのでこのテキストが表示されます。",
+      "order": -1
+    },
+    {
+      "type": "jump",
+      "target": "after_jump_test",
+      "order": -1
+    },
+    {
+      "type": "label",
+      "label": "unless_skipped",
+      "order": -1
+    },
+    {
+      "type": "say",
+      "text": "(ここには来ないはず)",
+      "order": -1
+    },
+    {
+      "type": "label",
+      "label": "after_jump_test",
+      "order": -1
+    },
+    {
+      "type": "hide_char",
+      "character": "sakura",
+      "order": -1
+    },
+    {
+      "type": "say",
+      "text": "=== 18. 音声コマンド ===",
+      "order": -1
+    },
+    {
+      "type": "say",
+      "text": "【play_bgm / stop_bgm / fade_bgm】BGMコマンド（音声ファイルが必要）",
+      "order": -1
+    },
+    {
+      "type": "say",
+      "text": "play_bgm: Resources/Audio/BGM/ にクリップを配置",
+      "order": -1
+    },
+    {
+      "type": "say",
+      "text": "play_bgm + value=fade_in: フェードインで再生開始",
+      "order": -1
+    },
+    {
+      "type": "say",
+      "text": "fade_bgm: 再生中BGMの音量をフェード",
+      "order": -1
+    },
+    {
+      "type": "say",
+      "text": "stop_bgm: BGMを停止（duration指定でフェードアウト）",
+      "order": -1
+    },
+    {
+      "type": "say",
+      "text": "【play_se / stop_se】SE コマンド（音声ファイルが必要）",
+      "order": -1
+    },
+    {
+      "type": "say",
+      "text": "play_se: Resources/Audio/SE/ にクリップを配置",
+      "order": -1
+    },
+    {
+      "type": "say",
+      "text": "stop_se: 再生中のSEを即時停止",
+      "order": -1
+    },
+    {
+      "type": "say",
+      "text": "【play_voice / stop_voice】ボイスコマンド（音声ファイルが必要）",
+      "order": -1
+    },
+    {
+      "type": "say",
+      "text": "play_voice: Resources/Audio/Voice/ にクリップを配置",
+      "order": -1
+    },
+    {
+      "type": "say",
+      "text": "stop_voice: 再生中のボイスを即時停止",
+      "order": -1
+    },
+    {
+      "type": "say",
+      "text": "【set_volume】チャンネル別音量設定",
+      "order": -1
+    },
+    {
+      "type": "say",
+      "text": "set_volume: target=bgm/se/voice, value=0.0~1.0",
+      "order": -1
+    },
+    {
+      "type": "say",
+      "text": "=== 19. ADV/NVL モード切替 ===",
+      "order": -1
+    },
+    {
+      "type": "set_mode",
+      "value": "nvl",
+      "order": -1
+    },
+    {
+      "type": "show_char",
+      "character": "sakura",
+      "position": "center",
+      "expression": "b",
+      "order": -1
+    },
+    {
+      "type": "say",
+      "character": "桜",
+      "text": "これはNVLモードです。テキストが画面全体に蓄積表示されます。",
+      "clip": "demo_020",
+      "order": -1
+    },
+    {
+      "type": "say",
+      "text": "ナレーションもこのようにそのまま続けて表示されます。小説のような雰囲気ですね。",
+      "order": -1
+    },
+    {
+      "type": "say",
+      "character": "桜",
+      "text": "前のテキストが残ったまま新しいテキストが追加されていくのが特徴です。",
+      "clip": "demo_021",
+      "order": -1
+    },
+    {
+      "type": "clear",
+      "order": -1
+    },
+    {
+      "type": "say",
+      "text": "clearコマンドでページ送り。テキストがリセットされました。",
+      "order": -1
+    },
+    {
+      "type": "set_mode",
+      "value": "adv",
+      "order": -1
+    },
+    {
+      "type": "say",
+      "text": "ADVモードに戻りました。通常のメッセージウィンドウ表示です。",
+      "order": -1
+    },
+    {
+      "type": "hide_char",
+      "character": "sakura",
+      "order": -1
+    },
+    {
+      "type": "say",
+      "text": "=== 20. 多言語対応 ===",
+      "order": -1
+    },
+    {
+      "type": "say",
+      "text": "【set_language】言語切替コマンド。翻訳データがあれば対応テキストに切り替わります。",
+      "order": -1
+    },
+    {
+      "type": "say",
+      "text": "=== 21. ムービー再生 ===",
+      "order": -1
+    },
+    {
+      "type": "say",
+      "text": "【play_movie / stop_movie】ムービーファイルがあれば全画面再生されます。（クリック/Enter/Spaceでスキップ）",
+      "order": -1
+    },
+    {
+      "type": "say",
+      "text": "=== 22. スクリプトチェイン ===",
+      "order": -1
+    },
+    {
+      "type": "say",
+      "text": "【next_script】別のスクリプトファイルに遷移できます。章の切り替えに使用。",
+      "order": -1
+    },
+    {
+      "type": "say",
+      "text": "=== 23. wait コマンド ===",
+      "order": -1
+    },
+    {
+      "type": "say",
+      "text": "2秒間待ちます...",
+      "order": -1
+    },
+    {
+      "type": "wait",
+      "duration": 2.0,
+      "order": -1
+    },
+    {
+      "type": "say",
+      "text": "待機完了。",
+      "order": -1
+    },
+    {
+      "type": "say",
+      "text": "=== フィナーレ ===",
+      "order": -1
+    },
+    {
+      "type": "show_bg",
+      "image": "bg_blue",
+      "duration": 1.5,
+      "value": "fade_black",
+      "order": -1
+    },
+    {
+      "type": "ken_burns",
+      "position": "center",
+      "duration": 20.0,
+      "value": "1.15",
+      "order": -1
+    },
+    {
+      "type": "show_char",
+      "character": "sakura",
+      "position": "center",
+      "expression": "b",
+      "value": "bounce",
+      "order": -1
+    },
+    {
+      "type": "say",
+      "character": "桜",
+      "text": "{player_name}さん、最後までご覧いただきありがとうございます！",
+      "clip": "demo_022",
+      "order": -1
+    },
+    {
+      "type": "say",
+      "character": "桜",
+      "text": "Novella Engine v1.0 -- 全43コマンドのショーケースでした。",
+      "clip": "demo_023",
+      "order": -1
+    },
+    {
+      "type": "say",
+      "character": "桜",
+      "text": "このエンジンで素敵な{rb:物語,ものがたり}を作ってくださいね！",
+      "clip": "demo_024",
+      "order": -1
+    },
+    {
+      "type": "hide_char",
+      "character": "sakura",
+      "value": "slide_down",
+      "order": -1
+    },
+    {
+      "type": "stop_ken_burns",
+      "duration": 1.5,
+      "order": -1
+    },
+    {
+      "type": "fade",
+      "duration": 2.0,
+      "value": "out",
+      "order": -1
+    },
+    {
+      "type": "say",
+      "text": "=== Novella Engine v1.0 ===\nコマンド一覧 (43種):\nsay / ai_say / show_bg / show_char / hide_char / move_char\nwait / play_bgm / stop_bgm / fade_bgm / play_se / stop_se\nplay_voice / stop_voice / set_volume / set_flag / add_flag\nlabel / jump / jump_if / jump_unless / choice / next_script\nshake / flash / fade / show_title / zoom / pan / reset_camera\nken_burns / stop_ken_burns / input_text / play_particle / stop_particle\nset_language / play_movie / stop_movie / calc / set_mode / clear / end",
+      "order": -1
+    },
+    {
+      "type": "fade",
+      "duration": 0.5,
+      "value": "in",
+      "order": -1
+    },
+    {
+      "type": "say",
+      "text": "Credit: 立ち絵素材 - わたおきば (wataokiba.net)",
+      "order": -1
+    },
+    {
+      "type": "end",
+      "label": "Showcase Complete",
+      "order": -1
+    }
   ]
 }
