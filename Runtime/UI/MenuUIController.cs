@@ -5,6 +5,9 @@ using UnityEngine.UI;
 
 namespace Novella.UI
 {
+    // Backlog等のサブパネルより先にUpdate()を実行し、
+    // 同一フレーム内で「サブパネルがEscapeで閉じた直後にMenuが誤って開く」事故を防ぐ
+    [DefaultExecutionOrder(-10)]
     public class MenuUIController : MonoBehaviour, Novella.Core.IMenuUI
     {
         [SerializeField] private GameObject _panel;
@@ -17,6 +20,7 @@ namespace Novella.UI
         [SerializeField] private SaveUIController _saveUI;
         [SerializeField] private SaveUIController _loadUI;
         [SerializeField] private SettingsUIController _settingsUI;
+        [SerializeField] private BacklogUIController _backlogUI;
 
         [SerializeField] private string _titleSceneName = "TitleScene";
 
@@ -56,13 +60,22 @@ namespace Novella.UI
 
         private void Update()
         {
-            if (!Input.GetKeyDown(KeyCode.Escape)) return;
-            // サブパネルが開いている間はサブパネル側のUpdateに任せる
+            // サブパネル・バックログが開いている間はそちら側のUpdateに任せる
             if ((_saveUI != null && _saveUI.IsOpen) ||
                 (_loadUI != null && _loadUI.IsOpen) ||
-                (_settingsUI != null && _settingsUI.IsOpen))
+                (_settingsUI != null && _settingsUI.IsOpen) ||
+                (_backlogUI != null && _backlogUI.IsOpen))
                 return;
-            Toggle();
+
+            if (Input.GetKeyDown(KeyCode.Escape))
+            {
+                Toggle();
+                return;
+            }
+
+            if (_panel != null && _panel.activeSelf
+                && Input.GetMouseButtonDown(1) && !Novella.Core.UIInputUtil.IsPointerOverInteractableUI())
+                Close();
         }
 
         public bool IsBlockingInput =>

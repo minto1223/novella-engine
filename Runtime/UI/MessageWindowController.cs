@@ -15,9 +15,20 @@ namespace Novella.UI
         [SerializeField] private TMP_Text _dialogueText;
         [SerializeField] private float _charsPerSecond = 40f;
 
+        /// <summary>既読色をどこまで適用するか（宴4のReadColorModeを参考）</summary>
+        public enum ReadColorMode
+        {
+            None,        // 既読でも色を変えない
+            TextOnly,    // 本文のみ既読色に変える（従来の挙動）
+            TextAndName, // 本文と話者名の両方を既読色に変える
+        }
+
         [Header("既読テキスト色")]
+        [SerializeField] private ReadColorMode _readColorMode = ReadColorMode.TextOnly;
         [SerializeField] private Color _readTextColor = new Color(0.7f, 0.7f, 0.7f, 1f);
         [SerializeField] private Color _unreadTextColor = Color.white;
+        [SerializeField] private Color _readNameColor = new Color(0.7f, 0.7f, 0.7f, 1f);
+        [SerializeField] private Color _unreadNameColor = Color.white;
 
         [Header("NVL Mode")]
         [SerializeField] private Color _nvlBgColor = new Color(0, 0, 0, 0.85f);
@@ -82,7 +93,7 @@ namespace Novella.UI
         private void ShowAdv(string characterName, string text, Action onTypingComplete, bool isRead)
         {
             if (_characterNameText != null) _characterNameText.text = characterName ?? "";
-            if (_dialogueText != null) _dialogueText.color = isRead ? _readTextColor : _unreadTextColor;
+            ApplyReadColor(isRead);
 
             _onTypingComplete = onTypingComplete;
 
@@ -100,8 +111,7 @@ namespace Novella.UI
                 _nvlBuffer.Append($"{characterName}: ");
             _nvlBuffer.Append(text ?? "");
 
-            if (_dialogueText != null)
-                _dialogueText.color = isRead ? _readTextColor : _unreadTextColor;
+            ApplyReadColor(isRead);
 
             _onTypingComplete = onTypingComplete;
 
@@ -298,6 +308,27 @@ namespace Novella.UI
             };
         }
 
+        /// <summary>既読色モードに応じて本文・話者名の色を適用する</summary>
+        private void ApplyReadColor(bool isRead)
+        {
+            switch (_readColorMode)
+            {
+                case ReadColorMode.None:
+                    if (_dialogueText != null) _dialogueText.color = _unreadTextColor;
+                    if (_characterNameText != null) _characterNameText.color = _unreadNameColor;
+                    break;
+                case ReadColorMode.TextAndName:
+                    if (_dialogueText != null) _dialogueText.color = isRead ? _readTextColor : _unreadTextColor;
+                    if (_characterNameText != null) _characterNameText.color = isRead ? _readNameColor : _unreadNameColor;
+                    break;
+                case ReadColorMode.TextOnly:
+                default:
+                    if (_dialogueText != null) _dialogueText.color = isRead ? _readTextColor : _unreadTextColor;
+                    if (_characterNameText != null) _characterNameText.color = _unreadNameColor;
+                    break;
+            }
+        }
+
         public void ApplyTextSpeed(float charsPerSecond)
         {
             _charsPerSecond = Mathf.Max(1f, charsPerSecond);
@@ -440,7 +471,8 @@ namespace Novella.UI
                 lastIdx = m.Index + m.Length;
             }
 
-            return Novella.Core.RubyProcessor.Convert(text, fontSize);
+            var font = _dialogueText != null ? _dialogueText.font : null;
+            return Novella.Core.RubyProcessor.Convert(text, fontSize, font);
         }
 
         /// <summary>TMProリッチテキストタグを除いた可視文字数を概算</summary>

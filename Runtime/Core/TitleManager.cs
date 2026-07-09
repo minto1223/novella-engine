@@ -42,6 +42,9 @@ namespace Novella.Core
         [SerializeField] private Image _logoImage;
         [SerializeField] private AudioSource _bgmSource;
 
+        [Header("Reset")]
+        [SerializeField] private Button _resetButton;
+
         [Header("Settings")]
         [SerializeField] private string _gameSceneName = "SampleScene";
 
@@ -107,6 +110,9 @@ namespace Novella.Core
                 _flowchartButton.onClick.AddListener(OnFlowchart);
                 _flowchartButton.interactable = _flowchartUI != null;
             }
+
+            if (_resetButton != null)
+                _resetButton.onClick.AddListener(OnResetAllData);
 
             // クイックセーブまたはオートセーブがあればコンティニュー有効
             _continueButton.interactable = _saveManager.HasQuickSave() || _saveManager.HasAutoSave();
@@ -186,6 +192,34 @@ namespace Novella.Core
                 SceneManager.LoadScene(_gameSceneName);
         }
 
+        private void OnResetAllData()
+        {
+            // セーブファイル削除
+            string dir = Application.persistentDataPath;
+            foreach (var file in System.IO.Directory.GetFiles(dir, "novella_*.json"))
+                System.IO.File.Delete(file);
+            foreach (var file in System.IO.Directory.GetFiles(dir, "novella_*.png"))
+                System.IO.File.Delete(file);
+
+            // 各マネージャーのPlayerPrefsデータをクリア
+            CGManager.ClearAll();
+            BGMManager.ClearAll();
+            SceneRecollectionManager.ClearAll();
+            EndingManager.ClearAll();
+            ReadManager.ClearAll();
+            PlayerPrefs.DeleteAll();
+            PlayerPrefs.Save();
+
+            // UI状態を更新
+            _continueButton.interactable = false;
+            if (_galleryButton != null) _galleryButton.interactable = false;
+            if (_recollectionButton != null) _recollectionButton.interactable = false;
+            if (_bgmGalleryButton != null) _bgmGalleryButton.interactable = false;
+            if (_endingListButton != null) _endingListButton.interactable = false;
+
+            Debug.Log("[Novella] All data reset.");
+        }
+
         private void OnQuit()
         {
 #if UNITY_EDITOR
@@ -239,6 +273,15 @@ namespace Novella.Core
             ApplyButtonTheme(_bgmGalleryButton);
             ApplyButtonTheme(_endingListButton);
             ApplyButtonTheme(_flowchartButton);
+
+            // Button Builderで手動追加されたカスタムボタンにも適用（ButtonRow配下を走査）
+            var titleCanvas = GameObject.Find("TitleCanvas");
+            var buttonRow = titleCanvas != null ? titleCanvas.transform.Find("ButtonRow") : null;
+            if (buttonRow != null)
+            {
+                foreach (var btn in buttonRow.GetComponentsInChildren<Button>(true))
+                    ApplyButtonTheme(btn);
+            }
 
             // フォント適用
             if (_uiTheme.Font != null)

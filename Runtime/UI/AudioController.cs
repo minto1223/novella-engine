@@ -49,7 +49,7 @@ namespace Novella.UI
                 return;
             }
 
-            float targetVolume = Mathf.Clamp01(volume > 0 ? volume : 1f);
+            float targetVolume = Mathf.Clamp01((volume > 0 ? volume : 1f) * Novella.Core.SettingsData.BgmVolume);
 
             // 現在BGMが再生中ならクロスフェード
             if (ActiveBgmSource.isPlaying)
@@ -113,14 +113,15 @@ namespace Novella.UI
 
         public void FadeBgm(float targetVolume, float duration, Action onComplete)
         {
+            float scaledTarget = Mathf.Clamp01(targetVolume * Novella.Core.SettingsData.BgmVolume);
             if (_fadeCoroutine != null) StopCoroutine(_fadeCoroutine);
             if (duration <= 0f)
             {
-                SetBgmVolume(targetVolume);
+                SetBgmVolume(scaledTarget);
                 onComplete?.Invoke();
                 return;
             }
-            _fadeCoroutine = StartCoroutine(FadeBgmVolume(Mathf.Clamp01(targetVolume), duration, onComplete));
+            _fadeCoroutine = StartCoroutine(FadeBgmVolume(scaledTarget, duration, onComplete));
         }
 
         private IEnumerator FadeBgmVolume(float targetVolume, float duration, Action onComplete)
@@ -171,8 +172,8 @@ namespace Novella.UI
         public void SetBgmVolume(float volume)
         {
             float v = Mathf.Clamp01(volume);
-            if (_bgmSource != null && _bgmSource.isPlaying) _bgmSource.volume = v;
-            if (_bgmSource2 != null && _bgmSource2.isPlaying) _bgmSource2.volume = v;
+            if (_bgmSource != null) _bgmSource.volume = v;
+            if (_bgmSource2 != null) _bgmSource2.volume = v;
         }
 
         public void SetSeVolume(float volume)
@@ -197,7 +198,7 @@ namespace Novella.UI
             }
             _voiceSource.Stop();
             _voiceSource.clip = clip;
-            _voiceSource.volume = Mathf.Clamp01(volume > 0 ? volume : 1f);
+            _voiceSource.volume = Mathf.Clamp01((volume > 0 ? volume : 1f) * Novella.Core.SettingsData.VoiceVolume);
             _voiceSource.loop = false;
             _voiceSource.Play();
             onComplete?.Invoke();

@@ -16,7 +16,8 @@ public class MenuPanelPatcher
     [MenuItem("Novella/Patch Menu: Add Title Button")]
     public static void Patch()
     {
-        var menuCard = GameObject.Find("NovellaCanvas/MenuPanel/MenuCard");
+        var menuCard = GameObject.Find("NovellaCanvas/CameraRoot/MenuPanel/MenuCard")
+            ?? GameObject.Find("NovellaCanvas/MenuPanel/MenuCard"); // CameraRootが無い旧構成へのフォールバック
         if (menuCard == null)
         {
             Debug.LogError("[Novella] MenuCard が見つかりません。SampleSceneを開いてください。");

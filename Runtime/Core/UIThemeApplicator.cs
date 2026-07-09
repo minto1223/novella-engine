@@ -1,6 +1,7 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using Novella.UI;
 
 namespace Novella.Core
 {
@@ -64,11 +65,11 @@ namespace Novella.Core
 
         private static void ApplyHUD(NovellaUITheme theme, NovellaEngine engine)
         {
-            // HUDはNovellaCanvas直下の"MiniHUD"を探す
-            var canvas = FindCanvas(engine);
-            if (canvas == null) return;
+            // HUDはNovellaCanvas（またはCameraRoot）直下の"HUDPanel"を探す
+            var container = FindContainer(engine);
+            if (container == null) return;
 
-            var hud = canvas.transform.Find("MiniHUD");
+            var hud = container.Find("HUDPanel");
             if (hud == null) return;
 
             var buttons = hud.GetComponentsInChildren<Button>(true);
@@ -108,13 +109,13 @@ namespace Novella.Core
         {
             if (theme.SavePanelImage == null) return;
 
-            var canvas = FindCanvas(engine);
-            if (canvas == null) return;
+            var container = FindContainer(engine);
+            if (container == null) return;
 
             // SavePanel / LoadPanel を探す
             foreach (var name in new[] { "SavePanel", "LoadPanel" })
             {
-                var t = canvas.transform.Find(name);
+                var t = container.Find(name);
                 if (t == null) continue;
                 var img = t.GetComponent<Image>();
                 if (img != null)
@@ -124,16 +125,22 @@ namespace Novella.Core
 
         private static void ApplySettingsPanel(NovellaUITheme theme, NovellaEngine engine)
         {
-            if (theme.SettingsPanelImage == null) return;
+            if (theme.SettingsPanelImage != null)
+            {
+                var container = FindContainer(engine);
+                var t = container != null ? container.Find("SettingsPanel") : null;
+                var img = t != null ? t.GetComponent<Image>() : null;
+                if (img != null)
+                    ApplyImageOrColor(img, theme.SettingsPanelImage, img.color);
+            }
 
-            var canvas = FindCanvas(engine);
-            if (canvas == null) return;
+            var settingsUI = engine.GetComponent<SettingsUIController>();
+            settingsUI?.ApplyTheme(theme.SettingsTabActiveColor, theme.SettingsTabInactiveColor,
+                theme.SettingsTabActiveTextColor, theme.SettingsTabInactiveTextColor);
 
-            var t = canvas.transform.Find("SettingsPanel");
-            if (t == null) return;
-            var img = t.GetComponent<Image>();
-            if (img != null)
-                ApplyImageOrColor(img, theme.SettingsPanelImage, img.color);
+            var confirmDialog = Object.FindFirstObjectByType<ConfirmDialogController>();
+            confirmDialog?.ApplyTheme(theme.ConfirmDialogBackground, theme.ConfirmDialogTextColor,
+                theme.ConfirmDialogYesButtonColor, theme.ConfirmDialogNoButtonColor, theme.ConfirmDialogButtonTextColor);
         }
 
         private static void ApplyFont(NovellaUITheme theme, NovellaEngine engine)
@@ -188,6 +195,17 @@ namespace Novella.Core
                 if (go != null) canvas = go.GetComponent<Canvas>();
             }
             return canvas;
+        }
+
+        /// <summary>
+        /// パネル検索のルートを取得する。CameraRootラッパーがあればそちらを、無ければCanvas自体を返す。
+        /// </summary>
+        private static Transform FindContainer(NovellaEngine engine)
+        {
+            var canvas = FindCanvas(engine);
+            if (canvas == null) return null;
+            var cameraRoot = canvas.transform.Find("CameraRoot");
+            return cameraRoot != null ? cameraRoot : canvas.transform;
         }
     }
 }

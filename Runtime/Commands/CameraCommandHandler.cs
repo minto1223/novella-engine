@@ -73,15 +73,27 @@ namespace Novella.Commands
             onComplete?.Invoke();
         }
 
+        /// <summary>
+        /// ズーム/パン対象のRectTransformを取得する。
+        /// Screen Space - OverlayのCanvasはルート自身のTransform（scale/position）が描画に反映されないため、
+        /// Canvas直下の"CameraRoot"ラッパーを対象にする。存在しない場合はCanvas自体にフォールバック（Overlayでは効果なし）。
+        /// </summary>
         internal static RectTransform FindNovellaCanvas(NovellaEngine engine)
         {
+            Canvas canvas = null;
             if (engine.Background != null)
+                canvas = engine.Background.GetComponentInParent<Canvas>();
+            if (canvas == null)
             {
-                var c = engine.Background.GetComponentInParent<Canvas>();
-                if (c != null) return c.GetComponent<RectTransform>();
+                var canvasGo = GameObject.Find("NovellaCanvas");
+                if (canvasGo != null) canvas = canvasGo.GetComponent<Canvas>();
             }
-            var go = GameObject.Find("NovellaCanvas");
-            return go != null ? go.GetComponent<RectTransform>() : null;
+            if (canvas == null) return null;
+
+            var cameraRoot = canvas.transform.Find("CameraRoot");
+            if (cameraRoot != null) return cameraRoot.GetComponent<RectTransform>();
+
+            return canvas.GetComponent<RectTransform>();
         }
     }
 

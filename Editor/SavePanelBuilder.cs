@@ -169,7 +169,9 @@ public class SavePanelBuilder
         GameObject canvas, string panelName, string cardName,
         string titleText, GameObject slotPrefab, SavePanelMode mode)
     {
-        var panelTr = canvas.transform.Find(panelName);
+        var cameraRoot = canvas.transform.Find("CameraRoot");
+        var searchRoot = cameraRoot != null ? cameraRoot : canvas.transform;
+        var panelTr = searchRoot.Find(panelName);
         if (panelTr == null) { Debug.LogError($"[Novella] {panelName} が見つかりません。"); return; }
 
         var cardTr = panelTr.Find(cardName);

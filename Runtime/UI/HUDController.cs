@@ -38,6 +38,8 @@ namespace Novella.UI
         [SerializeField] private TMPro.TMP_Text _autoLabel;
         [SerializeField] private TMPro.TMP_Text _skipLabel;
         [SerializeField] private TMPro.TMP_Text _quickLoadLabel;
+        [SerializeField] private Color _labelOnColor = new Color(1f, 0.7f, 0.1f);
+        [SerializeField] private Color _labelOffColor = Color.white;
 
         private readonly SaveManager _saveManager = new SaveManager();
         private bool _autoMode;
@@ -147,13 +149,13 @@ namespace Novella.UI
         private void UpdateAutoLabel()
         {
             if (_autoLabel != null)
-                _autoLabel.text = _autoMode ? "AUTO▶" : "AUTO";
+                _autoLabel.color = _autoMode ? _labelOnColor : _labelOffColor;
         }
 
         private void UpdateSkipLabel()
         {
             if (_skipLabel != null)
-                _skipLabel.text = _skipMode ? "SKIP▶" : "SKIP";
+                _skipLabel.color = _skipMode ? _labelOnColor : _labelOffColor;
         }
 
         private void OnSkipModeChangedByEngine(bool enabled)

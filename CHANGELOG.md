@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.1.0] - 2026-07-09
+
+### Added
+- Read-text color mode (`ReadColorMode`: None / TextOnly / TextAndName) for the message window
+- Button Builder editor tool (`Novella > Button Builder`) for adding/removing UI buttons with free placement
+- Title screen Reset button (clears all save data) with patcher tool
+- Confirm dialog UI (`ConfirmDialogController` + `ConfirmDialogBuilder`)
+- Windows build menu (`Novella > Build Windows`)
+- `UIInputUtil` helper for pointer/UI raycast checks
+
+### Fixed
+- Ruby (furigana) rendering now uses actual `TMP_FontAsset` glyph widths instead of a character-count estimate
+
 ## [1.0.0] - 2026-03-24
 
 ### Added

@@ -4,7 +4,6 @@ using System.Text.RegularExpressions;
 using Novella.UI;
 using TMPro;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 namespace Novella.Core
@@ -729,7 +728,7 @@ namespace Novella.Core
             }
 
             // 通常クリック/スペース/エンター
-            bool mouseClick = Input.GetMouseButtonDown(0) && !IsPointerOverInteractableUI();
+            bool mouseClick = Input.GetMouseButtonDown(0) && !UIInputUtil.IsPointerOverInteractableUI();
             bool advance = mouseClick
                         || Input.GetKeyDown(KeyCode.Space)
                         || Input.GetKeyDown(KeyCode.Return);
@@ -793,20 +792,5 @@ namespace Novella.Core
             });
         }
 
-        private static readonly List<RaycastResult> _raycastResults = new List<RaycastResult>();
-
-        private bool IsPointerOverInteractableUI()
-        {
-            if (EventSystem.current == null) return false;
-            var pointerData = new PointerEventData(EventSystem.current) { position = Input.mousePosition };
-            _raycastResults.Clear();
-            EventSystem.current.RaycastAll(pointerData, _raycastResults);
-            foreach (var result in _raycastResults)
-            {
-                if (result.gameObject.GetComponentInParent<Selectable>() != null)
-                    return true;
-            }
-            return false;
-        }
     }
 }

@@ -37,6 +37,26 @@ namespace Novella.UI
         [SerializeField] private Button _closeButton;
         [SerializeField] private Button _resetButton;
 
+        [Header("Tabs")]
+        [SerializeField] private Button _gameTabButton;
+        [SerializeField] private Button _soundTabButton;
+        [SerializeField] private GameObject _gameTabPanel;
+        [SerializeField] private GameObject _soundTabPanel;
+        [SerializeField] private Image _gameTabButtonImage;
+        [SerializeField] private Image _soundTabButtonImage;
+        [SerializeField] private TMP_Text _gameTabButtonLabel;
+        [SerializeField] private TMP_Text _soundTabButtonLabel;
+        [SerializeField] private Color _tabActiveColor = new Color(0.25f, 0.45f, 0.75f, 1f);
+        [SerializeField] private Color _tabInactiveColor = new Color(0.15f, 0.15f, 0.2f, 0.8f);
+        [SerializeField] private Color _tabActiveTextColor = Color.white;
+        [SerializeField] private Color _tabInactiveTextColor = new Color(0.7f, 0.7f, 0.7f, 1f);
+
+        [Header("Confirm Dialog")]
+        [SerializeField] private ConfirmDialogController _confirmDialog;
+
+        private enum SettingsTab { Game, Sound }
+        private SettingsTab _currentTab = SettingsTab.Game;
+
         private IMessageWindow _messageWindow;
         private IAudioPlayer _audio;
         private NovellaEngine _engine;
@@ -99,6 +119,11 @@ namespace Novella.UI
             if (_resetButton != null)
                 _resetButton.onClick.AddListener(OnReset);
 
+            if (_gameTabButton != null)
+                _gameTabButton.onClick.AddListener(() => SelectTab(SettingsTab.Game));
+            if (_soundTabButton != null)
+                _soundTabButton.onClick.AddListener(() => SelectTab(SettingsTab.Sound));
+
             ApplyAll();
             RefreshLabels();
         }
@@ -129,7 +154,34 @@ namespace Novella.UI
             if (_skipAfterChoiceToggle != null) _skipAfterChoiceToggle.isOn = SettingsData.SkipAfterChoice;
             if (_autoSaveToggle != null) _autoSaveToggle.isOn = SettingsData.AutoSave;
             RefreshLabels();
+            SelectTab(SettingsTab.Game);
             if (_panel != null) _panel.SetActive(true);
+        }
+
+        private void SelectTab(SettingsTab tab)
+        {
+            _currentTab = tab;
+            if (_gameTabPanel != null) _gameTabPanel.SetActive(tab == SettingsTab.Game);
+            if (_soundTabPanel != null) _soundTabPanel.SetActive(tab == SettingsTab.Sound);
+            RefreshTabVisuals();
+        }
+
+        private void RefreshTabVisuals()
+        {
+            bool gameActive = _currentTab == SettingsTab.Game;
+            if (_gameTabButtonImage != null) _gameTabButtonImage.color = gameActive ? _tabActiveColor : _tabInactiveColor;
+            if (_soundTabButtonImage != null) _soundTabButtonImage.color = gameActive ? _tabInactiveColor : _tabActiveColor;
+            if (_gameTabButtonLabel != null) _gameTabButtonLabel.color = gameActive ? _tabActiveTextColor : _tabInactiveTextColor;
+            if (_soundTabButtonLabel != null) _soundTabButtonLabel.color = gameActive ? _tabInactiveTextColor : _tabActiveTextColor;
+        }
+
+        public void ApplyTheme(Color activeColor, Color inactiveColor, Color activeText, Color inactiveText)
+        {
+            _tabActiveColor = activeColor;
+            _tabInactiveColor = inactiveColor;
+            _tabActiveTextColor = activeText;
+            _tabInactiveTextColor = inactiveText;
+            RefreshTabVisuals();
         }
 
         public bool IsOpen => _panel != null && _panel.activeSelf;
@@ -221,6 +273,14 @@ namespace Novella.UI
         }
 
         private void OnReset()
+        {
+            if (_confirmDialog != null)
+                _confirmDialog.Show("設定をすべて初期状態に戻しますか？", DoReset, null, "戻す", "キャンセル");
+            else
+                DoReset();
+        }
+
+        private void DoReset()
         {
             SettingsData.ResetAll();
             // スライダー・トグルに反映（onValueChangedが発火してApplyされる）

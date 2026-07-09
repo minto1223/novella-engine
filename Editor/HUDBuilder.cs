@@ -12,13 +12,15 @@ public class HUDBuilder
     {
         var canvas = GameObject.Find("NovellaCanvas");
         if (canvas == null) { Debug.LogError("NovellaCanvas not found"); return; }
+        var cameraRoot = canvas.transform.Find("CameraRoot");
+        var buildParent = cameraRoot != null ? cameraRoot : canvas.transform;
 
-        var existing = canvas.transform.Find("HUDPanel");
+        var existing = buildParent.Find("HUDPanel");
         if (existing != null) Object.DestroyImmediate(existing.gameObject);
 
         // HUDPanel
         var panel = new GameObject("HUDPanel");
-        panel.transform.SetParent(canvas.transform, false);
+        panel.transform.SetParent(buildParent, false);
         var panelRect = panel.AddComponent<RectTransform>();
         panelRect.anchorMin = new Vector2(1, 0);
         panelRect.anchorMax = new Vector2(1, 0);

@@ -52,6 +52,19 @@ namespace Novella.Core
         [Header("Settings")]
         [Tooltip("設定パネルの背景画像（未設定なら色のみ）")]
         public Sprite SettingsPanelImage;
+        public Color SettingsTabActiveColor = new Color(0.25f, 0.45f, 0.75f, 1f);
+        public Color SettingsTabInactiveColor = new Color(0.15f, 0.15f, 0.2f, 0.8f);
+        public Color SettingsTabActiveTextColor = Color.white;
+        public Color SettingsTabInactiveTextColor = new Color(0.7f, 0.7f, 0.7f, 1f);
+
+        [Header("Confirm Dialog")]
+        [Tooltip("確認ダイアログの背景画像（未設定なら色のみ）")]
+        public Sprite ConfirmDialogPanelImage;
+        public Color ConfirmDialogBackground = new Color(0.05f, 0.05f, 0.08f, 0.95f);
+        public Color ConfirmDialogTextColor = Color.white;
+        public Color ConfirmDialogYesButtonColor = new Color(0.8f, 0.2f, 0.2f, 1f);
+        public Color ConfirmDialogNoButtonColor = new Color(0.3f, 0.3f, 0.35f, 1f);
+        public Color ConfirmDialogButtonTextColor = Color.white;
 
         [Header("Title Display")]
         [Range(32, 96)] public float TitleFontSize = 64f;

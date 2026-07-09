@@ -60,7 +60,21 @@ namespace Novella.UI
         private void Update()
         {
             if (Input.GetKeyDown(KeyCode.B) || Input.mouseScrollDelta.y > 0.5f)
+            {
                 Toggle();
+                return;
+            }
+
+            if (!_isOpen) return;
+
+            if (Input.GetKeyDown(KeyCode.Escape))
+            {
+                Close();
+                return;
+            }
+
+            if (Input.GetMouseButtonDown(1) && !Novella.Core.UIInputUtil.IsPointerOverInteractableUI())
+                Close();
         }
 
         public void Toggle()
@@ -166,7 +180,7 @@ namespace Novella.UI
                     if (dlgTMP != null)
                     {
                         float fontSize = dlgTMP.fontSize;
-                        dlgTMP.text = Novella.Core.RubyProcessor.Convert(dlgText, fontSize);
+                        dlgTMP.text = Novella.Core.RubyProcessor.Convert(dlgText, fontSize, dlgTMP.font);
                     }
 
                     if (string.IsNullOrEmpty(entry.CharacterName))
@@ -178,7 +192,7 @@ namespace Novella.UI
                     if (texts.Length >= 2)
                     {
                         texts[0].text = string.IsNullOrEmpty(entry.CharacterName) ? "" : entry.CharacterName;
-                        texts[1].text = Novella.Core.RubyProcessor.Convert(entry.Text, texts[1].fontSize);
+                        texts[1].text = Novella.Core.RubyProcessor.Convert(entry.Text, texts[1].fontSize, texts[1].font);
                     }
                 }
 

@@ -19,6 +19,7 @@ public class SettingsPanelBuilder
         var canvas = GameObject.Find("NovellaCanvas");
         if (canvas == null) { Debug.LogError("[Novella] NovellaCanvas が見つかりません。"); return; }
 
+        // SettingsPanelはUIパネルのためCameraRootの外（Canvas直下）にある
         var panelTr = canvas.transform.Find("SettingsPanel");
         if (panelTr == null) { Debug.LogError("[Novella] SettingsPanel が見つかりません。"); return; }
 
@@ -51,74 +52,56 @@ public class SettingsPanelBuilder
             toDelete.Add(child.gameObject);
         toDelete.ForEach(Object.DestroyImmediate);
 
-        // --- ScrollView構造（項目が多いのでスクロール対応） ---
-        // タイトル
+        // ConfirmDialogを確保（設定リセット確認用、UIパネルはCameraRootの外＝Canvas直下に置く）
+        var confirmDialog = ConfirmDialogBuilder.EnsureExists(canvas.transform);
+
+        // --- タイトル ---
         var titleGO = MakeTMP(cardTr.gameObject, "SettingsTitle", "設定", 42, Color.white, TextAlignmentOptions.Center, font);
         var titleLE = titleGO.AddComponent<LayoutElement>();
         titleLE.preferredHeight = 80;
 
-        // ScrollView
-        var scrollGO = new GameObject("SettingsScrollView");
-        scrollGO.transform.SetParent(cardTr, false);
-        var scrollLE = scrollGO.AddComponent<LayoutElement>();
-        scrollLE.flexibleHeight = 1;
-        scrollLE.flexibleWidth = 1;
+        // --- タブボタン行 ---
+        var tabRow = new GameObject("TabRow");
+        tabRow.transform.SetParent(cardTr, false);
+        var tabRowLE = tabRow.AddComponent<LayoutElement>();
+        tabRowLE.preferredHeight = 60;
+        tabRowLE.flexibleHeight = 0;
+        var tabRowHLG = tabRow.AddComponent<HorizontalLayoutGroup>();
+        tabRowHLG.padding = new RectOffset(40, 40, 8, 8);
+        tabRowHLG.spacing = 20;
+        tabRowHLG.childControlWidth = true;
+        tabRowHLG.childControlHeight = true;
+        tabRowHLG.childForceExpandWidth = true;
+        tabRowHLG.childForceExpandHeight = true;
 
-        var scrollRect = scrollGO.AddComponent<ScrollRect>();
-        scrollRect.horizontal = false;
-        scrollRect.vertical = true;
-        scrollRect.scrollSensitivity = 40;
+        var gameTabBtn = MakeButton(tabRow, "GameTabButton", "ゲーム設定", Color.white, font);
+        var soundTabBtn = MakeButton(tabRow, "SoundTabButton", "サウンド設定", Color.white, font);
 
-        var viewport = new GameObject("Viewport");
-        viewport.transform.SetParent(scrollGO.transform, false);
-        var vpRect = viewport.AddComponent<RectTransform>();
-        vpRect.anchorMin = Vector2.zero;
-        vpRect.anchorMax = Vector2.one;
-        vpRect.sizeDelta = Vector2.zero;
-        vpRect.pivot = new Vector2(0, 1);
-        viewport.AddComponent<RectMask2D>();
+        // --- タブパネル: ゲーム設定 ---
+        var (gameTabPanelGO, gameTabContent) = BuildTabContent(cardTr, "GameTabPanel");
 
-        var content = new GameObject("Content");
-        content.transform.SetParent(viewport.transform, false);
-        var contentRect = content.AddComponent<RectTransform>();
-        contentRect.anchorMin = new Vector2(0, 1);
-        contentRect.anchorMax = new Vector2(1, 1);
-        contentRect.pivot = new Vector2(0.5f, 1);
-        contentRect.sizeDelta = Vector2.zero;
+        MakeSectionHeader(gameTabContent, "テキスト", font);
+        var textSpeedSlider   = BuildSliderRow(gameTabContent, "TextSpeedRow",   "テキスト速度", font);
+        var autoDelaySlider   = BuildSliderRow(gameTabContent, "AutoDelayRow",   "オート待ち時間", font);
+        var fontSizeSlider    = BuildSliderRow(gameTabContent, "FontSizeRow",    "フォントサイズ", font);
+        var skipUnreadToggle  = BuildToggleRow(gameTabContent, "SkipUnreadRow",  "未読もスキップする", font);
+        var skipAfterChoiceToggle = BuildToggleRow(gameTabContent, "SkipAfterChoiceRow", "選択肢後もスキップを続ける", font);
+        var autoSaveToggle = BuildToggleRow(gameTabContent, "AutoSaveRow", "オートセーブ", font);
 
-        var contentVLG = content.AddComponent<VerticalLayoutGroup>();
-        contentVLG.padding = new RectOffset(20, 20, 10, 10);
-        contentVLG.spacing = 8;
-        contentVLG.childControlWidth = true;
-        contentVLG.childControlHeight = true;
-        contentVLG.childForceExpandWidth = true;
-        contentVLG.childForceExpandHeight = false;
+        MakeSectionHeader(gameTabContent, "表示", font);
+        var windowOpacitySlider = BuildSliderRow(gameTabContent, "WindowOpacityRow", "ウィンドウ透明度", font);
+        var fullscreenToggle    = BuildToggleRow(gameTabContent, "FullscreenRow", "フルスクリーン", font);
 
-        var csf = content.AddComponent<ContentSizeFitter>();
-        csf.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
+        // --- タブパネル: サウンド設定 ---
+        var (soundTabPanelGO, soundTabContent) = BuildTabContent(cardTr, "SoundTabPanel");
 
-        scrollRect.viewport = vpRect;
-        scrollRect.content = contentRect;
+        MakeSectionHeader(soundTabContent, "サウンド", font);
+        var bgmVolumeSlider   = BuildSliderRow(soundTabContent, "BgmVolumeRow",  "BGM音量", font);
+        var seVolumeSlider    = BuildSliderRow(soundTabContent, "SeVolumeRow",   "SE音量", font);
+        var voiceVolumeSlider = BuildSliderRow(soundTabContent, "VoiceVolumeRow", "ボイス音量", font);
 
-        // --- セクション: テキスト ---
-        MakeSectionHeader(content, "テキスト", font);
-        var textSpeedSlider   = BuildSliderRow(content, "TextSpeedRow",   "テキスト速度", font);
-        var autoDelaySlider   = BuildSliderRow(content, "AutoDelayRow",   "オート待ち時間", font);
-        var fontSizeSlider    = BuildSliderRow(content, "FontSizeRow",    "フォントサイズ", font);
-        var skipUnreadToggle  = BuildToggleRow(content, "SkipUnreadRow",  "未読もスキップする", font);
-        var skipAfterChoiceToggle = BuildToggleRow(content, "SkipAfterChoiceRow", "選択肢後もスキップを続ける", font);
-        var autoSaveToggle = BuildToggleRow(content, "AutoSaveRow", "オートセーブ", font);
-
-        // --- セクション: サウンド ---
-        MakeSectionHeader(content, "サウンド", font);
-        var bgmVolumeSlider   = BuildSliderRow(content, "BgmVolumeRow",  "BGM音量", font);
-        var seVolumeSlider    = BuildSliderRow(content, "SeVolumeRow",   "SE音量", font);
-        var voiceVolumeSlider = BuildSliderRow(content, "VoiceVolumeRow", "ボイス音量", font);
-
-        // --- セクション: 表示 ---
-        MakeSectionHeader(content, "表示", font);
-        var windowOpacitySlider = BuildSliderRow(content, "WindowOpacityRow", "ウィンドウ透明度", font);
-        var fullscreenToggle    = BuildToggleRow(content, "FullscreenRow", "フルスクリーン", font);
+        gameTabPanelGO.SetActive(true);
+        soundTabPanelGO.SetActive(false);
 
         // --- ボタン行 ---
         var btnRow = new GameObject("ButtonRow");
@@ -164,6 +147,15 @@ public class SettingsPanelBuilder
             so.FindProperty("_fontSizeLabel").objectReferenceValue    = fontSizeSlider.transform.parent.Find("Label")?.GetComponent<TextMeshProUGUI>();
             so.FindProperty("_closeButton").objectReferenceValue      = closeBtn.GetComponent<Button>();
             so.FindProperty("_resetButton").objectReferenceValue      = resetBtn.GetComponent<Button>();
+            so.FindProperty("_gameTabButton").objectReferenceValue    = gameTabBtn.GetComponent<Button>();
+            so.FindProperty("_soundTabButton").objectReferenceValue   = soundTabBtn.GetComponent<Button>();
+            so.FindProperty("_gameTabPanel").objectReferenceValue     = gameTabPanelGO;
+            so.FindProperty("_soundTabPanel").objectReferenceValue    = soundTabPanelGO;
+            so.FindProperty("_gameTabButtonImage").objectReferenceValue  = gameTabBtn.GetComponent<Image>();
+            so.FindProperty("_soundTabButtonImage").objectReferenceValue = soundTabBtn.GetComponent<Image>();
+            so.FindProperty("_gameTabButtonLabel").objectReferenceValue  = gameTabBtn.transform.Find("Text").GetComponent<TextMeshProUGUI>();
+            so.FindProperty("_soundTabButtonLabel").objectReferenceValue = soundTabBtn.transform.Find("Text").GetComponent<TextMeshProUGUI>();
+            so.FindProperty("_confirmDialog").objectReferenceValue    = confirmDialog;
             so.ApplyModifiedProperties();
         }
 
@@ -171,6 +163,56 @@ public class SettingsPanelBuilder
             UnityEngine.SceneManagement.SceneManager.GetActiveScene());
 
         Debug.Log("[Novella] Settings Panel を再構築しました。");
+    }
+
+    // =========================================================
+    // タブコンテンツ（ScrollView構造）
+    // =========================================================
+    private static (GameObject root, GameObject content) BuildTabContent(Transform cardTr, string name)
+    {
+        var scrollGO = new GameObject(name);
+        scrollGO.transform.SetParent(cardTr, false);
+        var scrollLE = scrollGO.AddComponent<LayoutElement>();
+        scrollLE.flexibleHeight = 1;
+        scrollLE.flexibleWidth = 1;
+
+        var scrollRect = scrollGO.AddComponent<ScrollRect>();
+        scrollRect.horizontal = false;
+        scrollRect.vertical = true;
+        scrollRect.scrollSensitivity = 40;
+
+        var viewport = new GameObject("Viewport");
+        viewport.transform.SetParent(scrollGO.transform, false);
+        var vpRect = viewport.AddComponent<RectTransform>();
+        vpRect.anchorMin = Vector2.zero;
+        vpRect.anchorMax = Vector2.one;
+        vpRect.sizeDelta = Vector2.zero;
+        vpRect.pivot = new Vector2(0, 1);
+        viewport.AddComponent<RectMask2D>();
+
+        var content = new GameObject("Content");
+        content.transform.SetParent(viewport.transform, false);
+        var contentRect = content.AddComponent<RectTransform>();
+        contentRect.anchorMin = new Vector2(0, 1);
+        contentRect.anchorMax = new Vector2(1, 1);
+        contentRect.pivot = new Vector2(0.5f, 1);
+        contentRect.sizeDelta = Vector2.zero;
+
+        var contentVLG = content.AddComponent<VerticalLayoutGroup>();
+        contentVLG.padding = new RectOffset(20, 20, 10, 10);
+        contentVLG.spacing = 8;
+        contentVLG.childControlWidth = true;
+        contentVLG.childControlHeight = true;
+        contentVLG.childForceExpandWidth = true;
+        contentVLG.childForceExpandHeight = false;
+
+        var csf = content.AddComponent<ContentSizeFitter>();
+        csf.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
+
+        scrollRect.viewport = vpRect;
+        scrollRect.content = contentRect;
+
+        return (scrollGO, content);
     }
 
     // =========================================================

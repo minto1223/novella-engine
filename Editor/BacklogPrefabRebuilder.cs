@@ -190,8 +190,10 @@ namespace Novella.Editor
         {
             var canvas = GameObject.Find("NovellaCanvas");
             if (canvas == null) { Debug.LogError("[Novella] NovellaCanvas が見つかりません。"); return; }
+            var cameraRoot = canvas.transform.Find("CameraRoot");
+            var searchRoot = cameraRoot != null ? cameraRoot : canvas.transform;
 
-            var panelTr = canvas.transform.Find("BacklogPanel");
+            var panelTr = searchRoot.Find("BacklogPanel");
             if (panelTr == null) { Debug.LogError("[Novella] BacklogPanel が見つかりません。"); return; }
 
             // 既存のSearchBarがあれば削除
