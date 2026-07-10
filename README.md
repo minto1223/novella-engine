@@ -128,9 +128,11 @@ Assets/
 2. 左側のパッケージ一覧から `Novella Visual Novel Engine` を選択
 3. 右側パネル上部の `Samples` タブをクリック
 4. `Demo Project` の行にある `Import` ボタンをクリック
-5. `Assets/Samples/Novella Visual Novel Engine/<version>/Demo Project/` にシナリオ・立ち絵・BGM/ボイス一式がコピーされる
+5. `Assets/Samples/Novella Visual Novel Engine/<version>/Demo Project/` にシナリオ・立ち絵・BGM/ボイス一式、および`Scenes/TitleScene.unity` / `Scenes/SampleScene.unity` がコピーされる
+6. `Scenes/TitleScene.unity` をダブルクリックで開き、そのままPlayすればデモが再生できる
 
 > Import操作はパッケージキャッシュ内のファイルをコピーするだけなので、追加のダウンロードは発生しません。
+> デモシーンは著作権の都合上、開発元プロジェクトの`font_1_kokugl_1`（商用フォント）ではなくUnity同梱の`LiberationSans SDF`で表示されます。
 
 ## Editorメニュー（Novella）
 

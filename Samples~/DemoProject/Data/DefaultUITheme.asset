@@ -1,0 +1,54 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e9551c96e7ae8a4ea7edaf7b96df491, type: 3}
+  m_Name: DefaultUITheme
+  m_EditorClassIdentifier: 
+  Font: {fileID: 0}
+  MessageWindowImage: {fileID: 0}
+  MessageWindowBackground: {r: 0, g: 0, b: 0.1, a: 0.8}
+  MessageTextColor: {r: 1, g: 1, b: 1, a: 1}
+  ReadTextColor: {r: 0.7, g: 0.7, b: 0.7, a: 1}
+  CharacterNameColor: {r: 1, g: 0.9, b: 0.5, a: 1}
+  FontSize: 24
+  TextSpeed: 40
+  ChoiceButtonImage: {fileID: 0}
+  ChoiceButtonColor: {r: 0.2, g: 0.3, b: 0.5, a: 0.9}
+  ChoiceButtonHoverColor: {r: 0.3, g: 0.4, b: 0.7, a: 1}
+  ChoiceTextColor: {r: 1, g: 1, b: 1, a: 1}
+  HUDButtonImage: {fileID: 0}
+  HUDButtonColor: {r: 0.15, g: 0.15, b: 0.2, a: 0.8}
+  HUDTextColor: {r: 1, g: 1, b: 1, a: 1}
+  MenuPanelImage: {fileID: 0}
+  MenuPanelColor: {r: 0.1, g: 0.1, b: 0.15, a: 0.95}
+  BacklogPanelImage: {fileID: 0}
+  BacklogBackground: {r: 0, g: 0, b: 0.05, a: 0.9}
+  BacklogEntryColor: {r: 0.15, g: 0.15, b: 0.2, a: 0.8}
+  SavePanelImage: {fileID: 0}
+  SettingsPanelImage: {fileID: 0}
+  SettingsTabActiveColor: {r: 0.25, g: 0.45, b: 0.75, a: 1}
+  SettingsTabInactiveColor: {r: 0.15, g: 0.15, b: 0.2, a: 0.8}
+  SettingsTabActiveTextColor: {r: 1, g: 1, b: 1, a: 1}
+  SettingsTabInactiveTextColor: {r: 0.7, g: 0.7, b: 0.7, a: 1}
+  ConfirmDialogPanelImage: {fileID: 0}
+  ConfirmDialogBackground: {r: 0.05, g: 0.05, b: 0.08, a: 0.95}
+  ConfirmDialogTextColor: {r: 1, g: 1, b: 1, a: 1}
+  ConfirmDialogYesButtonColor: {r: 0.8, g: 0.2, b: 0.2, a: 1}
+  ConfirmDialogNoButtonColor: {r: 0.3, g: 0.3, b: 0.35, a: 1}
+  ConfirmDialogButtonTextColor: {r: 1, g: 1, b: 1, a: 1}
+  TitleFontSize: 64
+  TitleTextColor: {r: 1, g: 1, b: 1, a: 1}
+  TitleBackgroundImage: {fileID: 0}
+  TitleLogoImage: {fileID: 0}
+  TitleBGM: 
+  TitleButtonColor: {r: 0.15, g: 0.15, b: 0.35, a: 0.9}
+  TitleButtonTextColor: {r: 1, g: 1, b: 1, a: 1}
+  TitleButtonImage: {fileID: 0}
