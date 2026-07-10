@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.3.2] - 2026-07-11
+
+### Changed
+- `Runtime/Fonts/NotoSansJP SDF.asset` now covers a comprehensive Japanese character set (~13,500 characters - hiragana, katakana, and the full common-use kanji range, matching Utage 4's coverage) instead of only the ~600 characters used by Novella's own demo scenario. The font is usable for any Japanese VN content, not just the bundled demo.
+- Regenerated at `pointSize` 30 / padding 3 / 4096x4096 atlas (matching Utage 4's settings) instead of the Font Asset Creator's default 90/9/1024x1024, which packed the same character count into 2 atlas pages (~73 MB) instead of the ~147 tiny pages (~300+ MB) the defaults produced.
+
 ## [1.3.1] - 2026-07-11
 
 ### Fixed
