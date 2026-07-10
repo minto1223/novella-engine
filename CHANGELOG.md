@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.3.1] - 2026-07-11
+
+### Fixed
+- v1.3.0 replaced the shipped demo scenes' font with `LiberationSans SDF`, which only covers Latin script and does not render Japanese at all - breaking the entire Japanese-language demo it was meant to fix. Switched to `Noto Sans JP` (SIL Open Font License, safe to redistribute; the same font Utage 4 bundles for the same purpose), pre-populated with every hiragana/katakana/kanji character actually used by the demo content plus ASCII. Applies to the shipped demo scenes and the `BacklogEntry`/`ChoiceButton`/`SaveSlot` prefabs.
+- `Runtime/Fonts/` added to the package so the font is available even if the Demo Project sample isn't imported (the `BacklogEntry`/`ChoiceButton`/`SaveSlot` prefabs are core Runtime assets, not sample-only).
+
 ## [1.3.0] - 2026-07-11
 
 ### Added
