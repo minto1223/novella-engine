@@ -132,7 +132,6 @@ Assets/
 6. `Scenes/TitleScene.unity` をダブルクリックで開き、そのままPlayすればデモが再生できる
 
 > Import操作はパッケージキャッシュ内のファイルをコピーするだけなので、追加のダウンロードは発生しません。
-> デモシーンは著作権の都合上、開発元プロジェクトの`font_1_kokugl_1`（商用フォント）ではなく`Noto Sans JP`（SIL Open Font License）で表示されます。
 
 ## Editorメニュー（Novella）
 
