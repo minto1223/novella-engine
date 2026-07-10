@@ -36,6 +36,10 @@ namespace Novella.Core
         [SerializeField] private Button _flowchartButton;
         [SerializeField] private Novella.UI.FlowchartUIController _flowchartUI;
 
+        [Header("Settings Button")]
+        [SerializeField] private Button _settingsButton;
+        [SerializeField] private Novella.UI.SettingsUIController _settingsUI;
+
         [Header("Theme")]
         [SerializeField] private NovellaUITheme _uiTheme;
         [SerializeField] private Image _backgroundImage;
@@ -111,6 +115,15 @@ namespace Novella.Core
                 _flowchartButton.interactable = _flowchartUI != null;
             }
 
+            if (_settingsButton != null)
+            {
+                _settingsButton.onClick.AddListener(OnSettings);
+                _settingsButton.interactable = _settingsUI != null;
+            }
+            // タイトル画面にはメッセージウィンドウ/オーディオ/エンジンが存在しないためnullで初期化
+            // （スライダー等の値変更をSettingsDataへ保存する配線のみ有効化される）
+            _settingsUI?.Init(null, null, null);
+
             if (_resetButton != null)
                 _resetButton.onClick.AddListener(OnResetAllData);
 
@@ -182,6 +195,12 @@ namespace Novella.Core
         {
             if (_flowchartUI != null)
                 _flowchartUI.Open();
+        }
+
+        private void OnSettings()
+        {
+            if (_settingsUI != null)
+                _settingsUI.Open();
         }
 
         private void TransitionToGame()

@@ -27,18 +27,18 @@ public class ButtonBuilderWindow : EditorWindow
     {
         "New Game", "Continue", "Quit", "Reset",
         "CG Gallery", "BGM Gallery", "Scene Recollection",
-        "Chapter Select", "Ending List", "Flowchart"
+        "Chapter Select", "Ending List", "Flowchart", "Settings"
     };
     private static readonly string[] TitleFields =
     {
         "_newGameButton", "_continueButton", "_quitButton", "_resetButton",
         "_galleryButton", "_bgmGalleryButton", "_recollectionButton",
-        "_chapterSelectButton", "_endingListButton", "_flowchartButton"
+        "_chapterSelectButton", "_endingListButton", "_flowchartButton", "_settingsButton"
     };
     private static readonly string[] TitleDefaultLabels =
     {
         "NEW GAME", "CONTINUE", "QUIT", "RESET",
-        "CG", "BGM", "RECOLLECT", "CHAPTER", "ENDING", "MAP"
+        "CG", "BGM", "RECOLLECT", "CHAPTER", "ENDING", "MAP", "OPTION"
     };
 
     // ---- Game タブ定義 ----

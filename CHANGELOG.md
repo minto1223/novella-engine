@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.2.0] - 2026-07-11
+
+### Added
+- Title screen Settings button support (`TitleManager._settingsButton` / `_settingsUI`) with `Novella > Rebuild Title Settings Panel` editor tool to build a full settings panel (tabs, sliders, toggles) on the title screen
+- "Settings" option in the Button Builder tool's Title tab function list
+
 ## [1.1.0] - 2026-07-09
 
 ### Added
