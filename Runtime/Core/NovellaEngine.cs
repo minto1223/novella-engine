@@ -335,11 +335,7 @@ namespace Novella.Core
             else
                 RebuildVisualStateFromScript(script, _currentIndex);
             // 選択肢UIが残っていればクリア
-            if (IChoiceUI is MonoBehaviour choiceMB)
-            {
-                var hideMethod = choiceMB.GetType().GetMethod("Hide");
-                hideMethod?.Invoke(choiceMB, null);
-            }
+            IChoiceUI?.Hide();
             Debug.Log($"[Novella] Loaded: {script.Title} @ index {_currentIndex}");
             ExecuteNext();
         }

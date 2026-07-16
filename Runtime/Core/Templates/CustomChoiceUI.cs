@@ -16,5 +16,11 @@ namespace Novella.Core.Templates
         /// 条件フィルタリングは済んだ状態で呼ばれる。
         /// </summary>
         public abstract void Show(List<ChoiceOption> choices, Action<ChoiceOption> onSelected);
+
+        /// <summary>
+        /// 表示中の選択肢を閉じる。ロード時など選択待ちの中断時に呼ばれる。
+        /// 選択肢UIを画面から消す処理をオーバーライドして実装すること（既定は何もしない）。
+        /// </summary>
+        public virtual void Hide() { }
     }
 }

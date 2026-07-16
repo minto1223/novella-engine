@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.3.4] - 2026-07-16
+
+### Added
+- `IChoiceUI.Hide()` is now part of the interface (previously the engine looked up a `Hide` method via reflection and silently did nothing if absent). `CustomChoiceUI` provides a no-op `virtual` default, so existing custom choice UIs keep compiling; override it to dismiss your UI when a load interrupts a pending choice.
+
+### Fixed
+- Corrupt or truncated save files no longer throw unhandled exceptions on load. All save reads (slots, quick save, auto save, slot info) now validate and fail gracefully with a warning, treating the broken file as an empty slot. Save writes are also guarded so an I/O failure can't halt the game.
+- `FlagManager.Set` no longer logs every flag assignment in release builds (editor and development builds still log).
+
+### Documentation
+- `ai_say` command reference now warns that `NovellaEngine.AIApiKey` is serialized into the built player in plain text, and should only be used for local prototyping (use a proxy server for distributed builds).
+
 ## [1.3.3] - 2026-07-16
 
 ### Fixed

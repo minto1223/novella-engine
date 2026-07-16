@@ -10,7 +10,9 @@ namespace Novella.Core
         public void Set(string name, string value)
         {
             _flags[name] = value;
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
             Debug.Log($"[Novella] Flag set: {name} = {value}");
+#endif
         }
 
         public string Get(string name)

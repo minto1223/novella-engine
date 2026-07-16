@@ -119,11 +119,49 @@ namespace Novella.Core
             engine.LoadAndPlayFrom(data.ScriptPath, data.CommandIndex, data.Visual);
         }
 
+        /// <summary>
+        /// セーブファイルを読み込む。ファイルなし・破損・必須項目欠落の場合はnull。
+        /// </summary>
+        private static SaveData ReadSaveFile(string path)
+        {
+            if (!File.Exists(path)) return null;
+            try
+            {
+                var data = JsonConvert.DeserializeObject<SaveData>(File.ReadAllText(path));
+                if (data == null || string.IsNullOrEmpty(data.ScriptPath))
+                {
+                    Debug.LogWarning($"[Novella] Save file is corrupt or incomplete: {path}");
+                    return null;
+                }
+                return data;
+            }
+            catch (Exception e)
+            {
+                Debug.LogWarning($"[Novella] Failed to read save file '{path}': {e.Message}");
+                return null;
+            }
+        }
+
+        /// <summary>セーブファイルを書き込む。失敗してもゲームは止めない。</summary>
+        private static bool WriteSaveFile(string path, SaveData data)
+        {
+            try
+            {
+                File.WriteAllText(path, JsonConvert.SerializeObject(data, Formatting.Indented));
+                return true;
+            }
+            catch (Exception e)
+            {
+                Debug.LogError($"[Novella] Failed to write save file '{path}': {e.Message}");
+                return false;
+            }
+        }
+
         public void QuickSave(NovellaEngine engine)
         {
             string thumbFile = "novella_thumb_quick.png";
             var data = BuildSaveData(engine, thumbFile);
-            File.WriteAllText(QuickSavePath, JsonConvert.SerializeObject(data, Formatting.Indented));
+            if (!WriteSaveFile(QuickSavePath, data)) return;
             SaveCachedScreenshot(thumbFile);
             ReadManager.SaveIfDirty();
             Debug.Log("[Novella] Quick saved.");
@@ -131,12 +169,12 @@ namespace Novella.Core
 
         public bool QuickLoad(NovellaEngine engine)
         {
-            if (!File.Exists(QuickSavePath))
+            var data = ReadSaveFile(QuickSavePath);
+            if (data == null)
             {
-                Debug.LogWarning("[Novella] No quick save found.");
+                Debug.LogWarning("[Novella] No quick save found (or file is corrupt).");
                 return false;
             }
-            var data = JsonConvert.DeserializeObject<SaveData>(File.ReadAllText(QuickSavePath));
             ApplyLoad(data, engine);
             Debug.Log($"[Novella] Quick loaded ({data.SavedAt})");
             return true;
@@ -149,7 +187,7 @@ namespace Novella.Core
             if (!SettingsData.AutoSave) return;
             string thumbFile = "novella_thumb_auto.png";
             var data = BuildSaveData(engine, thumbFile);
-            File.WriteAllText(AutoSavePath, JsonConvert.SerializeObject(data, Formatting.Indented));
+            if (!WriteSaveFile(AutoSavePath, data)) return;
             SaveCachedScreenshot(thumbFile);
             ReadManager.SaveIfDirty();
             Debug.Log("[Novella] Auto saved.");
@@ -157,12 +195,12 @@ namespace Novella.Core
 
         public bool AutoLoad(NovellaEngine engine)
         {
-            if (!File.Exists(AutoSavePath))
+            var data = ReadSaveFile(AutoSavePath);
+            if (data == null)
             {
-                Debug.LogWarning("[Novella] No auto save found.");
+                Debug.LogWarning("[Novella] No auto save found (or file is corrupt).");
                 return false;
             }
-            var data = JsonConvert.DeserializeObject<SaveData>(File.ReadAllText(AutoSavePath));
             ApplyLoad(data, engine);
             Debug.Log($"[Novella] Auto loaded ({data.SavedAt})");
             return true;
@@ -170,11 +208,7 @@ namespace Novella.Core
 
         public bool HasAutoSave() => File.Exists(AutoSavePath);
 
-        public SaveData GetAutoSaveInfo()
-        {
-            if (!File.Exists(AutoSavePath)) return null;
-            return JsonConvert.DeserializeObject<SaveData>(File.ReadAllText(AutoSavePath));
-        }
+        public SaveData GetAutoSaveInfo() => ReadSaveFile(AutoSavePath);
 
         private static string BuildLastDialogue(NovellaEngine engine)
         {
@@ -190,7 +224,7 @@ namespace Novella.Core
         {
             string thumbFile = $"novella_thumb_{slot}.png";
             var data = BuildSaveData(engine, thumbFile);
-            File.WriteAllText(SlotPath(slot), JsonConvert.SerializeObject(data, Formatting.Indented));
+            if (!WriteSaveFile(SlotPath(slot), data)) return;
             SaveCachedScreenshot(thumbFile);
             ReadManager.SaveIfDirty();
             Debug.Log($"[Novella] Saved to slot {slot}");
@@ -198,23 +232,17 @@ namespace Novella.Core
 
         public void Load(int slot, NovellaEngine engine)
         {
-            var path = SlotPath(slot);
-            if (!File.Exists(path))
+            var data = ReadSaveFile(SlotPath(slot));
+            if (data == null)
             {
-                Debug.LogWarning($"[Novella] Save slot {slot} not found.");
+                Debug.LogWarning($"[Novella] Save slot {slot} not found (or file is corrupt).");
                 return;
             }
-            var data = JsonConvert.DeserializeObject<SaveData>(File.ReadAllText(path));
             ApplyLoad(data, engine);
             Debug.Log($"[Novella] Loaded from slot {slot} ({data.SavedAt})");
         }
 
-        public SaveData GetInfo(int slot)
-        {
-            var path = SlotPath(slot);
-            if (!File.Exists(path)) return null;
-            return JsonConvert.DeserializeObject<SaveData>(File.ReadAllText(path));
-        }
+        public SaveData GetInfo(int slot) => ReadSaveFile(SlotPath(slot));
 
         /// <summary>サムネイル画像をSpriteとしてロードする。</summary>
         public static Sprite LoadThumbnail(string fileName)
