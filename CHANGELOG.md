@@ -1,5 +1,10 @@
 # Changelog
 
+## [1.4.0] - 2026-07-16
+
+### Removed
+- The `ai_say` command, the bundled Claude API client, and the `NovellaEngine.AIApiKey` Inspector field. Generating dialogue at runtime against a metered, key-protected web API doesn't fit a redistributable offline engine (the key would ship in plain text inside every build). Scripts that still contain `ai_say` now log an "Unknown command" warning and skip the line; remove or replace those lines with `say`. The command count is now 42.
+
 ## [1.3.4] - 2026-07-16
 
 ### Added
@@ -8,9 +13,6 @@
 ### Fixed
 - Corrupt or truncated save files no longer throw unhandled exceptions on load. All save reads (slots, quick save, auto save, slot info) now validate and fail gracefully with a warning, treating the broken file as an empty slot. Save writes are also guarded so an I/O failure can't halt the game.
 - `FlagManager.Set` no longer logs every flag assignment in release builds (editor and development builds still log).
-
-### Documentation
-- `ai_say` command reference now warns that `NovellaEngine.AIApiKey` is serialized into the built player in plain text, and should only be used for local prototyping (use a proxy server for distributed builds).
 
 ## [1.3.3] - 2026-07-16
 

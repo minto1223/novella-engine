@@ -1,6 +1,6 @@
 # Novella Visual Novel Engine
 
-Unity 6 向けのビジュアルノベルエンジンです。JSON/CSV スクリプトでシナリオを記述し、43種のコマンドで演出を制御できます。
+Unity 6 向けのビジュアルノベルエンジンです。JSON/CSV スクリプトでシナリオを記述し、42種のコマンドで演出を制御できます。
 
 ## 目次
 
@@ -16,7 +16,7 @@ Unity 6 向けのビジュアルノベルエンジンです。JSON/CSV スクリ
 ## 特徴
 
 - **JSON/CSV 両対応** — スクリプトをテキストエディタで書ける
-- **43種のコマンド** — テキスト表示、立ち絵、背景、BGM/SE/ボイス、選択肢、フラグ、カメラ演出、パーティクル等
+- **42種のコマンド** — テキスト表示、立ち絵、背景、BGM/SE/ボイス、選択肢、フラグ、カメラ演出、パーティクル等
 - **セーブ/ロード** — クイックセーブ、オートセーブ、複数スロット対応
 - **バックログ** — ボイスリプレイ付き履歴表示
 - **ADV/NVL モード** — ウィンドウ表示と全画面テキストを切り替え
@@ -105,11 +105,11 @@ Assets/
 
 ## コマンド一覧
 
-全43コマンドの詳細は [Documentation~/command-reference.md](Documentation~/command-reference.md) を参照してください。
+全42コマンドの詳細は [Documentation~/command-reference.md](Documentation~/command-reference.md) を参照してください。
 
 | カテゴリ | コマンド |
 |---------|---------|
-| テキスト | `say`, `ai_say`, `set_mode`, `clear` |
+| テキスト | `say`, `set_mode`, `clear` |
 | 立ち絵 | `show_char`, `hide_char`, `move_char` |
 | 背景 | `show_bg` |
 | カメラ | `zoom`, `pan`, `reset_camera`, `ken_burns`, `stop_ken_burns` |
@@ -122,7 +122,7 @@ Assets/
 
 ## サンプル
 
-全43コマンドを使用したデモシナリオ（`Demo Project`）が同梱されています。**パッケージを追加しただけでは`Assets`に入らないため、以下の手順で別途インポートしてください。**
+全42コマンドを使用したデモシナリオ（`Demo Project`）が同梱されています。**パッケージを追加しただけでは`Assets`に入らないため、以下の手順で別途インポートしてください。**
 
 1. Unity エディタで `Window > Package Manager` を開く
 2. 左側のパッケージ一覧から `Novella Visual Novel Engine` を選択

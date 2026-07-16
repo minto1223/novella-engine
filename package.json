@@ -1,8 +1,8 @@
 {
   "name": "com.novella.engine",
-  "version": "1.3.4",
+  "version": "1.4.0",
   "displayName": "Novella Visual Novel Engine",
-  "description": "A visual novel engine for Unity 6. Supports JSON/CSV scripts, 43+ commands, character expressions, branching, save/load, backlog, gallery, and more.",
+  "description": "A visual novel engine for Unity 6. Supports JSON/CSV scripts, 42 commands, character expressions, branching, save/load, backlog, gallery, and more.",
   "unity": "6000.0",
   "unityRelease": "0f1",
   "keywords": [
@@ -26,7 +26,7 @@
   "samples": [
     {
       "displayName": "Demo Project",
-      "description": "Sample scenarios, character sprites, and backgrounds demonstrating all 43 commands.",
+      "description": "Sample scenarios, character sprites, and backgrounds demonstrating all 42 commands.",
       "path": "Samples~/DemoProject"
     }
   ]

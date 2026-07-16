@@ -14,7 +14,7 @@ namespace Novella.Editor
         {
             "say", "show_bg", "show_char", "hide_char", "wait", "end",
             "play_bgm", "stop_bgm", "play_se", "choice", "set_flag", "add_flag",
-            "label", "jump", "jump_if", "jump_unless", "ai_say", "next_script",
+            "label", "jump", "jump_if", "jump_unless", "next_script",
             "shake", "flash", "fade", "show_title", "play_voice", "stop_voice",
             "move_char", "zoom", "pan", "reset_camera", "input_text",
             "play_particle", "stop_particle", "set_language",

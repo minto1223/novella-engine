@@ -13902,7 +13902,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: c596e50720a91f244824ae30cdc5c847, type: 2}
   - {fileID: 11400000, guid: 25a6cb8297eed184aa6a3df44c2b42dc, type: 2}
   SceneDefinitions: []
-  AIApiKey: 
 --- !u!4 &1407354323
 Transform:
   m_ObjectHideFlags: 0

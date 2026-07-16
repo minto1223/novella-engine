@@ -63,9 +63,6 @@ namespace Novella.Core
         [Header("Scene Definitions (Recollection)")]
         public SceneDefinition[] SceneDefinitions;
 
-        [Header("AI Settings")]
-        public string AIApiKey = "";
-
         private NovellaScript _currentScript;
         private string _currentScriptPath;
         private int _currentIndex;
@@ -249,7 +246,6 @@ namespace Novella.Core
             RegisterHandler(new Novella.Commands.JumpCommandHandler());
             RegisterHandler(new Novella.Commands.JumpIfCommandHandler());
             RegisterHandler(new Novella.Commands.JumpUnlessCommandHandler());
-            RegisterHandler(new Novella.Commands.AISayCommandHandler());
             RegisterHandler(new Novella.Commands.NextScriptCommandHandler());
             RegisterHandler(new Novella.Commands.ShakeCommandHandler());
             RegisterHandler(new Novella.Commands.FlashCommandHandler());

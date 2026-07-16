@@ -1266,7 +1266,7 @@
     },
     {
       "type": "say",
-      "text": "=== Novella Engine v1.0 ===\nコマンド一覧 (43種):\nsay / ai_say / show_bg / show_char / hide_char / move_char\nwait / play_bgm / stop_bgm / fade_bgm / play_se / stop_se\nplay_voice / stop_voice / set_volume / set_flag / add_flag\nlabel / jump / jump_if / jump_unless / choice / next_script\nshake / flash / fade / show_title / zoom / pan / reset_camera\nken_burns / stop_ken_burns / input_text / play_particle / stop_particle\nset_language / play_movie / stop_movie / calc / set_mode / clear / end",
+      "text": "=== Novella Engine v1.0 ===\nコマンド一覧 (42種):\nsay / show_bg / show_char / hide_char / move_char\nwait / play_bgm / stop_bgm / fade_bgm / play_se / stop_se\nplay_voice / stop_voice / set_volume / set_flag / add_flag\nlabel / jump / jump_if / jump_unless / choice / next_script\nshake / flash / fade / show_title / zoom / pan / reset_camera\nken_burns / stop_ken_burns / input_text / play_particle / stop_particle\nset_language / play_movie / stop_movie / calc / set_mode / clear / end",
       "order": -1
     },
     {

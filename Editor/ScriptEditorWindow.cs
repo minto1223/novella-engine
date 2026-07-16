@@ -39,7 +39,7 @@ public class ScriptEditorWindow : EditorWindow
 
     // --- Command type list ---
     private static readonly string[] CommandTypes = {
-        "say", "ai_say", "show_bg", "show_char", "hide_char", "move_char",
+        "say", "show_bg", "show_char", "hide_char", "move_char",
         "wait", "play_bgm", "stop_bgm", "fade_bgm", "play_se", "stop_se",
         "play_voice", "stop_voice", "set_volume",
         "set_flag", "add_flag", "label", "jump", "jump_if", "jump_unless",
@@ -54,7 +54,6 @@ public class ScriptEditorWindow : EditorWindow
     private static readonly Dictionary<string, string[]> FieldsByType = new Dictionary<string, string[]>
     {
         { "say",          new[] { "character", "text", "clip" } },
-        { "ai_say",       new[] { "character", "text" } },
         { "show_bg",      new[] { "image", "duration", "value" } },
         { "show_char",    new[] { "character", "expression", "position", "value", "order", "layer" } },
         { "hide_char",    new[] { "character", "value" } },
@@ -500,7 +499,6 @@ public class ScriptEditorWindow : EditorWindow
         switch (cmd.Type)
         {
             case "say":
-            case "ai_say":
                 string who = cmd.Character ?? "";
                 string txt = cmd.Text ?? "";
                 if (txt.Length > 30) txt = txt.Substring(0, 30) + "...";

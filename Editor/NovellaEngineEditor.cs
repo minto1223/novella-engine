@@ -119,10 +119,6 @@ namespace Novella.EditorTools
             EditorGUILayout.LabelField("Save Settings", EditorStyles.boldLabel);
             EditorGUILayout.PropertyField(serializedObject.FindProperty("_saveSlotCount"));
 
-            EditorGUILayout.Space(4);
-            EditorGUILayout.LabelField("AI Settings", EditorStyles.boldLabel);
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("AIApiKey"));
-
             serializedObject.ApplyModifiedProperties();
         }
     }
