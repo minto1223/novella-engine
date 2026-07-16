@@ -475,18 +475,16 @@ namespace Novella.UI
             return Novella.Core.RubyProcessor.Convert(text, fontSize, font);
         }
 
+        // TMProタグらしき形（<tag>, </tag>, <tag=value>, <#RRGGBB>）のみ除去する。
+        // 単独の '<' や "A < B" のような比較記号をタグ開始と誤認しないための制約付きパターン。
+        private static readonly Regex TmpTagRegex =
+            new Regex(@"</?(?:[a-zA-Z][a-zA-Z0-9\-]*|#[0-9A-Fa-f]{3,8})(?:=[^<>\n]*)?>", RegexOptions.Compiled);
+
         /// <summary>TMProリッチテキストタグを除いた可視文字数を概算</summary>
         private static int CountVisibleChars(string text)
         {
-            bool inTag = false;
-            int count = 0;
-            foreach (char c in text)
-            {
-                if (c == '<') { inTag = true; continue; }
-                if (c == '>') { inTag = false; continue; }
-                if (!inTag) count++;
-            }
-            return count;
+            if (string.IsNullOrEmpty(text)) return 0;
+            return TmpTagRegex.Replace(text, "").Length;
         }
 
         /// <summary>指定の可視インデックスがルビブロック内ならブロック末尾を返す</summary>

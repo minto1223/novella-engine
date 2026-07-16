@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.5.0] - 2026-07-16
+
+### Added
+- **Diced character sprites** — a new `Novella > Diced Character Builder` editor tool slices a character's expression PNGs into cells, de-duplicates identical cells, and packs the unique ones into a single atlas (`DicedCharacterData` + `DicedImage`). Expression variants share most of their pixels, so memory use drops dramatically for characters with many expressions. When `Resources/Characters/Diced/{id}` exists, `show_char` renders through the atlas automatically — scenarios need no changes, and crossfades, movement, blink (`_blink`) and lip-sync (`_talk`) all keep working. The bundled demo ships diced data for the sample character.
+
+### Fixed
+- Typewriter character counting no longer breaks when dialogue text contains a literal `<` (e.g. "A < B"). Only strings shaped like TextMeshPro rich-text tags are treated as tags now.
+
 ## [1.4.0] - 2026-07-16
 
 ### Removed

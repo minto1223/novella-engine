@@ -27,6 +27,20 @@ namespace Novella.UI
         private readonly Dictionary<string, CharacterAnimator> _animators =
             new Dictionary<string, CharacterAnimator>();
 
+        // Dicing差分立ち絵データのキャッシュ（値がnull＝データ無しも記録して再Loadを避ける）
+        private static readonly Dictionary<string, Novella.Core.DicedCharacterData> _dicedCache =
+            new Dictionary<string, Novella.Core.DicedCharacterData>();
+
+        private static Novella.Core.DicedCharacterData GetDicedData(string characterId)
+        {
+            if (!_dicedCache.TryGetValue(characterId, out var data))
+            {
+                data = Resources.Load<Novella.Core.DicedCharacterData>($"Characters/Diced/{characterId}");
+                _dicedCache[characterId] = data;
+            }
+            return data;
+        }
+
         public void ShowCharacter(string characterId, string expression, string position, float duration, Action onComplete)
         {
             ShowCharacter(characterId, expression, position, duration, null, onComplete);
@@ -46,13 +60,21 @@ namespace Novella.UI
                 return;
             }
 
-            string spritePath = string.IsNullOrEmpty(expression)
-                ? $"Characters/{characterId}"
-                : $"Characters/{characterId}_{expression}";
+            // Dicing差分立ち絵データがあればアトラス合成描画を優先し、フルスプライトは読み込まない
+            var dicedData = GetDicedData(characterId);
 
-            var sprite = Resources.Load<Sprite>(spritePath);
-            if (sprite == null && !string.IsNullOrEmpty(expression))
-                sprite = Resources.Load<Sprite>($"Characters/{characterId}");
+            Sprite sprite = null;
+            string spritePath = null;
+            if (dicedData == null)
+            {
+                spritePath = string.IsNullOrEmpty(expression)
+                    ? $"Characters/{characterId}"
+                    : $"Characters/{characterId}_{expression}";
+
+                sprite = Resources.Load<Sprite>(spritePath);
+                if (sprite == null && !string.IsNullOrEmpty(expression))
+                    sprite = Resources.Load<Sprite>($"Characters/{characterId}");
+            }
 
             bool isNewCharacter = !_activeCharacters.TryGetValue(characterId, out var img);
 
@@ -72,7 +94,24 @@ namespace Novella.UI
                     return;
                 }
                 var go = Instantiate(_characterImagePrefab, slot);
-                img = go.GetComponent<Image>();
+                if (dicedData != null)
+                {
+                    // プレハブのImageをDicedImage（アトラス合成描画）に差し替える。
+                    // DicedImageはImage派生なので以降のフェード・移動処理は共通で動く
+                    var srcImg = go.GetComponent<Image>();
+                    bool raycast = srcImg != null && srcImg.raycastTarget;
+                    bool preserve = srcImg != null && srcImg.preserveAspect;
+                    if (srcImg != null) DestroyImmediate(srcImg);
+                    var diced = go.AddComponent<DicedImage>();
+                    diced.raycastTarget = raycast;
+                    diced.preserveAspect = preserve;
+                    diced.Init(dicedData, expression);
+                    img = diced;
+                }
+                else
+                {
+                    img = go.GetComponent<Image>();
+                }
                 _activeCharacters[characterId] = img;
 
                 // アニメーター追加
@@ -91,9 +130,35 @@ namespace Novella.UI
                 }
 
                 // 表情変更: クロスフェード
-                if (sprite != null && img.sprite != sprite)
+                bool expressionChanged = false;
+                Action applyNewExpression = null;
+                if (img is DicedImage dicedImg)
                 {
-                    StartCoroutine(CrossfadeExpression(img, sprite, ExpressionCrossfade));
+                    string key = DicedImage.Normalize(expression);
+                    if (dicedImg.CurrentExpression != key)
+                    {
+                        if (dicedImg.Data != null && dicedImg.Data.HasExpression(key))
+                        {
+                            expressionChanged = true;
+                            applyNewExpression = () => dicedImg.SetExpression(expression);
+                        }
+                        else
+                        {
+                            Debug.LogWarning($"[Novella] Diced expression not found: {characterId}/{key}");
+                        }
+                    }
+                }
+                else if (sprite != null && img.sprite != sprite)
+                {
+                    expressionChanged = true;
+                    var newSprite = sprite;
+                    var targetImg = img;
+                    applyNewExpression = () => targetImg.sprite = newSprite;
+                }
+
+                if (expressionChanged)
+                {
+                    StartCoroutine(CrossfadeExpression(img, applyNewExpression, ExpressionCrossfade));
                     // アニメーター更新
                     if (_animators.TryGetValue(characterId, out var anim))
                         anim.UpdateExpression(expression, sprite);
@@ -105,7 +170,11 @@ namespace Novella.UI
                 }
             }
 
-            if (sprite != null)
+            if (img is DicedImage)
+            {
+                // 表情はInit/SetExpression側で適用済み
+            }
+            else if (sprite != null)
                 img.sprite = sprite;
             else
                 Debug.LogWarning($"[Novella] Character sprite not found: {spritePath}");
@@ -256,15 +325,15 @@ namespace Novella.UI
         }
 
         /// <summary>表情クロスフェード: 一時的にコピーを重ねてフェード</summary>
-        private IEnumerator CrossfadeExpression(Image img, Sprite newSprite, float duration)
+        private IEnumerator CrossfadeExpression(Image img, Action applyNewExpression, float duration)
         {
-            // 旧スプライトのコピーを同じ場所に生成
+            // 旧表情のコピーを同じ場所に生成（DicedImageもシリアライズ値ごと複製される）
             var oldGO = Instantiate(img.gameObject, img.transform.parent);
             var oldImg = oldGO.GetComponent<Image>();
             oldGO.transform.SetSiblingIndex(img.transform.GetSiblingIndex());
 
-            // 新スプライトに差し替え
-            img.sprite = newSprite;
+            // 新表情に差し替え
+            applyNewExpression?.Invoke();
             img.transform.SetAsLastSibling();
 
             // 旧画像をフェードアウト

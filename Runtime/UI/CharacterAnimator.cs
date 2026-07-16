@@ -10,16 +10,29 @@ namespace Novella.UI
     ///   通常: Characters/{id}_{expression}
     ///   まばたき: Characters/{id}_{expression}_blink
     ///   口パク: Characters/{id}_{expression}_talk
-    /// 該当スプライトが存在しない場合は何もしない。
+    /// Dicing立ち絵（DicedImage）の場合はアトラス内の表情
+    /// "{expression}_blink" / "{expression}_talk"（基本表情なら "blink" / "talk"）を使う。
+    /// 該当バリアントが存在しない場合は何もしない。
     /// </summary>
     public class CharacterAnimator : MonoBehaviour
     {
         private Image _image;
+        private DicedImage _diced; // DicedImageの場合のみ非null
         private string _characterId;
         private string _expression;
+
+        // フルスプライト用
         private Sprite _normalSprite;
         private Sprite _blinkSprite;
         private Sprite _talkSprite;
+
+        // Diced用（アトラス内表情名）
+        private string _normalExpr;
+        private string _blinkExpr;
+        private string _talkExpr;
+
+        private bool _hasBlink;
+        private bool _hasTalk;
 
         private bool _isTalking;
         private Coroutine _blinkCoroutine;
@@ -36,10 +49,11 @@ namespace Novella.UI
         public void Init(Image image, string characterId, string expression)
         {
             _image = image;
+            _diced = image as DicedImage;
             _characterId = characterId;
             _expression = expression;
 
-            LoadSprites();
+            LoadVariants();
             StartBlinking();
         }
 
@@ -52,7 +66,7 @@ namespace Novella.UI
             _expression = newExpression;
             _normalSprite = normalSprite;
 
-            LoadSprites();
+            LoadVariants();
             StartBlinking();
 
             if (_isTalking) StartTalking();
@@ -61,7 +75,7 @@ namespace Novella.UI
         public void StartTalking()
         {
             _isTalking = true;
-            if (_talkSprite != null && _lipSyncCoroutine == null)
+            if (_hasTalk && _lipSyncCoroutine == null)
                 _lipSyncCoroutine = StartCoroutine(LipSyncLoop());
         }
 
@@ -73,25 +87,59 @@ namespace Novella.UI
                 StopCoroutine(_lipSyncCoroutine);
                 _lipSyncCoroutine = null;
             }
-            // 通常スプライトに戻す
-            if (_image != null && _normalSprite != null)
-                _image.sprite = _normalSprite;
+            // 通常表情に戻す
+            ShowNormal();
         }
 
-        private void LoadSprites()
+        private void LoadVariants()
         {
+            if (_diced != null && _diced.Data != null)
+            {
+                bool baseExpr = string.IsNullOrEmpty(_expression);
+                _normalExpr = baseExpr ? "default" : _expression;
+                _blinkExpr = baseExpr ? "blink" : $"{_expression}_blink";
+                _talkExpr = baseExpr ? "talk" : $"{_expression}_talk";
+                _hasBlink = _diced.Data.HasExpression(_blinkExpr);
+                _hasTalk = _diced.Data.HasExpression(_talkExpr);
+                return;
+            }
+
             string basePath = string.IsNullOrEmpty(_expression)
                 ? $"Characters/{_characterId}"
                 : $"Characters/{_characterId}_{_expression}";
 
-            _normalSprite = Resources.Load<Sprite>(basePath);
+            if (_normalSprite == null)
+                _normalSprite = Resources.Load<Sprite>(basePath);
             _blinkSprite = Resources.Load<Sprite>($"{basePath}_blink");
             _talkSprite = Resources.Load<Sprite>($"{basePath}_talk");
+            _hasBlink = _blinkSprite != null;
+            _hasTalk = _talkSprite != null;
+        }
+
+        private void ShowNormal()
+        {
+            if (_image == null) return;
+            if (_diced != null) _diced.SetExpression(_normalExpr);
+            else if (_normalSprite != null) _image.sprite = _normalSprite;
+        }
+
+        private void ShowBlink()
+        {
+            if (_image == null) return;
+            if (_diced != null) _diced.SetExpression(_blinkExpr);
+            else if (_blinkSprite != null) _image.sprite = _blinkSprite;
+        }
+
+        private void ShowTalk()
+        {
+            if (_image == null) return;
+            if (_diced != null) _diced.SetExpression(_talkExpr);
+            else if (_talkSprite != null) _image.sprite = _talkSprite;
         }
 
         private void StartBlinking()
         {
-            if (_blinkSprite != null && _blinkCoroutine == null)
+            if (_hasBlink && _blinkCoroutine == null)
                 _blinkCoroutine = StartCoroutine(BlinkLoop());
         }
 
@@ -111,16 +159,16 @@ namespace Novella.UI
                 float wait = Random.Range(_blinkIntervalMin, _blinkIntervalMax);
                 yield return new WaitForSeconds(wait);
 
-                if (_image == null || _blinkSprite == null) yield break;
+                if (_image == null || !_hasBlink) yield break;
 
-                // リップシンク中はまばたきスプライトを使わない（衝突回避）
+                // リップシンク中はまばたきを使わない（衝突回避）
                 if (_lipSyncCoroutine != null) continue;
 
-                _image.sprite = _blinkSprite;
+                ShowBlink();
                 yield return new WaitForSeconds(_blinkDuration);
 
-                if (_image != null && _normalSprite != null)
-                    _image.sprite = _normalSprite;
+                if (_lipSyncCoroutine == null)
+                    ShowNormal();
             }
         }
 
@@ -132,14 +180,14 @@ namespace Novella.UI
                 if (_image == null) yield break;
 
                 mouthOpen = !mouthOpen;
-                _image.sprite = mouthOpen ? _talkSprite : _normalSprite;
+                if (mouthOpen) ShowTalk();
+                else ShowNormal();
 
                 yield return new WaitForSeconds(_lipSyncInterval);
             }
 
             // 終了時は通常に戻す
-            if (_image != null && _normalSprite != null)
-                _image.sprite = _normalSprite;
+            ShowNormal();
             _lipSyncCoroutine = null;
         }
 
