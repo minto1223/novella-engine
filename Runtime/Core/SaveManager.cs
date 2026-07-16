@@ -16,6 +16,13 @@ namespace Novella.Core
         /// <summary>最後にキャプチャしたゲーム画面のPNGデータ（UIなし状態）。</summary>
         private static byte[] _cachedScreenshot;
 
+        // キャプチャ用テクスチャは使い回してGCアロケーションを抑える
+        private static Texture2D _screenTex;
+        private static Texture2D _thumbTex;
+        private static float _lastCaptureTime = -999f;
+        /// <summary>キャプチャの最短間隔（秒）。高速クリック・スキップ時の負荷対策。</summary>
+        private const float CaptureMinInterval = 0.5f;
+
         private string SlotPath(int slot) =>
             Path.Combine(Application.persistentDataPath, $"{FilePrefix}{slot}{FileExt}");
 
@@ -31,34 +38,44 @@ namespace Novella.Core
         /// </summary>
         public static IEnumerator CacheScreenshot()
         {
+            // サムネイル用途なので直近のキャッシュがあれば撮り直さない
+            if (_cachedScreenshot != null && Time.unscaledTime - _lastCaptureTime < CaptureMinInterval)
+                yield break;
+
             yield return new WaitForEndOfFrame();
 
             try
             {
-                var screenTex = new Texture2D(Screen.width, Screen.height, TextureFormat.RGB24, false);
-                screenTex.ReadPixels(new Rect(0, 0, Screen.width, Screen.height), 0, 0);
-                screenTex.Apply();
-
-                // 縮小（幅320px）
-                int thumbW = 320;
-                int thumbH = (int)(Screen.height * (320f / Screen.width));
-                var thumbTex = new Texture2D(thumbW, thumbH, TextureFormat.RGB24, false);
-
-                for (int y = 0; y < thumbH; y++)
+                int w = Screen.width;
+                int h = Screen.height;
+                if (_screenTex == null || _screenTex.width != w || _screenTex.height != h)
                 {
-                    for (int x = 0; x < thumbW; x++)
-                    {
-                        float u = (float)x / thumbW;
-                        float v = (float)y / thumbH;
-                        thumbTex.SetPixel(x, y, screenTex.GetPixelBilinear(u, v));
-                    }
+                    if (_screenTex != null) UnityEngine.Object.Destroy(_screenTex);
+                    _screenTex = new Texture2D(w, h, TextureFormat.RGB24, false);
                 }
-                thumbTex.Apply();
+                _screenTex.ReadPixels(new Rect(0, 0, w, h), 0, 0);
+                _screenTex.Apply();
 
-                _cachedScreenshot = thumbTex.EncodeToPNG();
+                // 縮小（幅320px）はGPU（Graphics.Blit）で行う
+                int thumbW = 320;
+                int thumbH = Mathf.Max(1, Mathf.RoundToInt(h * (320f / w)));
+                if (_thumbTex == null || _thumbTex.width != thumbW || _thumbTex.height != thumbH)
+                {
+                    if (_thumbTex != null) UnityEngine.Object.Destroy(_thumbTex);
+                    _thumbTex = new Texture2D(thumbW, thumbH, TextureFormat.RGB24, false);
+                }
 
-                UnityEngine.Object.Destroy(screenTex);
-                UnityEngine.Object.Destroy(thumbTex);
+                var rt = RenderTexture.GetTemporary(thumbW, thumbH, 0);
+                Graphics.Blit(_screenTex, rt);
+                var prevActive = RenderTexture.active;
+                RenderTexture.active = rt;
+                _thumbTex.ReadPixels(new Rect(0, 0, thumbW, thumbH), 0, 0);
+                _thumbTex.Apply();
+                RenderTexture.active = prevActive;
+                RenderTexture.ReleaseTemporary(rt);
+
+                _cachedScreenshot = _thumbTex.EncodeToPNG();
+                _lastCaptureTime = Time.unscaledTime;
             }
             catch (Exception e)
             {
@@ -108,6 +125,7 @@ namespace Novella.Core
             var data = BuildSaveData(engine, thumbFile);
             File.WriteAllText(QuickSavePath, JsonConvert.SerializeObject(data, Formatting.Indented));
             SaveCachedScreenshot(thumbFile);
+            ReadManager.SaveIfDirty();
             Debug.Log("[Novella] Quick saved.");
         }
 
@@ -133,6 +151,7 @@ namespace Novella.Core
             var data = BuildSaveData(engine, thumbFile);
             File.WriteAllText(AutoSavePath, JsonConvert.SerializeObject(data, Formatting.Indented));
             SaveCachedScreenshot(thumbFile);
+            ReadManager.SaveIfDirty();
             Debug.Log("[Novella] Auto saved.");
         }
 
@@ -173,6 +192,7 @@ namespace Novella.Core
             var data = BuildSaveData(engine, thumbFile);
             File.WriteAllText(SlotPath(slot), JsonConvert.SerializeObject(data, Formatting.Indented));
             SaveCachedScreenshot(thumbFile);
+            ReadManager.SaveIfDirty();
             Debug.Log($"[Novella] Saved to slot {slot}");
         }
 

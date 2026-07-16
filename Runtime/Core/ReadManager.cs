@@ -12,6 +12,7 @@ namespace Novella.Core
     {
         private const string PrefsKey = "novella_read_commands";
         private static HashSet<string> _readSet;
+        private static bool _dirty;
 
         private static void EnsureLoaded()
         {
@@ -37,13 +38,25 @@ namespace Novella.Core
 
         /// <summary>
         /// 指定コマンドを既読としてマークする。
+        /// 保存は即座には行わず、SaveIfDirty()呼び出し時にまとめて書き込む。
         /// </summary>
         public static void MarkRead(string scriptPath, int commandIndex)
         {
             EnsureLoaded();
             string key = $"{scriptPath}:{commandIndex}";
             if (_readSet.Add(key))
-                Save();
+                _dirty = true;
+        }
+
+        /// <summary>
+        /// 未保存の既読データがあれば書き込む。
+        /// シーン遷移・アプリ終了・セーブ実行時などの節目で呼ぶこと。
+        /// </summary>
+        public static void SaveIfDirty()
+        {
+            if (!_dirty || _readSet == null) return;
+            Save();
+            _dirty = false;
         }
 
         /// <summary>
@@ -61,6 +74,7 @@ namespace Novella.Core
         public static void ClearAll()
         {
             _readSet = new HashSet<string>();
+            _dirty = false;
             PlayerPrefs.DeleteKey(PrefsKey);
             PlayerPrefs.Save();
         }

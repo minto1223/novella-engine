@@ -1,5 +1,15 @@
 # Changelog
 
+## [1.3.3] - 2026-07-16
+
+### Fixed
+- Script execution no longer grows the call stack when many instantly-completing commands (`set_flag`, `label`, `jump`, etc.) run back-to-back. `NovellaEngine.ExecuteNext` now drains synchronous continuations in a loop (trampoline) instead of recursing, preventing potential stack overflow in long scripts.
+- Command errors are now logged with the full stack trace and the correct command index.
+
+### Changed
+- Read-state tracking no longer serializes the entire read set to `PlayerPrefs` on every command advance. `ReadManager` marks entries dirty and flushes in batch on scene teardown, application quit/pause, and every save (manual, quick, auto), removing per-click serialization and disk I/O.
+- Save thumbnail capture is much cheaper: the 320px downscale is done on the GPU via `Graphics.Blit` (previously a per-pixel `GetPixelBilinear` loop on the CPU), capture textures are reused instead of reallocated per shot, and captures are throttled to at most one per 0.5s so fast-clicking/skipping doesn't re-capture every message.
+
 ## [1.3.2] - 2026-07-11
 
 ### Changed

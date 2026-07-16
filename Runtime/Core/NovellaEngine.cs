@@ -198,6 +198,14 @@ namespace Novella.Core
             if (BacklogUI != null) BacklogUI.SetEngine(this);
         }
 
+        // 既読データはMarkReadでは書き込まないため、節目で必ずフラッシュする
+        private void OnDestroy() => ReadManager.SaveIfDirty();
+        private void OnApplicationQuit() => ReadManager.SaveIfDirty();
+        private void OnApplicationPause(bool paused)
+        {
+            if (paused) ReadManager.SaveIfDirty();
+        }
+
         private void OnBacklogJump(string scriptPath, int commandIndex)
         {
             // バックログをジャンプ先のエントリも含めてトリム（再実行で再追加されるため）
@@ -599,7 +607,35 @@ namespace Novella.Core
             StartCoroutine(SaveManager.CacheScreenshot());
         }
 
+        // 同期完了コマンド連続時の再帰によるスタックオーバーフローを防ぐため、
+        // 実行中の再入は「継続要求」フラグに変換してループで回す（トランポリン方式）
+        private bool _isExecuting;
+        private bool _advanceRequested;
+
         private void ExecuteNext()
+        {
+            if (_isExecuting)
+            {
+                _advanceRequested = true;
+                return;
+            }
+
+            _isExecuting = true;
+            try
+            {
+                do
+                {
+                    _advanceRequested = false;
+                    ExecuteCurrentCommand();
+                } while (_advanceRequested);
+            }
+            finally
+            {
+                _isExecuting = false;
+            }
+        }
+
+        private void ExecuteCurrentCommand()
         {
             if (!_isRunning) return;
 
@@ -625,14 +661,14 @@ namespace Novella.Core
                 }
                 catch (Exception e)
                 {
-                    Debug.LogError($"[Novella] Error in '{command.Type}' (index {_currentIndex - 1}): {e.Message}");
-                    ExecuteNext();
+                    Debug.LogError($"[Novella] Error in '{command.Type}' (index {execIndex}): {e}");
+                    _advanceRequested = true;
                 }
             }
             else
             {
                 Debug.LogWarning($"[Novella] Unknown command: '{command.Type}'. Skipping.");
-                ExecuteNext();
+                _advanceRequested = true;
             }
         }
 
