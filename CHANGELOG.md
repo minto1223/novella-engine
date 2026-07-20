@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.7.0] - 2026-07-20
+
+### Added
+- **Per-state button sprites** — each `ButtonStateStyle` (Normal / Hover / Pressed / Disabled) now has its own `Sprite` slot, so hand-drawn button images can swap per state (states without a sprite fall back to the shared `BackgroundSprite`). Sprites swap at the start of a transition; color and scale still tween.
+- `SpriteTint` per state (default white). When a sprite is used, the image is tinted with `SpriteTint` instead of `BackgroundColor`, so custom art shows in its original colors without any color setup.
+- `ShowBorder` toggle on `NovellaButtonStyle` — turn off the code-drawn border for designs that already include a frame in the image.
+
 ## [1.6.0] - 2026-07-20
 
 ### Added

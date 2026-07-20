@@ -8,6 +8,13 @@ namespace Novella.Core
     [System.Serializable]
     public class ButtonStateStyle
     {
+        [Tooltip("この状態専用のボタン画像（未設定なら共通のBackground Sprite、それも無ければ色のみで描画）")]
+        public Sprite Sprite;
+
+        [Tooltip("画像使用時の乗算色。白=画像そのままの色（画像がある時はBackgroundColorの代わりに使われる）")]
+        public Color SpriteTint = Color.white;
+
+        [Tooltip("画像を使わない時の背景色")]
         public Color BackgroundColor = new Color(0.118f, 0.137f, 0.251f, 1f);
         public Color BorderColor = new Color(0.165f, 0.188f, 0.314f, 1f);
         public Color TextColor = new Color(0.925f, 0.902f, 0.847f, 1f);
@@ -69,7 +76,10 @@ namespace Novella.Core
         [Tooltip("角括弧装飾の色")]
         public Color CornerColor = new Color(0.788f, 0.639f, 0.373f, 1f);
 
-        [Tooltip("ボタン背景のスプライト（9スライス推奨。未設定なら色のみ）")]
+        [Tooltip("枠線を表示する。画像に枠が描き込んであるデザインではOFFにする")]
+        public bool ShowBorder = true;
+
+        [Tooltip("ボタン背景のスプライト（9スライス推奨。全状態共通。状態別Spriteが設定されている状態ではそちらが優先）")]
         public Sprite BackgroundSprite;
     }
 }

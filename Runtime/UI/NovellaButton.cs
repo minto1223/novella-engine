@@ -109,12 +109,6 @@ namespace Novella.UI
             _button.transition = Selectable.Transition.None;
             _lastInteractable = _button.interactable;
 
-            if (_style.BackgroundSprite != null && _background != null)
-            {
-                _background.sprite = _style.BackgroundSprite;
-                _background.type = Image.Type.Sliced;
-            }
-
             if (!_initialized)
             {
                 BuildDecorations();
@@ -123,6 +117,8 @@ namespace Novella.UI
 
             foreach (var bar in _cornerBars)
                 bar.color = _style.CornerColor;
+
+            _borderBars[0].transform.parent.gameObject.SetActive(_style.ShowBorder);
 
             ApplyState(ComputeState(), instant: true);
         }
@@ -156,6 +152,12 @@ namespace Novella.UI
             ApplyState(next, instant: false);
         }
 
+        /// <summary>この状態で使うスプライトを解決する（状態別→共通の順。無ければnull＝色のみ描画）</summary>
+        private Sprite ResolveSprite(ButtonStateStyle state)
+        {
+            return state.Sprite != null ? state.Sprite : _style.BackgroundSprite;
+        }
+
         private void ApplyState(VisualState state, bool instant)
         {
             _currentState = state;
@@ -165,6 +167,14 @@ namespace Novella.UI
             {
                 StopCoroutine(_transition);
                 _transition = null;
+            }
+
+            // スプライトはクロスフェードできないため遷移開始時に即時差し替える（色・スケールはトゥイーン）
+            var sprite = ResolveSprite(target);
+            if (sprite != null && _background != null && _background.sprite != sprite)
+            {
+                _background.sprite = sprite;
+                _background.type = Image.Type.Sliced;
             }
 
             if (!instant && target.EnterSe != null)
@@ -224,7 +234,11 @@ namespace Novella.UI
         private void SetVisual(ButtonStateStyle target, float p, VisualSnapshot from)
         {
             if (_background != null)
-                _background.color = Color.Lerp(from.Background, target.BackgroundColor, p);
+            {
+                // 画像使用時はSpriteTint（デフォルト白＝画像そのまま）、色のみ描画時はBackgroundColor
+                var targetBg = ResolveSprite(target) != null ? target.SpriteTint : target.BackgroundColor;
+                _background.color = Color.Lerp(from.Background, targetBg, p);
+            }
 
             var borderColor = Color.Lerp(from.Border, target.BorderColor, p);
             foreach (var bar in _borderBars)
