@@ -13,6 +13,14 @@ namespace Novella.Core
         [Header("Font")]
         public TMP_FontAsset Font;
 
+        [Header("Button Styles")]
+        [Tooltip("メインメニュー等のプライマリボタン用スタイル（未設定なら従来のフラット色を適用）")]
+        public NovellaButtonStyle PrimaryButtonStyle;
+        [Tooltip("HUD等のアイコンボタン用スタイル（未設定なら従来のフラット色を適用）")]
+        public NovellaButtonStyle IconButtonStyle;
+        [Tooltip("終了・リセット等の危険操作ボタン用スタイル（未設定ならPrimaryにフォールバック）")]
+        public NovellaButtonStyle DangerButtonStyle;
+
         [Header("Message Window")]
         [Tooltip("メッセージウィンドウの背景画像（未設定なら色のみ）")]
         public Sprite MessageWindowImage;

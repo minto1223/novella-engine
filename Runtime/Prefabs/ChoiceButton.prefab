@@ -67,8 +67,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 7a093d46c0557414a83970b43a2fe5e8, type: 2}
-  m_sharedMaterial: {fileID: 7226263451901965804, guid: 7a093d46c0557414a83970b43a2fe5e8, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: fcb7f56beb5d72840991cf1fca468eaf, type: 2}
+  m_sharedMaterial: {fileID: -2428126385681067186, guid: fcb7f56beb5d72840991cf1fca468eaf, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -148,6 +148,7 @@ GameObject:
   - component: {fileID: 3607336566974652672}
   - component: {fileID: 8994603076800056583}
   - component: {fileID: 298668408030556656}
+  - component: {fileID: 4049335548309717689}
   m_Layer: 0
   m_Name: ChoiceButton
   m_TagString: Untagged
@@ -257,3 +258,17 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &4049335548309717689
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8073457214183448942}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 590326d184fdf374f8bb76f0fb9f1aa1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _style: {fileID: 11400000, guid: 7126df56e846e674e88f9c7a82013c6e, type: 2}
+  _controlLabelColor: 1

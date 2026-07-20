@@ -68,6 +68,16 @@ public class ButtonBuilderWindow : EditorWindow
     private float _fontSize = 36f;
     private bool _freeLayout = false; // LayoutGroup無視・自由配置
 
+    // ---- NovellaButtonスタイル ----
+    private int _styleMode = 1; // 0=なし(従来), 1=テーマ自動, 2=カスタム指定
+    private readonly string[] _styleModeNames =
+    {
+        "なし（従来のフラット色）",
+        "テーマにおまかせ（推奨）",
+        "カスタムスタイル指定"
+    };
+    private NovellaButtonStyle _customStyle = null;
+
     // ---- 削除モード パラメータ ----
     private int _removeIndex = 0;
 
@@ -177,6 +187,27 @@ public class ButtonBuilderWindow : EditorWindow
 
         EditorGUILayout.Space(4);
         _buttonColor = EditorGUILayout.ColorField("ボタン色", _buttonColor);
+
+        EditorGUILayout.Space(8);
+
+        EditorGUILayout.LabelField("スタイル（4状態演出）", EditorStyles.boldLabel);
+        _styleMode = EditorGUILayout.Popup("スタイル適用", _styleMode, _styleModeNames);
+        if (_styleMode == 1)
+        {
+            EditorGUILayout.HelpBox(
+                "NovellaButtonを装着します。スタイルはテーマ（NovellaUITheme）の " +
+                (_tab == 0 ? "PrimaryButtonStyle" : "IconButtonStyle") + " が実行時に自動割り当てされます。\n" +
+                "テーマ側が未設定の場合は上のボタン色・文字色（従来動作）で表示されます。", MessageType.Info);
+        }
+        else if (_styleMode == 2)
+        {
+            _customStyle = (NovellaButtonStyle)EditorGUILayout.ObjectField(
+                "スタイルアセット", _customStyle, typeof(NovellaButtonStyle), false);
+            if (_customStyle == null)
+                EditorGUILayout.HelpBox("スタイルアセット未指定です。Create > Novella > Button Style で作成できます。", MessageType.Warning);
+        }
+        if (_styleMode != 0)
+            EditorGUILayout.HelpBox("スタイル適用時は、上のボタン色・文字色はPlayモードでスタイル側の色に上書きされます。", MessageType.None);
 
         EditorGUILayout.Space(8);
 
@@ -373,6 +404,22 @@ public class ButtonBuilderWindow : EditorWindow
         }
 
         var btn = go.AddComponent<Button>();
+
+        // NovellaButtonスタイル装着（テーマ自動 or カスタム指定）
+        if (_styleMode != 0)
+        {
+            var novellaBtn = go.AddComponent<NovellaButton>();
+            if (_styleMode == 2 && _customStyle != null)
+            {
+                var nbSo = new SerializedObject(novellaBtn);
+                var styleProp = nbSo.FindProperty("_style");
+                if (styleProp != null)
+                {
+                    styleProp.objectReferenceValue = _customStyle;
+                    nbSo.ApplyModifiedProperties();
+                }
+            }
+        }
 
         // 自由配置モード: LayoutGroupの制御を無効化
         if (_freeLayout)

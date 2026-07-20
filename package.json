@@ -1,6 +1,6 @@
 {
   "name": "com.novella.engine",
-  "version": "1.5.0",
+  "version": "1.6.0",
   "displayName": "Novella Visual Novel Engine",
   "description": "A visual novel engine for Unity 6. Supports JSON/CSV scripts, 42 commands, character expressions, branching, save/load, backlog, gallery, and more.",
   "unity": "6000.0",

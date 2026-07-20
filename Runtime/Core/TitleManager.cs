@@ -314,6 +314,15 @@ namespace Novella.Core
         {
             if (btn == null || _uiTheme == null) return;
 
+            // NovellaButton装着済みならスタイル側が見た目を制御する（フラット色の上書きは二重制御になるため回避）
+            var novellaBtn = btn.GetComponent<Novella.UI.NovellaButton>();
+            if (novellaBtn != null && (novellaBtn.HasStyle || _uiTheme.PrimaryButtonStyle != null))
+            {
+                if (!novellaBtn.HasStyle)
+                    novellaBtn.SetStyle(_uiTheme.PrimaryButtonStyle);
+                return;
+            }
+
             var img = btn.GetComponent<Image>();
             if (img != null)
             {

@@ -13,6 +13,9 @@ MonoBehaviour:
   m_Name: DefaultUITheme
   m_EditorClassIdentifier: 
   Font: {fileID: 0}
+  PrimaryButtonStyle: {fileID: 11400000, guid: 7126df56e846e674e88f9c7a82013c6e, type: 2}
+  IconButtonStyle: {fileID: 11400000, guid: 4ac7a0bf2e92c5a41819ce0f88aaa011, type: 2}
+  DangerButtonStyle: {fileID: 11400000, guid: a9b9e9ff626970e41984a1fd923b2fc5, type: 2}
   MessageWindowImage: {fileID: 0}
   MessageWindowBackground: {r: 0, g: 0, b: 0.1, a: 0.8}
   MessageTextColor: {r: 1, g: 1, b: 1, a: 1}

@@ -1,0 +1,49 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1251c552ef35c9d4eb4f5af56976a400, type: 3}
+  m_Name: DangerButtonStyle
+  m_EditorClassIdentifier: 
+  Normal:
+    BackgroundColor: {r: 0.118, g: 0.137, b: 0.251, a: 1}
+    BorderColor: {r: 0.165, g: 0.188, b: 0.314, a: 1}
+    TextColor: {r: 0.925, g: 0.902, b: 0.847, a: 1}
+    ShowCorners: 0
+    PlaySheen: 0
+    Scale: 1
+    EnterSe: {fileID: 0}
+  Hover:
+    BackgroundColor: {r: 0.157, g: 0.184, b: 0.322, a: 1}
+    BorderColor: {r: 0.784, g: 0.361, b: 0.431, a: 1}
+    TextColor: {r: 0.941, g: 0.718, b: 0.753, a: 1}
+    ShowCorners: 1
+    PlaySheen: 1
+    Scale: 1
+    EnterSe: {fileID: 0}
+  Pressed:
+    BackgroundColor: {r: 0.078, g: 0.09, b: 0.165, a: 1}
+    BorderColor: {r: 0.784, g: 0.361, b: 0.431, a: 1}
+    TextColor: {r: 0.941, g: 0.718, b: 0.753, a: 1}
+    ShowCorners: 0
+    PlaySheen: 0
+    Scale: 0.98
+    EnterSe: {fileID: 0}
+  Disabled:
+    BackgroundColor: {r: 0.078, g: 0.09, b: 0.165, a: 1}
+    BorderColor: {r: 0.137, g: 0.153, b: 0.247, a: 1}
+    TextColor: {r: 0.337, g: 0.357, b: 0.471, a: 1}
+    ShowCorners: 0
+    PlaySheen: 0
+    Scale: 1
+    EnterSe: {fileID: 0}
+  TransitionDuration: 0.25
+  CornerColor: {r: 0.784, g: 0.361, b: 0.431, a: 1}
+  BackgroundSprite: {fileID: 0}

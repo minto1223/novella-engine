@@ -1,5 +1,16 @@
 # Changelog
 
+## [1.6.0] - 2026-07-20
+
+### Added
+- **Styled buttons (4-state)** — a new `NovellaButtonStyle` ScriptableObject (`Create > Novella > Button Style`) defines a button's look per state (Normal / Hover / Pressed / Disabled): background, border and text colors, corner-bracket decoration, a sweeping sheen highlight, scale, and an optional per-state SE. The new `NovellaButton` component reads the style and animates transitions with a built-in tween (no external dependencies); border, corner brackets and sheen are generated at runtime, so no manual object setup is needed. Keyboard/gamepad focus shows the same visuals as mouse hover. `NovellaUITheme` gains `PrimaryButtonStyle` / `IconButtonStyle` / `DangerButtonStyle` slots — assign a style there and every themed button picks it up; leave them empty and everything renders with the previous flat colors.
+- **Button Builder style option** — the Button Builder window can now attach `NovellaButton` to generated buttons: theme-driven (default), a custom style asset, or none (legacy flat color).
+- The bundled demo ships three ready-made styles (`PrimaryButtonStyle`, `IconButtonStyle`, `DangerButtonStyle`) applied to the title menu, in-game HUD, and choice buttons.
+
+### Fixed
+- `UIThemeApplicator` could not find `HUDPanel`, `SavePanel` or `SettingsPanel` when the scene uses the `CameraRoot` wrapper (the panels intentionally live outside it, so HUD/save/settings theming silently did nothing since the wrapper was introduced). Panel lookup now falls back from `CameraRoot` to the canvas root.
+- Clicking a styled button no longer leaves it stuck in its hover look: uGUI keeps a clicked button selected, and `NovellaButton` treats selection as hover for gamepad support, so pointer-initiated selection is now released on pointer-up (navigation selection is unaffected).
+
 ## [1.5.0] - 2026-07-16
 
 ### Added

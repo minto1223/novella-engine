@@ -54,6 +54,8 @@ namespace Novella.Core
             var buttons = engine.ChoiceUI.GetComponentsInChildren<Button>(true);
             foreach (var btn in buttons)
             {
+                if (TryApplyButtonStyle(btn, theme.PrimaryButtonStyle)) continue;
+
                 var img = btn.GetComponent<Image>();
                 if (img != null)
                     ApplyImageOrColor(img, theme.ChoiceButtonImage, theme.ChoiceButtonColor);
@@ -66,15 +68,14 @@ namespace Novella.Core
         private static void ApplyHUD(NovellaUITheme theme, NovellaEngine engine)
         {
             // HUDはNovellaCanvas（またはCameraRoot）直下の"HUDPanel"を探す
-            var container = FindContainer(engine);
-            if (container == null) return;
-
-            var hud = container.Find("HUDPanel");
+            var hud = FindPanel(engine, "HUDPanel");
             if (hud == null) return;
 
             var buttons = hud.GetComponentsInChildren<Button>(true);
             foreach (var btn in buttons)
             {
+                if (TryApplyButtonStyle(btn, theme.IconButtonStyle)) continue;
+
                 var img = btn.GetComponent<Image>();
                 if (img != null)
                     ApplyImageOrColor(img, theme.HUDButtonImage, theme.HUDButtonColor);
@@ -109,13 +110,10 @@ namespace Novella.Core
         {
             if (theme.SavePanelImage == null) return;
 
-            var container = FindContainer(engine);
-            if (container == null) return;
-
             // SavePanel / LoadPanel を探す
             foreach (var name in new[] { "SavePanel", "LoadPanel" })
             {
-                var t = container.Find(name);
+                var t = FindPanel(engine, name);
                 if (t == null) continue;
                 var img = t.GetComponent<Image>();
                 if (img != null)
@@ -127,8 +125,7 @@ namespace Novella.Core
         {
             if (theme.SettingsPanelImage != null)
             {
-                var container = FindContainer(engine);
-                var t = container != null ? container.Find("SettingsPanel") : null;
+                var t = FindPanel(engine, "SettingsPanel");
                 var img = t != null ? t.GetComponent<Image>() : null;
                 if (img != null)
                     ApplyImageOrColor(img, theme.SettingsPanelImage, img.color);
@@ -156,6 +153,23 @@ namespace Novella.Core
         }
 
         // --- Helpers ---
+
+        /// <summary>
+        /// NovellaButtonが付いたボタンにはスタイル経由で見た目を適用する。
+        /// 適用できた場合true（呼び出し側はフラット色適用をスキップする）。
+        /// スタイルがボタン側にもテーマ側にも無い場合はfalse（従来のフラット色適用に任せる）。
+        /// </summary>
+        private static bool TryApplyButtonStyle(Button btn, NovellaButtonStyle style)
+        {
+            var novellaBtn = btn.GetComponent<NovellaButton>();
+            if (novellaBtn == null) return false;
+            if (!novellaBtn.HasStyle)
+            {
+                if (style == null) return false;
+                novellaBtn.SetStyle(style);
+            }
+            return true;
+        }
 
         private static void ApplyImageOrColor(Image target, Sprite sprite, Color color)
         {
@@ -206,6 +220,20 @@ namespace Novella.Core
             if (canvas == null) return null;
             var cameraRoot = canvas.transform.Find("CameraRoot");
             return cameraRoot != null ? cameraRoot : canvas.transform;
+        }
+
+        /// <summary>
+        /// 名前でUIパネルを探す。CameraRoot配下→Canvas直下の順で探索する。
+        /// （HUDPanel等のUIパネルはズーム対象外としてCameraRootの外に置かれているため、
+        /// CameraRootのみの探索では見つからない）
+        /// </summary>
+        private static Transform FindPanel(NovellaEngine engine, string name)
+        {
+            var canvas = FindCanvas(engine);
+            if (canvas == null) return null;
+            var cameraRoot = canvas.transform.Find("CameraRoot");
+            var t = cameraRoot != null ? cameraRoot.Find(name) : null;
+            return t != null ? t : canvas.transform.Find(name);
         }
     }
 }
