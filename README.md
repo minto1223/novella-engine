@@ -103,6 +103,10 @@ Assets/
       Voice/       ← ボイス（AudioClip）
 ```
 
+## ボタンデザインのカスタマイズ
+
+ボタンは4状態（通常/ホバー/押下/無効）のスタイルアセットで管理され、自作画像への差し替えもコード不要で行えます。詳細は [Documentation~/button-style-guide.md](Documentation~/button-style-guide.md) を参照してください。
+
 ## コマンド一覧
 
 全42コマンドの詳細は [Documentation~/command-reference.md](Documentation~/command-reference.md) を参照してください。
