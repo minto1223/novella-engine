@@ -693,7 +693,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "ver 1.0.0\u3000\xA92026 Aozora Works"
+  m_text: "ver \u3007\u3007\u3007"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: fcb7f56beb5d72840991cf1fca468eaf, type: 2}
   m_sharedMaterial: {fileID: -2428126385681067186, guid: fcb7f56beb5d72840991cf1fca468eaf, type: 2}
@@ -3995,7 +3995,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\u9752\u306E\u5B63\u7BC0\u306B\u3001\u304D\u307F\u3068\u51FA\u4F1A\u3046\u3002"
+  m_text: "\u30AD\u30E3\u30C3\u30C1\u30B3\u30D4\u30FC"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: fcb7f56beb5d72840991cf1fca468eaf, type: 2}
   m_sharedMaterial: {fileID: -2428126385681067186, guid: fcb7f56beb5d72840991cf1fca468eaf, type: 2}
@@ -4371,7 +4371,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\u305D\u3089\u3044\u308D\n\u30AF\u30AA\u30EA\u30A2"
+  m_text: 'Novella
+
+    engine'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: fcb7f56beb5d72840991cf1fca468eaf, type: 2}
   m_sharedMaterial: {fileID: 1475679788}
@@ -7125,7 +7127,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: SORAIRO QUALIA
+  m_text: minto
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: fcb7f56beb5d72840991cf1fca468eaf, type: 2}
   m_sharedMaterial: {fileID: -2428126385681067186, guid: fcb7f56beb5d72840991cf1fca468eaf, type: 2}

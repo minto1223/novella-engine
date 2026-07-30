@@ -373,16 +373,16 @@ Screen Space - Overlay のCanvasを一時カメラでRenderTextureに描画し�
 
 テーマ用のアルファ付きグラデーションPNG（背景・スクリム）を生成します。
 
-#### Tools > Novella > Apply Sorairo Settings Skin
+#### Tools > Novella > Apply Sample Theme Settings Skin
 
-設定パネル（タブ・スライダー・トグル・フッターボタン）に「そらいろクオリア」テーマのスキンを一括適用します。
+設定パネル（タブ・スライダー・トグル・フッターボタン）に仮テーマ（サンプルの水色テーマ）のスキンを一括適用します。
 
 - シーン内の全ルートCanvas（非アクティブ含む）から `SettingsPanel` を探すため、SampleScene・TitleSceneのどちらでも動作
 - タブ=アクセントピル、スライダー=track/fill+ノブ、トグル=トラック画像、初期化=Dangerスタイル、閉じる=アクセントピル
 
-#### Tools > Novella > Apply Sorairo SaveLoad Skin
+#### Tools > Novella > Apply Sample Theme SaveLoad Skin
 
-SavePanel / LoadPanel と `SaveSlot.prefab` に「そらいろクオリア」テーマのスキンを一括適用します。
+SavePanel / LoadPanel と `SaveSlot.prefab` に仮テーマ（サンプルの水色テーマ）のスキンを一括適用します。
 
 - パネル背景=空色グラデ、カード=白カード、ページ送り=白ピル、閉じる=アクセントピル
 - スロットは実行時生成のため、prefab側のスキンがそのまま反映される

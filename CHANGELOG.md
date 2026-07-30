@@ -1,11 +1,16 @@
 # Changelog
 
+## [1.8.1] - 2026-07-30
+
+### Changed
+- The sample theme is now presented as a neutral placeholder: the demo title screen uses generic placeholder branding, and the skin menu items were renamed from `Apply Sorairo ... Skin` to `Tools > Novella > Apply Sample Theme Settings Skin` / `Apply Sample Theme SaveLoad Skin`.
+
 ## [1.8.0] - 2026-07-30
 
 ### Added
-- **"Sorairo Qualia" UI theme** for the bundled demo — a light, sky-blue school-days look applied across every screen: title (stacked pill buttons, scrim, catch copy), in-game HUD (white message window, gradient name plate, pill quick bar), main menu (card layout), settings (pill tabs, themed sliders/toggles), and save/load panels + `SaveSlot.prefab`. Ships 14 nine-slice sprites under `Runtime/UI/Sprites/Theme/` and a new `MenuButtonStyle` asset; `PrimaryButtonStyle`, `DangerButtonStyle`, `IconButtonStyle` and `DefaultUITheme` are updated to match.
+- **Sample sky-blue UI theme** for the bundled demo — a light school-days look applied across every screen: title (stacked pill buttons, scrim, catch copy), in-game HUD (white message window, gradient name plate, pill quick bar), main menu (card layout), settings (pill tabs, themed sliders/toggles), and save/load panels + `SaveSlot.prefab`. Ships 14 nine-slice sprites under `Runtime/UI/Sprites/Theme/` and a new `MenuButtonStyle` asset; `PrimaryButtonStyle`, `DangerButtonStyle`, `IconButtonStyle` and `DefaultUITheme` are updated to match.
 - **Click-wait marker animation** — the ▼ marker in the message window now fades and bobs (1.1s cycle) via the new `NextMarkerBlinker` component, and hides automatically while text is typing.
-- **Editor utilities** (Tools > Novella): `Capture Game View` (render overlay canvases to PNG without relying on Game View repaint), `Generate Theme Gradients`, `Apply Sorairo Settings Skin`, and `Apply Sorairo SaveLoad Skin` (re-apply the theme to settings / save-load UIs in any scene).
+- **Editor utilities** (Tools > Novella): `Capture Game View` (render overlay canvases to PNG without relying on Game View repaint), `Generate Theme Gradients`, `Apply Sample Theme Settings Skin`, and `Apply Sample Theme SaveLoad Skin` (re-apply the theme to settings / save-load UIs in any scene).
 
 ### Fixed
 - `HUDController` quick-bar labels: the QL label used a hard-coded white color that was invisible on the new white pill buttons; all label colors now come from the controller's on/off color fields.

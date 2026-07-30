@@ -6,7 +6,7 @@ using UnityEngine.UI;
 namespace NovellaEditor
 {
     /// <summary>
-    /// Save/LoadパネルとSaveSlot.prefabにそらいろクオリアのスキンを一括適用するMCP作業用ツール。
+    /// Save/LoadパネルとSaveSlot.prefabに仮テーマ（サンプルの水色テーマ）のスキンを一括適用するMCP作業用ツール。
     /// </summary>
     public static class SaveLoadPanelSkinner
     {
@@ -16,7 +16,7 @@ namespace NovellaEditor
         private static readonly Color UiBlue = new Color(0.239f, 0.416f, 0.541f, 1f);
         private static readonly Color SubBlue = new Color(0.357f, 0.498f, 0.608f, 1f);
 
-        [MenuItem("Tools/Novella/Apply Sorairo SaveLoad Skin")]
+        [MenuItem("Tools/Novella/Apply Sample Theme SaveLoad Skin")]
         public static void Apply()
         {
             var bg = Load("bg_sky_gradient.png");
@@ -67,7 +67,7 @@ namespace NovellaEditor
                     var panel = canvas.transform.Find(panelName);
                     if (panel == null) continue;
 
-                    Undo.RegisterFullObjectHierarchyUndo(panel.gameObject, "Sorairo SaveLoad Skin");
+                    Undo.RegisterFullObjectHierarchyUndo(panel.gameObject, "Sample Theme SaveLoad Skin");
                     SetImage(panel.GetComponent<Image>(), bg, Image.Type.Simple, new Color(1, 1, 1, 0.97f));
 
                     var cardT = panel.GetChild(0);
@@ -108,7 +108,7 @@ namespace NovellaEditor
                 }
             }
 
-            Debug.Log("[SaveLoadSkinner] Sorairo save/load skin applied.");
+            Debug.Log("[SaveLoadSkinner] Sample theme save/load skin applied.");
         }
 
         private static Sprite Load(string file) => AssetDatabase.LoadAssetAtPath<Sprite>(ThemeDir + file);

@@ -8,7 +8,7 @@ using Novella.UI;
 namespace NovellaEditor
 {
     /// <summary>
-    /// SettingsPanelにそらいろクオリアのスキンを一括適用するMCP作業用ツール。
+    /// SettingsPanelに仮テーマ（サンプルの水色テーマ）のスキンを一括適用するMCP作業用ツール。
     /// </summary>
     public static class SettingsPanelSkinner
     {
@@ -18,7 +18,7 @@ namespace NovellaEditor
         private static readonly Color SubBlue = new Color(0.357f, 0.498f, 0.608f, 1f);
         private static readonly Color Accent = new Color(0.302f, 0.639f, 0.851f, 1f);
 
-        [MenuItem("Tools/Novella/Apply Sorairo Settings Skin")]
+        [MenuItem("Tools/Novella/Apply Sample Theme Settings Skin")]
         public static void Apply()
         {
             // どのシーンでも動くよう、全ルートCanvas直下からSettingsPanelを探す（非アクティブ含む）
@@ -41,7 +41,7 @@ namespace NovellaEditor
             var pill = Load("button_pill.png");
             var pillAccent = Load("button_pill_accent.png");
 
-            Undo.RegisterFullObjectHierarchyUndo(panel.gameObject, "Sorairo Settings Skin");
+            Undo.RegisterFullObjectHierarchyUndo(panel.gameObject, "Sample Theme Settings Skin");
 
             SetImage(panel.GetComponent<Image>(), bg, Image.Type.Simple, new Color(1, 1, 1, 0.97f));
             var cardT = panel.Find("SettingsCard");
@@ -133,7 +133,7 @@ namespace NovellaEditor
             settingsUI?.ApplyTheme(Accent, new Color(1, 1, 1, 0.8f), Color.white, UiBlue);
 
             EditorUtility.SetDirty(panel.gameObject);
-            Debug.Log("[Skinner] Sorairo settings skin applied.");
+            Debug.Log("[Skinner] Sample theme settings skin applied.");
         }
 
         private static Sprite Load(string file) => AssetDatabase.LoadAssetAtPath<Sprite>(ThemeDir + file);
