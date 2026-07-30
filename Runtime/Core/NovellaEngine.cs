@@ -29,6 +29,10 @@ namespace Novella.Core
         public IBacklogUI         IBacklogUI      => _backlogUI      ?? BacklogUI      as IBacklogUI;
         public IMenuUI            IMenuUI         => _menuUI         ?? MenuUI         as IMenuUI;
 
+        [Header("Scene Flow")]
+        [Tooltip("end コマンドや回想終了でスクリプトが終わったときに戻るシーン名")]
+        [SerializeField] private string _titleSceneName = "TitleScene";
+
         [Header("Custom UI Overrides (optional)")]
         [SerializeField] private MonoBehaviour _messageWindowOverride;
         [SerializeField] private MonoBehaviour _backgroundOverride;
@@ -394,11 +398,19 @@ namespace Novella.Core
                 _savedFlags = null;
             }
 
-            // タイトルに戻る
+            ReturnToTitle();
+        }
+
+        /// <summary>タイトルシーンへ戻る。SceneTransitionManagerがあればフェードを挟む。</summary>
+        public void ReturnToTitle()
+        {
+            _isRunning = false;
+            _pendingAdvanceCallback = null;
+
             if (SceneTransitionManager.Instance != null)
-                SceneTransitionManager.Instance.LoadScene("TitleScene");
+                SceneTransitionManager.Instance.LoadScene(_titleSceneName);
             else
-                UnityEngine.SceneManagement.SceneManager.LoadScene("TitleScene");
+                UnityEngine.SceneManagement.SceneManager.LoadScene(_titleSceneName);
         }
 
         /// <summary>ラベル通過時に呼ばれ、回想終了ラベルチェックとシーン自動記録を行う。</summary>

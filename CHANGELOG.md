@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.10.0] - 2026-07-31
+
+### Changed
+- **`end` now returns to the title screen.** Previously it hid the message window and stopped the engine without going anywhere, so finishing a script left the player looking at a static background with nothing happening — the only way out was Escape → menu → Title. Only recollection playback returned to the title. Reaching `end` in normal play now transitions to the title scene (through `SceneTransitionManager`, so the usual fade applies), matching what recollection mode already did.
+- The destination is configurable: `NovellaEngine` gained a `Scene Flow > Title Scene Name` field (default `TitleScene`), which both `end` and recollection playback use. `NovellaEngine.ReturnToTitle()` is public if you want to trigger it yourself.
+
 ## [1.9.0] - 2026-07-30
 
 ### Added

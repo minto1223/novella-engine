@@ -28,7 +28,10 @@ namespace Novella.Commands
                 return;
             }
 
-            engine.Stop();
+            // 通常プレイでもタイトルへ戻す。
+            // 以前は Stop() するだけだったため、最後まで進めると背景だけが残って
+            // 何も起きない状態になっていた（ESCメニュー以外に抜け道が無かった）
+            engine.ReturnToTitle();
             // onComplete は呼ばない（スクリプト終了）
         }
     }
