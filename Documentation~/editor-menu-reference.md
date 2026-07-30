@@ -380,6 +380,15 @@ Screen Space - Overlay のCanvasを一時カメラでRenderTextureに描画し�
 - シーン内の全ルートCanvas（非アクティブ含む）から `SettingsPanel` を探すため、SampleScene・TitleSceneのどちらでも動作
 - タブ=アクセントピル、スライダー=track/fill+ノブ、トグル=トラック画像、初期化=Dangerスタイル、閉じる=アクセントピル
 
+#### Tools > Novella > Apply Sample Theme Gallery Skin
+
+ギャラリー系6画面（CGギャラリー・CG拡大表示・シーン回想・章選択・BGM回想・エンディングリスト）に仮テーマのスキンを一括適用します。
+
+- 背景=空色グラデ、見出し=インク太字、閉じる=アクセントピル（280x54を中央配置）、スクロールバー=アクセント半透明
+- CG拡大表示だけは画像を邪魔しないよう暗幕のまま
+- 一覧の行はコントローラーが実行時に生成するため、各コントローラーの色フィールド（`_itemColor` / `_cardUnlocked` 等）もあわせて書き換える
+- 縦積みレイアウトの `childForceExpandWidth` を切って閉じるボタンが画面全幅の帯にならないようにし、一覧側の `childControlHeight` を切って行の高さが1行分に潰れないようにする
+
 #### Tools > Novella > Apply Sample Theme SaveLoad Skin
 
 SavePanel / LoadPanel と `SaveSlot.prefab` に仮テーマ（サンプルの水色テーマ）のスキンを一括適用します。

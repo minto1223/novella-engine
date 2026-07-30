@@ -115,7 +115,7 @@ namespace NovellaEditor
             {
                 SetImage(reset.GetComponent<Image>(), pill, Image.Type.Sliced, new Color(1, 1, 1, 0.7f));
                 var nb = reset.GetComponent<NovellaButton>() ?? Undo.AddComponent<NovellaButton>(reset.gameObject);
-                var danger = AssetDatabase.LoadAssetAtPath<NovellaButtonStyle>("Assets/Novella/Data/DangerButtonStyle.asset");
+                var danger = ThemeAssetLocator.Asset<NovellaButtonStyle>("DangerButtonStyle");
                 new SerializedObject(nb).FindPropertyOrThrow("_style", danger);
                 var txt = reset.GetComponentInChildren<TMP_Text>(true);
                 if (txt != null) { txt.color = SubBlue; txt.fontStyle = FontStyles.Bold; }
@@ -136,7 +136,7 @@ namespace NovellaEditor
             Debug.Log("[Skinner] Sample theme settings skin applied.");
         }
 
-        private static Sprite Load(string file) => AssetDatabase.LoadAssetAtPath<Sprite>(ThemeDir + file);
+        private static Sprite Load(string file) => ThemeAssetLocator.Sprite(file);
 
         private static void SetImage(Image img, Sprite sprite, Image.Type type, Color color)
         {

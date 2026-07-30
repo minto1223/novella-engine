@@ -28,6 +28,12 @@ namespace Novella.UI
         [SerializeField] private Color _lockedColor = new Color(0.1f, 0.1f, 0.1f, 0.6f);
         [SerializeField] private Color _unlockedTextColor = Color.white;
         [SerializeField] private Color _lockedTextColor = new Color(0.4f, 0.4f, 0.4f);
+        [Tooltip("行の背景画像。未設定なら単色で塗る")]
+        [SerializeField] private Sprite _itemSprite;
+        [SerializeField] private Color _hoverColor = new Color(0.3f, 0.3f, 0.5f);
+        [SerializeField] private Color _pressedColor = new Color(0.2f, 0.2f, 0.4f);
+        [SerializeField] private Color _thumbPlaceholderColor = new Color(0.15f, 0.15f, 0.15f);
+        [SerializeField] private Color _emptyTextColor = new Color(0.6f, 0.6f, 0.6f);
 
         public bool IsOpen => _panel != null && _panel.activeSelf;
 
@@ -127,6 +133,11 @@ namespace Novella.UI
 
             var bgImg = go.AddComponent<Image>();
             bgImg.color = cleared ? _unlockedColor : _lockedColor;
+            if (_itemSprite != null)
+            {
+                bgImg.sprite = _itemSprite;
+                bgImg.type = Image.Type.Sliced;
+            }
 
             // サムネイル
             if (def.thumbnail != null)
@@ -143,7 +154,7 @@ namespace Novella.UI
                 }
                 else
                 {
-                    thumbImg.color = new Color(0.15f, 0.15f, 0.15f);
+                    thumbImg.color = _thumbPlaceholderColor;
                 }
                 var thumbLE = thumbGO.AddComponent<LayoutElement>();
                 thumbLE.preferredWidth = 160;
@@ -173,8 +184,8 @@ namespace Novella.UI
             {
                 var btn = go.AddComponent<Button>();
                 var colors = btn.colors;
-                colors.highlightedColor = new Color(0.3f, 0.3f, 0.5f);
-                colors.pressedColor = new Color(0.2f, 0.2f, 0.4f);
+                colors.highlightedColor = _hoverColor;
+                colors.pressedColor = _pressedColor;
                 btn.colors = colors;
 
                 string scriptPath = def.scriptPath;
@@ -192,7 +203,7 @@ namespace Novella.UI
             tmp.text = text;
             tmp.fontSize = 32;
             tmp.alignment = TextAlignmentOptions.Center;
-            tmp.color = new Color(0.6f, 0.6f, 0.6f);
+            tmp.color = _emptyTextColor;
             if (_font != null) tmp.font = _font;
             var rect = go.GetComponent<RectTransform>();
             rect.sizeDelta = new Vector2(800, 60);
@@ -208,11 +219,16 @@ namespace Novella.UI
 
             var img = go.AddComponent<Image>();
             img.color = _unlockedColor;
+            if (_itemSprite != null)
+            {
+                img.sprite = _itemSprite;
+                img.type = Image.Type.Sliced;
+            }
 
             var btn = go.AddComponent<Button>();
             var colors = btn.colors;
-            colors.highlightedColor = new Color(0.3f, 0.3f, 0.5f);
-            colors.pressedColor = new Color(0.2f, 0.2f, 0.4f);
+            colors.highlightedColor = _hoverColor;
+            colors.pressedColor = _pressedColor;
             btn.colors = colors;
 
             var labelGO = new GameObject("Label");

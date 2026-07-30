@@ -18,6 +18,16 @@ namespace Novella.UI
         [Header("Now Playing")]
         [SerializeField] private TextMeshProUGUI _nowPlayingLabel;
 
+        [Header("List Item Appearance")]
+        [Tooltip("行の背景画像。未設定なら単色で塗る")]
+        [SerializeField] private Sprite _itemSprite;
+        [SerializeField] private Color _itemColor = new Color(0.12f, 0.15f, 0.25f, 0.9f);
+        [SerializeField] private Color _itemHighlightColor = new Color(0.25f, 0.3f, 0.5f);
+        [SerializeField] private Color _itemPressedColor = new Color(0.2f, 0.25f, 0.45f);
+        [SerializeField] private Color _itemTextColor = Color.white;
+        [SerializeField] private Color _iconColor = new Color(0.5f, 0.8f, 1f);
+        [SerializeField] private Color _emptyTextColor = new Color(0.6f, 0.6f, 0.6f);
+
         public bool IsOpen => _panel != null && _panel.activeSelf;
 
         private AudioSource _audioSource;
@@ -95,7 +105,7 @@ namespace Novella.UI
             tmp.text = text;
             tmp.fontSize = 32;
             tmp.alignment = TextAlignmentOptions.Center;
-            tmp.color = new Color(0.6f, 0.6f, 0.6f);
+            tmp.color = _emptyTextColor;
             if (_font != null) tmp.font = _font;
             var rect = go.GetComponent<RectTransform>();
             rect.sizeDelta = new Vector2(800, 60);
@@ -110,12 +120,17 @@ namespace Novella.UI
             rect.sizeDelta = new Vector2(900, 90);
 
             var img = go.AddComponent<Image>();
-            img.color = new Color(0.12f, 0.15f, 0.25f, 0.9f);
+            img.color = _itemColor;
+            if (_itemSprite != null)
+            {
+                img.sprite = _itemSprite;
+                img.type = Image.Type.Sliced;
+            }
 
             var btn = go.AddComponent<Button>();
             var colors = btn.colors;
-            colors.highlightedColor = new Color(0.25f, 0.3f, 0.5f);
-            colors.pressedColor = new Color(0.2f, 0.25f, 0.45f);
+            colors.highlightedColor = _itemHighlightColor;
+            colors.pressedColor = _itemPressedColor;
             btn.colors = colors;
 
             // 音符アイコン + タイトル
@@ -135,7 +150,7 @@ namespace Novella.UI
             tmp.fontSize = 34;
             tmp.alignment = TextAlignmentOptions.MidlineLeft;
             if (_font != null) tmp.font = _font;
-            tmp.color = Color.white;
+            tmp.color = _itemTextColor;
 
             // 再生/停止ボタンアイコン
             var iconGO = new GameObject("PlayIcon");
@@ -151,7 +166,8 @@ namespace Novella.UI
             iconTmp.text = ">";
             iconTmp.fontSize = 28;
             iconTmp.alignment = TextAlignmentOptions.Center;
-            iconTmp.color = new Color(0.5f, 0.8f, 1f);
+            iconTmp.color = _iconColor;
+            if (_font != null) iconTmp.font = _font;
 
             string captured = clipName;
             string capturedTitle = displayName;

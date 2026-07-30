@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.9.0] - 2026-07-30
+
+### Added
+- **Sample theme applied to the gallery screens** — CG gallery, CG full view, scene recollection, chapter select, BGM gallery and the ending list now match the rest of the themed demo (sky gradient background, ink headings, centered accent close pill, tinted scrollbars). The CG full view intentionally keeps a dark scrim so artwork is not washed out. New menu item `Tools > Novella > Apply Sample Theme Gallery Skin` re-applies it to any scene.
+- **List item colors are now editable in the Inspector.** `BGMGalleryUIController` and `EndingListUIController` gained `List Item Appearance` fields (row sprite, row/hover/pressed colors, text colors), and `ChapterSelectUIController` / `SceneRecollectionUIController` gained the hover, pressed, placeholder and empty-state colors that were previously hard-coded. Rows are generated at runtime, so these were the only colors a project could not change without editing engine source. **All defaults match the previous hard-coded values, so existing scenes are unaffected.**
+
+### Fixed
+- **The ending list never displayed anything.** Its scroll viewport combined a `Mask` with a fully transparent `Image`; because the mask derives its stencil from the graphic's alpha, every row inside was clipped away — in the editor and at runtime. The viewport now uses `RectMask2D`, matching every other panel in the engine. `EndingListBuilder` was fixed too, so rebuilding the panel no longer reintroduces it.
+- List rows collapsed to the height of a single line of text, because the content layout group controlled child heights while the controllers set row heights explicitly. Rows now keep their intended height.
+- Close buttons in gallery panels stretched into full-width bars; they are now fixed-size pills centered in the panel.
+- The bundled skin tools (`Apply Sample Theme ... Skin`) looked up sprites, styles and `SaveSlot.prefab` by hard-coded `Assets/Novella/...` paths, so they found nothing when the engine was installed as a package. Asset lookup now falls back to searching the project by name, making the tools usable from an installed package.
+
 ## [1.8.2] - 2026-07-30
 
 ### Fixed

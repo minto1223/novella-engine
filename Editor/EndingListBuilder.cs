@@ -62,8 +62,9 @@ public class EndingListBuilder
         vpRect.anchorMin = Vector2.zero;
         vpRect.anchorMax = Vector2.one;
         vpRect.sizeDelta = Vector2.zero;
-        viewport.AddComponent<Image>().color = Color.clear;
-        viewport.AddComponent<Mask>().showMaskGraphic = false;
+        // Mask + 透明Imageの組み合わせはアルファ0だとステンシルが書かれず中身が丸ごと消えるため、
+        // 他のパネルのビルダーと同じくRectMask2Dを使う
+        viewport.AddComponent<RectMask2D>();
 
         // Content
         var content = new GameObject("Content");

@@ -10,8 +10,7 @@ namespace NovellaEditor
     /// </summary>
     public static class SaveLoadPanelSkinner
     {
-        private const string ThemeDir = "Assets/Novella/UI/Sprites/Theme/";
-        private const string SlotPrefabPath = "Assets/Novella/Prefabs/SaveSlot.prefab";
+        private const string LocalSlotPrefabPath = "Assets/Novella/Prefabs/SaveSlot.prefab";
         private static readonly Color Ink = new Color(0.133f, 0.22f, 0.29f, 1f);
         private static readonly Color UiBlue = new Color(0.239f, 0.416f, 0.541f, 1f);
         private static readonly Color SubBlue = new Color(0.357f, 0.498f, 0.608f, 1f);
@@ -25,7 +24,9 @@ namespace NovellaEditor
             var pillAccent = Load("button_pill_accent.png");
 
             // ---- SaveSlot.prefab ----
-            var prefabRoot = PrefabUtility.LoadPrefabContents(SlotPrefabPath);
+            var slotPrefabPath = ResolveSlotPrefabPath();
+            if (slotPrefabPath == null) { Debug.LogError("[SaveLoadSkinner] SaveSlot.prefab not found"); return; }
+            var prefabRoot = PrefabUtility.LoadPrefabContents(slotPrefabPath);
             try
             {
                 var rootImg = prefabRoot.GetComponent<Image>();
@@ -51,7 +52,7 @@ namespace NovellaEditor
                         default: txt.color = Ink; break;
                     }
                 }
-                PrefabUtility.SaveAsPrefabAsset(prefabRoot, SlotPrefabPath);
+                PrefabUtility.SaveAsPrefabAsset(prefabRoot, slotPrefabPath);
             }
             finally
             {
@@ -111,7 +112,19 @@ namespace NovellaEditor
             Debug.Log("[SaveLoadSkinner] Sample theme save/load skin applied.");
         }
 
-        private static Sprite Load(string file) => AssetDatabase.LoadAssetAtPath<Sprite>(ThemeDir + file);
+        private static Sprite Load(string file) => ThemeAssetLocator.Sprite(file);
+
+        /// <summary>本体プロジェクトとUPM導入時のどちらでもSaveSlot.prefabを見つける。</summary>
+        private static string ResolveSlotPrefabPath()
+        {
+            if (AssetDatabase.LoadAssetAtPath<GameObject>(LocalSlotPrefabPath) != null) return LocalSlotPrefabPath;
+            foreach (var guid in AssetDatabase.FindAssets("SaveSlot t:Prefab"))
+            {
+                var path = AssetDatabase.GUIDToAssetPath(guid);
+                if (System.IO.Path.GetFileNameWithoutExtension(path) == "SaveSlot") return path;
+            }
+            return null;
+        }
 
         private static void SetImage(Image img, Sprite sprite, Image.Type type, Color color)
         {

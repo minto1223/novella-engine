@@ -17,6 +17,16 @@ namespace Novella.UI
         [Tooltip("全エンディング名を定義（未到達は???で表示）")]
         [SerializeField] private List<string> _allEndings = new List<string>();
 
+        [Header("List Item Appearance")]
+        [Tooltip("行の背景画像。未設定なら単色で塗る")]
+        [SerializeField] private Sprite _itemSprite;
+        [SerializeField] private Color _unlockedColor = new Color(0.15f, 0.2f, 0.15f, 0.9f);
+        [SerializeField] private Color _lockedColor = new Color(0.15f, 0.15f, 0.15f, 0.7f);
+        [SerializeField] private Color _unlockedTextColor = Color.white;
+        [SerializeField] private Color _lockedTextColor = new Color(0.5f, 0.5f, 0.5f);
+        [SerializeField] private Color _progressTextColor = new Color(0.8f, 0.8f, 0.5f);
+        [SerializeField] private Color _emptyTextColor = new Color(0.6f, 0.6f, 0.6f);
+
         public bool IsOpen => _panel != null && _panel.activeSelf;
 
         private void Awake()
@@ -91,9 +101,12 @@ namespace Novella.UI
             rect.sizeDelta = new Vector2(900, 70);
 
             var img = go.AddComponent<Image>();
-            img.color = unlocked
-                ? new Color(0.15f, 0.2f, 0.15f, 0.9f)
-                : new Color(0.15f, 0.15f, 0.15f, 0.7f);
+            img.color = unlocked ? _unlockedColor : _lockedColor;
+            if (_itemSprite != null)
+            {
+                img.sprite = _itemSprite;
+                img.type = Image.Type.Sliced;
+            }
 
             var labelGO = new GameObject("Label");
             labelGO.transform.SetParent(go.transform, false);
@@ -107,7 +120,7 @@ namespace Novella.UI
             tmp.text = unlocked ? endingName : "???";
             tmp.fontSize = 30;
             tmp.alignment = TextAlignmentOptions.MidlineLeft;
-            tmp.color = unlocked ? Color.white : new Color(0.5f, 0.5f, 0.5f);
+            tmp.color = unlocked ? _unlockedTextColor : _lockedTextColor;
             if (_font != null) tmp.font = _font;
         }
 
@@ -124,7 +137,7 @@ namespace Novella.UI
             tmp.text = $"Endings: {unlocked} / {total}";
             tmp.fontSize = 24;
             tmp.alignment = TextAlignmentOptions.Center;
-            tmp.color = new Color(0.8f, 0.8f, 0.5f);
+            tmp.color = _progressTextColor;
             if (_font != null) tmp.font = _font;
         }
 
@@ -136,7 +149,7 @@ namespace Novella.UI
             tmp.text = text;
             tmp.fontSize = 32;
             tmp.alignment = TextAlignmentOptions.Center;
-            tmp.color = new Color(0.6f, 0.6f, 0.6f);
+            tmp.color = _emptyTextColor;
             if (_font != null) tmp.font = _font;
             var rect = go.GetComponent<RectTransform>();
             rect.sizeDelta = new Vector2(800, 60);

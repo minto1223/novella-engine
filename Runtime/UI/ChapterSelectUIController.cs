@@ -28,6 +28,21 @@ namespace Novella.UI
         [SerializeField] private Color _cardCleared = new Color(0.1f, 0.2f, 0.15f, 0.9f);
         [SerializeField] private Color _badgeColor = new Color(0.3f, 0.5f, 0.8f, 1f);
         [SerializeField] private Color _badgeClearedColor = new Color(0.3f, 0.7f, 0.4f, 1f);
+        [SerializeField] private Color _badgeLockedColor = new Color(0.25f, 0.25f, 0.25f, 1f);
+        [Tooltip("カード・行の背景画像。未設定なら単色で塗る")]
+        [SerializeField] private Sprite _itemSprite;
+        [SerializeField] private Color _cardHoverColor = new Color(0.3f, 0.3f, 0.5f);
+        [SerializeField] private Color _cardPressedColor = new Color(0.2f, 0.2f, 0.4f);
+        [SerializeField] private Color _titleTextColor = Color.white;
+        [SerializeField] private Color _lockedTextColor = new Color(0.4f, 0.4f, 0.4f);
+        [SerializeField] private Color _progressTextColor = new Color(0.7f, 0.8f, 0.9f);
+        [SerializeField] private Color _emptyTextColor = new Color(0.6f, 0.6f, 0.6f);
+
+        [Header("Colors: Replay Rows")]
+        [SerializeField] private Color _replayColor = new Color(0.12f, 0.18f, 0.25f, 0.8f);
+        [SerializeField] private Color _replayHoverColor = new Color(0.2f, 0.3f, 0.45f);
+        [SerializeField] private Color _replayPressedColor = new Color(0.15f, 0.22f, 0.35f);
+        [SerializeField] private Color _replayTextColor = new Color(0.7f, 0.85f, 1f);
 
         public bool IsOpen => _panel != null && _panel.activeSelf;
 
@@ -114,7 +129,7 @@ namespace Novella.UI
             if (_font != null) tmp.font = _font;
             tmp.fontSize = 28;
             tmp.alignment = TextAlignmentOptions.Center;
-            tmp.color = new Color(0.7f, 0.8f, 0.9f);
+            tmp.color = _progressTextColor;
 
             float percent = total > 0 ? (float)cleared / total * 100f : 0f;
             tmp.text = $"Progress: {cleared} / {total}  ({percent:F0}%)";
@@ -135,7 +150,7 @@ namespace Novella.UI
             tmp.text = text;
             tmp.fontSize = 32;
             tmp.alignment = TextAlignmentOptions.Center;
-            tmp.color = new Color(0.6f, 0.6f, 0.6f);
+            tmp.color = _emptyTextColor;
             if (_font != null) tmp.font = _font;
             var rect = go.GetComponent<RectTransform>();
             rect.sizeDelta = new Vector2(800, 60);
@@ -154,14 +169,19 @@ namespace Novella.UI
             // カード背景
             var img = go.AddComponent<Image>();
             img.color = cleared ? _cardCleared : (unlocked ? _cardUnlocked : _cardLocked);
+            if (_itemSprite != null)
+            {
+                img.sprite = _itemSprite;
+                img.type = Image.Type.Sliced;
+            }
 
             var btn = go.AddComponent<Button>();
             btn.interactable = unlocked;
             var colors = btn.colors;
             colors.highlightedColor = cleared
                 ? new Color(_cardCleared.r + 0.1f, _cardCleared.g + 0.1f, _cardCleared.b + 0.1f)
-                : new Color(0.3f, 0.3f, 0.5f);
-            colors.pressedColor = new Color(0.2f, 0.2f, 0.4f);
+                : _cardHoverColor;
+            colors.pressedColor = _cardPressedColor;
             colors.disabledColor = _cardLocked;
             btn.colors = colors;
 
@@ -176,7 +196,7 @@ namespace Novella.UI
             badgeRect.anchoredPosition = new Vector2(12, 0);
 
             var badgeImg = badgeGO.AddComponent<Image>();
-            badgeImg.color = cleared ? _badgeClearedColor : (unlocked ? _badgeColor : new Color(0.25f, 0.25f, 0.25f));
+            badgeImg.color = cleared ? _badgeClearedColor : (unlocked ? _badgeColor : _badgeLockedColor);
 
             var badgeText = new GameObject("BadgeText");
             badgeText.transform.SetParent(badgeGO.transform, false);
@@ -234,12 +254,12 @@ namespace Novella.UI
                     ? "\n<size=24><color=#80FF80>Cleared</color>  <color=#AAAAAA>- Tap to replay</color></size>"
                     : "\n<size=24><color=#AAAAAA>New</color></size>";
                 tmp.text = $"<b>{displayTitle}</b>{statusLine}";
-                tmp.color = Color.white;
+                tmp.color = _titleTextColor;
             }
             else
             {
                 tmp.text = "<b>???</b>\n<size=24><color=#555555>Locked</color></size>";
-                tmp.color = new Color(0.4f, 0.4f, 0.4f);
+                tmp.color = _lockedTextColor;
             }
 
             tmp.fontSize = 34;
@@ -288,12 +308,17 @@ namespace Novella.UI
             rect.sizeDelta = new Vector2(860, 48);
 
             var img = go.AddComponent<Image>();
-            img.color = new Color(0.12f, 0.18f, 0.25f, 0.8f);
+            img.color = _replayColor;
+            if (_itemSprite != null)
+            {
+                img.sprite = _itemSprite;
+                img.type = Image.Type.Sliced;
+            }
 
             var btn = go.AddComponent<Button>();
             var colors = btn.colors;
-            colors.highlightedColor = new Color(0.2f, 0.3f, 0.45f);
-            colors.pressedColor = new Color(0.15f, 0.22f, 0.35f);
+            colors.highlightedColor = _replayHoverColor;
+            colors.pressedColor = _replayPressedColor;
             btn.colors = colors;
 
             var labelGO = new GameObject("Label");
@@ -308,7 +333,7 @@ namespace Novella.UI
             if (_font != null) tmp.font = _font;
             tmp.text = text;
             tmp.fontSize = 26;
-            tmp.color = new Color(0.7f, 0.85f, 1f);
+            tmp.color = _replayTextColor;
             tmp.alignment = TextAlignmentOptions.MidlineLeft;
 
             string capturedPath = scriptPath;
