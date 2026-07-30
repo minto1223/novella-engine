@@ -16,20 +16,20 @@ MonoBehaviour:
   PrimaryButtonStyle: {fileID: 11400000, guid: 7126df56e846e674e88f9c7a82013c6e, type: 2}
   IconButtonStyle: {fileID: 11400000, guid: 4ac7a0bf2e92c5a41819ce0f88aaa011, type: 2}
   DangerButtonStyle: {fileID: 11400000, guid: a9b9e9ff626970e41984a1fd923b2fc5, type: 2}
-  MessageWindowImage: {fileID: 0}
-  MessageWindowBackground: {r: 0, g: 0, b: 0.1, a: 0.8}
-  MessageTextColor: {r: 1, g: 1, b: 1, a: 1}
-  ReadTextColor: {r: 0.7, g: 0.7, b: 0.7, a: 1}
-  CharacterNameColor: {r: 1, g: 0.9, b: 0.5, a: 1}
+  MessageWindowImage: {fileID: 21300000, guid: fa0dec8ecb42f3542afca686871a2756, type: 3}
+  MessageWindowBackground: {r: 1, g: 1, b: 1, a: 0.88}
+  MessageTextColor: {r: 0.133, g: 0.22, b: 0.29, a: 1}
+  ReadTextColor: {r: 0.357, g: 0.498, b: 0.608, a: 1}
+  CharacterNameColor: {r: 1, g: 1, b: 1, a: 1}
   FontSize: 24
   TextSpeed: 40
-  ChoiceButtonImage: {fileID: 0}
-  ChoiceButtonColor: {r: 0.2, g: 0.3, b: 0.5, a: 0.9}
-  ChoiceButtonHoverColor: {r: 0.3, g: 0.4, b: 0.7, a: 1}
-  ChoiceTextColor: {r: 1, g: 1, b: 1, a: 1}
-  HUDButtonImage: {fileID: 0}
-  HUDButtonColor: {r: 0.15, g: 0.15, b: 0.2, a: 0.8}
-  HUDTextColor: {r: 1, g: 1, b: 1, a: 1}
+  ChoiceButtonImage: {fileID: 21300000, guid: 43e7dca78fe47c64d8c73bb1fb00eda6, type: 3}
+  ChoiceButtonColor: {r: 1, g: 1, b: 1, a: 0.85}
+  ChoiceButtonHoverColor: {r: 0.302, g: 0.639, b: 0.851, a: 1}
+  ChoiceTextColor: {r: 0.239, g: 0.416, b: 0.541, a: 1}
+  HUDButtonImage: {fileID: 21300000, guid: 43e7dca78fe47c64d8c73bb1fb00eda6, type: 3}
+  HUDButtonColor: {r: 1, g: 1, b: 1, a: 0.8}
+  HUDTextColor: {r: 0.239, g: 0.416, b: 0.541, a: 1}
   MenuPanelImage: {fileID: 0}
   MenuPanelColor: {r: 0.1, g: 0.1, b: 0.15, a: 0.95}
   BacklogPanelImage: {fileID: 0}

@@ -1,6 +1,15 @@
 # Changelog
 
-## [1.7.0] - 2026-07-20
+## [1.8.0] - 2026-07-30
+
+### Added
+- **"Sorairo Qualia" UI theme** for the bundled demo — a light, sky-blue school-days look applied across every screen: title (stacked pill buttons, scrim, catch copy), in-game HUD (white message window, gradient name plate, pill quick bar), main menu (card layout), settings (pill tabs, themed sliders/toggles), and save/load panels + `SaveSlot.prefab`. Ships 14 nine-slice sprites under `Runtime/UI/Sprites/Theme/` and a new `MenuButtonStyle` asset; `PrimaryButtonStyle`, `DangerButtonStyle`, `IconButtonStyle` and `DefaultUITheme` are updated to match.
+- **Click-wait marker animation** — the ▼ marker in the message window now fades and bobs (1.1s cycle) via the new `NextMarkerBlinker` component, and hides automatically while text is typing.
+- **Editor utilities** (Tools > Novella): `Capture Game View` (render overlay canvases to PNG without relying on Game View repaint), `Generate Theme Gradients`, `Apply Sorairo Settings Skin`, and `Apply Sorairo SaveLoad Skin` (re-apply the theme to settings / save-load UIs in any scene).
+
+### Fixed
+- `HUDController` quick-bar labels: the QL label used a hard-coded white color that was invisible on the new white pill buttons; all label colors now come from the controller's on/off color fields.
+- `SaveUIController`: empty save-slot thumbnails used a hard-coded dark color; now a light blue that fits the theme.
 
 ### Added
 - **Per-state button sprites** — each `ButtonStateStyle` (Normal / Hover / Pressed / Disabled) now has its own `Sprite` slot, so hand-drawn button images can swap per state (states without a sprite fall back to the shared `BackgroundSprite`). Sprites swap at the start of a transition; color and scale still tween.

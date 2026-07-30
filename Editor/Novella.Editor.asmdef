@@ -3,7 +3,8 @@
   "rootNamespace": "Novella.Editor",
   "references": [
     "Novella.Runtime",
-    "Unity.TextMeshPro"
+    "Unity.TextMeshPro",
+    "Unity.RenderPipelines.Universal.Runtime"
   ],
   "includePlatforms": [
     "Editor"

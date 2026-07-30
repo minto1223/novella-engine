@@ -220,7 +220,7 @@ namespace Novella.UI
             {
                 var sprite = hasData ? SaveManager.LoadThumbnail(info.ThumbnailFile) : null;
                 view.ThumbnailImage.sprite = sprite;
-                view.ThumbnailImage.color = sprite != null ? Color.white : new Color(0.1f, 0.1f, 0.15f);
+                view.ThumbnailImage.color = sprite != null ? Color.white : new Color(0.85f, 0.9f, 0.94f);
             }
         }
 

@@ -143,7 +143,10 @@ namespace Novella.UI
             if (_quickLoadButton != null)
                 _quickLoadButton.interactable = hasQuickSave;
             if (_quickLoadLabel != null)
-                _quickLoadLabel.color = hasQuickSave ? Color.white : new Color(1, 1, 1, 0.4f);
+            {
+                var faded = new Color(_labelOffColor.r, _labelOffColor.g, _labelOffColor.b, _labelOffColor.a * 0.4f);
+                _quickLoadLabel.color = hasQuickSave ? _labelOffColor : faded;
+            }
         }
 
         private void UpdateAutoLabel()
