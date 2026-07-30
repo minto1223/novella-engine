@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.8.2] - 2026-07-30
+
+### Fixed
+- **Broken font references in the shipped prefabs and demo scenes.** `BacklogEntry.prefab`, `ChoiceButton.prefab`, `SaveSlot.prefab` and both demo scenes pointed at a font asset that was never part of the package (it lives only in the engine's own development project), so every text element fell back to whatever TextMeshPro's default font provided — Japanese text in particular had no guaranteed glyph coverage. All 181 references now resolve to the bundled `NotoSansJP SDF` (OFL, full CJK coverage). This has been the case since the prefabs were first shipped.
+
+> Note: Noto Sans JP has a taller line height than the font used during development, so line spacing in the demo scenes is looser than in the screenshots. Text content and layout are otherwise unchanged.
+
 ## [1.8.1] - 2026-07-30
 
 ### Changed
