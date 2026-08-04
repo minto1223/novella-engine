@@ -14831,7 +14831,7 @@ MonoBehaviour:
   _panel: {fileID: 1332031285}
   _listContainer: {fileID: 1847246856}
   _closeButton: {fileID: 14843907}
-  _chapterList: {fileID: 11400000, guid: 16d67fcaf4a4b2545994f657c3947a39, type: 2}
+  _chapterList: {fileID: 0}
   _font: {fileID: 11400000, guid: 7a093d46c0557414a83970b43a2fe5e8, type: 2}
   _gameSceneName: SampleScene
   _cardUnlocked: {r: 1, g: 1, b: 1, a: 0.9}

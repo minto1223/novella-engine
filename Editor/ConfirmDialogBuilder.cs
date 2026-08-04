@@ -38,12 +38,29 @@ public class ConfirmDialogBuilder
             Debug.LogError("[Novella] NovellaManager が見つかりません。");
             return null;
         }
+        return EnsureExists(canvasTransform, novellaManager);
+    }
+
+    /// <summary>
+    /// ConfirmDialogController を載せるGameObjectを明示して生成・配線する。
+    /// NovellaManagerが存在しないシーン（タイトル画面など）から使う。
+    /// </summary>
+    public static ConfirmDialogController EnsureExists(Transform canvasTransform, GameObject host)
+    {
+        if (canvasTransform == null || host == null)
+        {
+            Debug.LogError("[Novella] ConfirmDialog の生成先が指定されていません。");
+            return null;
+        }
+        var novellaManager = host;
 
         var existingPanel = canvasTransform.Find("ConfirmDialog");
         if (existingPanel != null)
         {
             var existingController = novellaManager.GetComponent<ConfirmDialogController>();
-            if (existingController != null)
+            // 参照が外れているものを再利用すると「見た目は在るのに動かない」状態が固定化するため、
+            // 配線が生きている場合だけ再利用し、壊れていれば作り直す（Undo後の半壊からの自己修復）
+            if (existingController != null && IsWired(existingController))
                 return existingController;
         }
 
@@ -120,6 +137,19 @@ public class ConfirmDialogBuilder
         so.ApplyModifiedProperties();
 
         return controller;
+    }
+
+    /// <summary>必須の参照が生きているか。1つでも欠けていれば作り直す判断に使う。</summary>
+    private static bool IsWired(ConfirmDialogController controller)
+    {
+        var so = new SerializedObject(controller);
+        string[] required = { "_panel", "_messageLabel", "_yesButton", "_noButton" };
+        foreach (var name in required)
+        {
+            var prop = so.FindProperty(name);
+            if (prop == null || prop.objectReferenceValue == null) return false;
+        }
+        return true;
     }
 
     // =========================================================

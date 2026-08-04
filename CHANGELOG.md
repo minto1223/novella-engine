@@ -1,5 +1,25 @@
 # Changelog
 
+## [1.11.0] - 2026-08-04
+
+### Fixed
+- **The title screen died entirely if any one of its three required buttons was missing.** `TitleManager.Start()` called `AddListener` on `_newGameButton`, `_continueButton` and `_quitButton` without a null check, while every other button was guarded. Leaving one unassigned threw a `NullReferenceException` partway through `Start()`, so nothing after that line ran — gallery, recollection, BGM, ending list, chapter select, flowchart, settings and reset were all left unwired, with only a stack trace to go on. The three are now guarded and name the missing field in the error: `New Game Button が未割り当てです`.
+- **`ConfirmDialogBuilder` handed back dialogs whose references were empty.** It treated "a `ConfirmDialogController` exists" as "the dialog is usable" and returned early, so a controller that had lost its `_panel` / `_yesButton` references (which happens after an editor Undo, since the builders do not register undo steps) stayed broken no matter how often the tool was re-run. It now verifies the required references and rebuilds when any are missing.
+
+### Added
+- **Data reset now requires confirmation.** `TitleManager` gained a `Reset Confirm Dialog` field; `OnResetAllData` shows it before deleting anything, and **the reset button is disabled outright when the dialog is unassigned** — erasing every save, read flag and gallery entry on a single unconfirmed click is not a state the engine should be able to reach through a wiring mistake.
+- `Novella > Patch Title: Add Reset Button` now builds and wires that confirmation dialog too, and styles the button with `NovellaButton` + `DangerButtonStyle` so it matches the rest of the title screen instead of the flat red rectangle it used to create.
+- `ConfirmDialogBuilder.EnsureExists(canvas, host)` — an overload that takes the GameObject to host the controller. The previous version always looked for `NovellaManager`, so it could not be used on a title screen.
+
+### Removed
+- **`MobileTouchHandler` and `SafeAreaAdapter`.** Both shipped with the package but were never attached to anything in the demo scenes, were referenced by no other code, and had no documentation explaining how to use them — so the "mobile support: SafeArea, touch input" bullet in the README promised behaviour that no installed project ever got. Touch input still works: the engine advances on `Input.GetMouseButtonDown(0)`, which Unity raises for taps. The README bullet was removed along with the components.
+- **`ChapterList.asset` and `chapter01_csv.csv` from the demo sample.** The chapter list held an empty `Chapters` array — a leftover from consolidating the demo into a single scenario — and the CSV was the last remnant of the deleted `chapter01`. `ChapterSelectUIController` already falls back safely when `_chapterList` is null, and the demo title scene's reference has been cleared accordingly.
+- **`CharDef_New.asset`** from the demo sample — an unreferenced character definition left at its default creation name.
+
+### Changed
+- The command count in the README, the command reference and `package.json` now reads **41**, matching the handlers actually registered by `NovellaEngine`. The previous figure of 42 was left over from before `ai_say` was removed in 1.4.0.
+- The sample is now described as covering the main commands rather than "all 42": the bundled scenario exercises 28 of the 41 commands. SE, movie, particle, localization-switch and volume commands are documented but not demonstrated.
+
 ## [1.10.0] - 2026-07-31
 
 ### Changed

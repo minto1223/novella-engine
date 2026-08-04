@@ -49,6 +49,9 @@ namespace Novella.Core
         [Header("Reset")]
         [SerializeField] private Button _resetButton;
 
+        [Tooltip("全データ消去の確認ダイアログ。未設定の場合、リセットボタンは無効化されます（誤操作で全消しになるのを防ぐため）")]
+        [SerializeField] private Novella.UI.ConfirmDialogController _resetConfirmDialog;
+
         [Header("Settings")]
         [SerializeField] private string _gameSceneName = "SampleScene";
 
@@ -74,9 +77,17 @@ namespace Novella.Core
             _saveManager = new SaveManager();
             ApplyTheme();
 
-            _newGameButton.onClick.AddListener(OnNewGame);
-            _continueButton.onClick.AddListener(OnContinue);
-            _quitButton.onClick.AddListener(OnQuit);
+            // 必須3ボタンが未割り当てでも、ここで例外停止させない。
+            // 停止すると以降の配線（ギャラリー・設定・リセット等）が全て行われず、
+            // 「ボタンを1つ外しただけでタイトル画面が丸ごと死ぬ」状態になるため。
+            if (_newGameButton != null) _newGameButton.onClick.AddListener(OnNewGame);
+            else Debug.LogError("[Novella] TitleManager: New Game Button が未割り当てです。");
+
+            if (_continueButton != null) _continueButton.onClick.AddListener(OnContinue);
+            else Debug.LogError("[Novella] TitleManager: Continue Button が未割り当てです。");
+
+            if (_quitButton != null) _quitButton.onClick.AddListener(OnQuit);
+            else Debug.LogError("[Novella] TitleManager: Quit Button が未割り当てです。");
 
             if (_galleryButton != null)
             {
@@ -125,10 +136,15 @@ namespace Novella.Core
             _settingsUI?.Init(null, null, null);
 
             if (_resetButton != null)
+            {
                 _resetButton.onClick.AddListener(OnResetAllData);
+                // 確認ダイアログが無い状態で押されると取り返しがつかないため、押せなくする
+                _resetButton.interactable = _resetConfirmDialog != null;
+            }
 
             // クイックセーブまたはオートセーブがあればコンティニュー有効
-            _continueButton.interactable = _saveManager.HasQuickSave() || _saveManager.HasAutoSave();
+            if (_continueButton != null)
+                _continueButton.interactable = _saveManager.HasQuickSave() || _saveManager.HasAutoSave();
         }
 
         private void OnNewGame()
@@ -213,6 +229,20 @@ namespace Novella.Core
 
         private void OnResetAllData()
         {
+            if (_resetConfirmDialog == null)
+            {
+                // 配線ミスで確認なしに全消しするより、何もしない方が安全
+                Debug.LogWarning("[Novella] Reset Confirm Dialog が未設定のため、全データ消去を中止しました。");
+                return;
+            }
+
+            _resetConfirmDialog.Show(
+                "セーブデータ・既読・ギャラリーを全て消去します。\nこの操作は取り消せません。",
+                DoResetAllData, null, "消去する", "キャンセル");
+        }
+
+        private void DoResetAllData()
+        {
             // セーブファイル削除
             string dir = Application.persistentDataPath;
             foreach (var file in System.IO.Directory.GetFiles(dir, "novella_*.json"))
@@ -230,7 +260,7 @@ namespace Novella.Core
             PlayerPrefs.Save();
 
             // UI状態を更新
-            _continueButton.interactable = false;
+            if (_continueButton != null) _continueButton.interactable = false;
             if (_galleryButton != null) _galleryButton.interactable = false;
             if (_recollectionButton != null) _recollectionButton.interactable = false;
             if (_bgmGalleryButton != null) _bgmGalleryButton.interactable = false;

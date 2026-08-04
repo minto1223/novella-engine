@@ -4,10 +4,12 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using Novella.Core;
+using Novella.UI;
 
 /// <summary>
 /// Novella > Patch Title: Add Reset Button
 /// TitleCanvasのButtonRowにデータリセットボタンを追加し、TitleManagerに配線する。
+/// 全データ消去は取り消せないため、確認ダイアログも同時に生成して配線する。
 /// </summary>
 public class TitleResetButtonPatcher
 {
@@ -53,12 +55,9 @@ public class TitleResetButtonPatcher
         resetRT.sizeDelta = btnSize;
 
         var img = resetGO.AddComponent<Image>();
-        img.color = new Color(0.6f, 0.15f, 0.15f, 1f); // 赤系
+        img.color = new Color(0.6f, 0.15f, 0.15f, 1f); // スタイル未適用時のフォールバック色
 
         var btn = resetGO.AddComponent<Button>();
-        var colors = btn.colors;
-        colors.highlightedColor = new Color(0.8f, 0.2f, 0.2f, 1f);
-        btn.colors = colors;
 
         // テキスト
         var textGO = new GameObject("Text");
@@ -75,24 +74,68 @@ public class TitleResetButtonPatcher
         tmp.color = Color.white;
         if (font != null) tmp.font = font;
 
-        // QuitButtonの右隣に配置（最後の子にする前にQuitを最後にする）
+        // 他のタイトルボタンと同じ見た目にする（Dangerスタイル）
+        ApplyDangerStyle(resetGO, quitBtn != null ? quitBtn.gameObject : null);
+
+        // QuitButtonの右隣に配置
         if (quitBtn != null)
             resetGO.transform.SetSiblingIndex(quitBtn.GetSiblingIndex() + 1);
 
-        // TitleManagerの_resetButtonに配線
+        // 確認ダイアログを生成（TitleSceneにはNovellaManagerが無いためTitleManagerに載せる）
+        var canvas = buttonRow.GetComponentInParent<Canvas>();
+        ConfirmDialogController confirmDialog = null;
+        if (canvas != null)
+            confirmDialog = ConfirmDialogBuilder.EnsureExists(canvas.transform, titleManager.gameObject);
+
+        if (confirmDialog == null)
+            Debug.LogWarning("[Novella] 確認ダイアログを生成できませんでした。ResetButtonは無効のままになります。");
+
+        // TitleManagerに配線
         var so = new SerializedObject(titleManager);
         var resetProp = so.FindProperty("_resetButton");
-        if (resetProp != null)
-        {
-            resetProp.objectReferenceValue = btn;
-            so.ApplyModifiedProperties();
-        }
+        if (resetProp != null) resetProp.objectReferenceValue = btn;
+        var dialogProp = so.FindProperty("_resetConfirmDialog");
+        if (dialogProp != null) dialogProp.objectReferenceValue = confirmDialog;
+        so.ApplyModifiedProperties();
 
         EditorUtility.SetDirty(titleManager.gameObject);
         UnityEditor.SceneManagement.EditorSceneManager.MarkSceneDirty(
             titleManager.gameObject.scene);
 
-        Debug.Log("[Novella] ResetButton を追加しました。Ctrl+S でシーンを保存してください。");
+        Debug.Log("[Novella] ResetButton と確認ダイアログを追加しました。Ctrl+S でシーンを保存してください。");
+    }
+
+    /// <summary>
+    /// QuitButtonと同じNovellaButtonスタイルを適用する。
+    /// QuitButtonにスタイルが無ければ DangerButtonStyle アセットを名前で探す。
+    /// </summary>
+    private static void ApplyDangerStyle(GameObject target, GameObject reference)
+    {
+        NovellaButtonStyle style = null;
+
+        if (reference != null)
+        {
+            var refButton = reference.GetComponent<NovellaButton>();
+            if (refButton != null) style = refButton.Style;
+        }
+
+        if (style == null)
+        {
+            var guids = AssetDatabase.FindAssets("DangerButtonStyle t:NovellaButtonStyle");
+            if (guids.Length > 0)
+                style = AssetDatabase.LoadAssetAtPath<NovellaButtonStyle>(
+                    AssetDatabase.GUIDToAssetPath(guids[0]));
+        }
+
+        if (style == null)
+        {
+            Debug.LogWarning("[Novella] DangerButtonStyle が見つかりませんでした。ResetButtonは既定色で表示されます。");
+            return;
+        }
+
+        var novellaButton = target.GetComponent<NovellaButton>();
+        if (novellaButton == null) novellaButton = target.AddComponent<NovellaButton>();
+        novellaButton.SetStyle(style);
     }
 }
 #endif
