@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using Novella.UI;
+using Novella.Editor;
 
 public static class SavePanelPager
 {
@@ -12,8 +13,12 @@ public static class SavePanelPager
     {
         var font = AssetDatabase.LoadAssetAtPath<TMP_FontAsset>("Assets/TextMesh Pro/Resources/Fonts & Materials/font_1_kokugl_1.asset");
 
+        int undoGroup = NovellaEditorUndo.Begin();
+
         AddPagingToPanel("SavePanel", "SaveCard", "SCloseBtn", font);
         AddPagingToPanel("LoadPanel", "LoadCard", "LCloseBtn", font);
+
+        NovellaEditorUndo.End(undoGroup, "Novella: Add Save Panel Paging");
 
         var scene = UnityEditor.SceneManagement.EditorSceneManager.GetActiveScene();
         UnityEditor.SceneManagement.EditorSceneManager.MarkSceneDirty(scene);
@@ -33,11 +38,12 @@ public static class SavePanelPager
         // Remove existing paging bar if present
         var existing = card.Find("PageBar");
         if (existing != null)
-            Object.DestroyImmediate(existing.gameObject);
+            NovellaEditorUndo.Destroy(existing.gameObject);
 
-        // Create PageBar
+        // Create PageBar（Prev/Label/Nextはこのルートごと消えるためUndo登録はルートのみ）
         var bar = new GameObject("PageBar", typeof(RectTransform), typeof(HorizontalLayoutGroup), typeof(LayoutElement));
         bar.transform.SetParent(card, false);
+        NovellaEditorUndo.Created(bar);
 
         var barLayout = bar.GetComponent<LayoutElement>();
         barLayout.preferredHeight = 60;

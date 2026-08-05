@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using Novella.UI;
+using Novella.Editor;
 
 /// <summary>
 /// Novella > Rebuild Title Settings Panel
@@ -24,13 +25,16 @@ public class TitleSettingsPanelBuilder
 
         var font = AssetDatabase.LoadAssetAtPath<TMP_FontAsset>(FontPath);
 
+        int undoGroup = NovellaEditorUndo.Begin();
+
         // --- 既存パネルを削除して再構築 ---
         var existingPanel = canvas.transform.Find("SettingsPanel");
-        if (existingPanel != null) Object.DestroyImmediate(existingPanel.gameObject);
+        if (existingPanel != null) NovellaEditorUndo.Destroy(existingPanel.gameObject);
 
-        // --- 全画面オーバーレイ ---
+        // --- 全画面オーバーレイ（配下は全てこのルートごと消えるためUndo登録はルートのみ） ---
         var panelGO = new GameObject("SettingsPanel");
         panelGO.transform.SetParent(canvas.transform, false);
+        NovellaEditorUndo.Created(panelGO);
         var panelRect = panelGO.AddComponent<RectTransform>();
         panelRect.anchorMin = Vector2.zero;
         panelRect.anchorMax = Vector2.one;
@@ -125,9 +129,7 @@ public class TitleSettingsPanelBuilder
         panelGO.SetActive(false);
 
         // --- SettingsUIController をTitleManagerに用意して配線 ---
-        var settingsUI = titleManager.GetComponent<SettingsUIController>();
-        if (settingsUI == null)
-            settingsUI = titleManager.AddComponent<SettingsUIController>();
+        var settingsUI = NovellaEditorUndo.EnsureComponent<SettingsUIController>(titleManager);
 
         var so = new SerializedObject(settingsUI);
         so.FindProperty("_panel").objectReferenceValue = panelGO;
@@ -171,6 +173,8 @@ public class TitleSettingsPanelBuilder
             tmSO.ApplyModifiedProperties();
             EditorUtility.SetDirty(tm);
         }
+
+        NovellaEditorUndo.End(undoGroup, "Novella: Rebuild Title Settings Panel");
 
         EditorUtility.SetDirty(settingsUI);
         UnityEditor.SceneManagement.EditorSceneManager.MarkSceneDirty(

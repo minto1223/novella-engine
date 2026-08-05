@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using TMPro;
 using Novella.Core;
 using Novella.UI;
+using Novella.Editor;
 
 /// <summary>
 /// Novella > Patch Title: Add Reset Button
@@ -34,9 +35,11 @@ public class TitleResetButtonPatcher
 
         var font = AssetDatabase.LoadAssetAtPath<TMP_FontAsset>(FontPath);
 
+        int undoGroup = NovellaEditorUndo.Begin();
+
         // 既存のResetButtonがあれば削除
         var existing = buttonRow.transform.Find("ResetButton");
-        if (existing != null) Object.DestroyImmediate(existing.gameObject);
+        if (existing != null) NovellaEditorUndo.Destroy(existing.gameObject);
 
         // QuitButtonを参照にサイズ取得
         var quitBtn = buttonRow.transform.Find("QuitButton");
@@ -47,9 +50,10 @@ public class TitleResetButtonPatcher
             if (rt != null) btnSize = rt.sizeDelta;
         }
 
-        // ResetButton作成
+        // ResetButton作成（子のTextはこのルートごと消えるためUndo登録はルートのみ）
         var resetGO = new GameObject("ResetButton");
         resetGO.transform.SetParent(buttonRow.transform, false);
+        NovellaEditorUndo.Created(resetGO);
 
         var resetRT = resetGO.AddComponent<RectTransform>();
         resetRT.sizeDelta = btnSize;
@@ -97,6 +101,8 @@ public class TitleResetButtonPatcher
         var dialogProp = so.FindProperty("_resetConfirmDialog");
         if (dialogProp != null) dialogProp.objectReferenceValue = confirmDialog;
         so.ApplyModifiedProperties();
+
+        NovellaEditorUndo.End(undoGroup, "Novella: Patch Title Reset Button");
 
         EditorUtility.SetDirty(titleManager.gameObject);
         UnityEditor.SceneManagement.EditorSceneManager.MarkSceneDirty(

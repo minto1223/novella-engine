@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using Novella.UI;
+using Novella.Editor;
 
 /// <summary>
 /// Novella > Rebuild Save Panels
@@ -29,8 +30,12 @@ public class SavePanelBuilder
         var canvas = GameObject.Find("NovellaCanvas");
         if (canvas == null) { Debug.LogError("[Novella] NovellaCanvas が見つかりません。"); return; }
 
+        int undoGroup = NovellaEditorUndo.Begin();
+
         RebuildCard(canvas, "SavePanel", "SaveCard", "セーブ",  prefab, SavePanelMode.Save);
         RebuildCard(canvas, "LoadPanel", "LoadCard", "ロード",  prefab, SavePanelMode.Load);
+
+        NovellaEditorUndo.End(undoGroup, "Novella: Rebuild Save Panels");
 
         UnityEditor.SceneManagement.EditorSceneManager.MarkSceneDirty(
             UnityEngine.SceneManagement.SceneManager.GetActiveScene());
@@ -177,6 +182,9 @@ public class SavePanelBuilder
         var cardTr = panelTr.Find(cardName);
         if (cardTr == null) { Debug.LogError($"[Novella] {cardName} が見つかりません。"); return; }
 
+        // 既存カードの子の並び順・タイトル文言を書き換えるため、階層まるごと記録しておく
+        NovellaEditorUndo.RecordHierarchy(cardTr.gameObject, "Novella: Rebuild Save Panels");
+
         // childControlHeight=true に設定（flexibleHeight が機能するために必要）
         var cardVLG = cardTr.GetComponent<VerticalLayoutGroup>();
         if (cardVLG != null)
@@ -196,7 +204,7 @@ public class SavePanelBuilder
             if (child == closeBtnTr || child == titleTr) continue;
             toDelete.Add(child.gameObject);
         }
-        toDelete.ForEach(Object.DestroyImmediate);
+        toDelete.ForEach(go => NovellaEditorUndo.Destroy(go));
 
         // タイトルテキスト更新
         if (titleTr != null)
@@ -209,6 +217,7 @@ public class SavePanelBuilder
         // --- SlotScrollView（ScrollRect + Viewport + SlotContainer） ---
         var scrollGO = new GameObject("SlotScrollView");
         scrollGO.transform.SetParent(cardTr, false);
+        NovellaEditorUndo.Created(scrollGO);
         scrollGO.transform.SetSiblingIndex(1); // タイトルの次
 
         var scrollLE = scrollGO.AddComponent<LayoutElement>();

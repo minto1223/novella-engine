@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using Novella.UI;
+using Novella.Editor;
 
 /// <summary>
 /// Novella > Build BGM Gallery
@@ -21,12 +22,15 @@ public class BGMGalleryBuilder
 
         var font = AssetDatabase.LoadAssetAtPath<TMP_FontAsset>(FontPath);
 
+        int undoGroup = NovellaEditorUndo.Begin();
+
         // --- BGMGalleryPanel ---
         var existingPanel = canvas.transform.Find("BGMGalleryPanel");
-        if (existingPanel != null) Object.DestroyImmediate(existingPanel.gameObject);
+        if (existingPanel != null) NovellaEditorUndo.Destroy(existingPanel.gameObject);
 
         var panelGO = new GameObject("BGMGalleryPanel");
         panelGO.transform.SetParent(canvas.transform, false);
+        NovellaEditorUndo.Created(panelGO);
         var panelRect = panelGO.AddComponent<RectTransform>();
         panelRect.anchorMin = Vector2.zero;
         panelRect.anchorMax = Vector2.one;
@@ -117,9 +121,7 @@ public class BGMGalleryBuilder
         var titleManager = GameObject.Find("TitleManager");
         if (titleManager != null)
         {
-            var bgmUI = titleManager.GetComponent<BGMGalleryUIController>();
-            if (bgmUI == null)
-                bgmUI = titleManager.AddComponent<BGMGalleryUIController>();
+            var bgmUI = NovellaEditorUndo.EnsureComponent<BGMGalleryUIController>(titleManager);
 
             var so = new SerializedObject(bgmUI);
             so.FindProperty("_panel").objectReferenceValue = panelGO;
@@ -137,13 +139,14 @@ public class BGMGalleryBuilder
 
         // --- BGMボタンを TitleCanvas に追加 ---
         var existingBtn = canvas.transform.Find("BGMGalleryButton");
-        if (existingBtn != null) Object.DestroyImmediate(existingBtn.gameObject);
+        if (existingBtn != null) NovellaEditorUndo.Destroy(existingBtn.gameObject);
 
         var chapterBtn = canvas.transform.Find("ChapterSelectButton");
         var quitBtn = canvas.transform.Find("QuitButton");
 
         var bgmBtnGO = new GameObject("BGMGalleryButton");
         bgmBtnGO.transform.SetParent(canvas.transform, false);
+        NovellaEditorUndo.Created(bgmBtnGO);
 
         var bgmBtnRect = bgmBtnGO.AddComponent<RectTransform>();
         if (chapterBtn != null)
@@ -193,6 +196,8 @@ public class BGMGalleryBuilder
             tmSO.FindProperty("_bgmGalleryButton").objectReferenceValue = bgmBtn;
             tmSO.ApplyModifiedProperties();
         }
+
+        NovellaEditorUndo.End(undoGroup, "Novella: Build BGM Gallery");
 
         UnityEditor.SceneManagement.EditorSceneManager.MarkSceneDirty(
             UnityEngine.SceneManagement.SceneManager.GetActiveScene());

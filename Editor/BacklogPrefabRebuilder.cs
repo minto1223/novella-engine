@@ -196,10 +196,15 @@ namespace Novella.Editor
             var panelTr = searchRoot.Find("BacklogPanel");
             if (panelTr == null) { Debug.LogError("[Novella] BacklogPanel が見つかりません。"); return; }
 
+            int undoGroup = NovellaEditorUndo.Begin();
+
+            // 既存BacklogPanelの子構成・並び順を変えるため階層ごと記録する
+            NovellaEditorUndo.RecordHierarchy(panelTr.gameObject, "Novella: Rebuild Backlog Search Bar");
+
             // 既存のSearchBarがあれば削除
             var existingSearch = panelTr.Find("SearchBar");
             if (existingSearch != null)
-                Object.DestroyImmediate(existingSearch.gameObject);
+                NovellaEditorUndo.Destroy(existingSearch.gameObject);
 
             // フォント取得
             TMP_FontAsset font = null;
@@ -210,7 +215,7 @@ namespace Novella.Editor
             var panelVLG = panelTr.GetComponent<VerticalLayoutGroup>();
             if (panelVLG == null)
             {
-                panelVLG = panelTr.gameObject.AddComponent<VerticalLayoutGroup>();
+                panelVLG = NovellaEditorUndo.AddComponent<VerticalLayoutGroup>(panelTr.gameObject);
                 panelVLG.padding = new RectOffset(0, 0, 0, 0);
                 panelVLG.spacing = 0;
                 panelVLG.childControlWidth = true;
@@ -223,8 +228,7 @@ namespace Novella.Editor
             var scrollView = panelTr.Find("BacklogScrollView");
             if (scrollView != null)
             {
-                var scrollLE = scrollView.GetComponent<LayoutElement>();
-                if (scrollLE == null) scrollLE = scrollView.gameObject.AddComponent<LayoutElement>();
+                var scrollLE = NovellaEditorUndo.EnsureComponent<LayoutElement>(scrollView.gameObject);
                 scrollLE.flexibleHeight = 1;
                 scrollLE.flexibleWidth = 1;
             }
@@ -232,6 +236,7 @@ namespace Novella.Editor
             // --- SearchBar ---
             var searchBar = new GameObject("SearchBar", typeof(RectTransform));
             searchBar.transform.SetParent(panelTr, false);
+            NovellaEditorUndo.Created(searchBar);
             searchBar.transform.SetAsFirstSibling(); // パネル最上部に配置
 
             var searchBarLE = searchBar.AddComponent<LayoutElement>();
@@ -329,6 +334,8 @@ namespace Novella.Editor
                 so.FindProperty("_searchInput").objectReferenceValue = inputField;
                 so.ApplyModifiedProperties();
             }
+
+            NovellaEditorUndo.End(undoGroup, "Novella: Rebuild Backlog Search Bar");
 
             UnityEditor.SceneManagement.EditorSceneManager.MarkSceneDirty(
                 UnityEngine.SceneManagement.SceneManager.GetActiveScene());

@@ -1,5 +1,21 @@
 # Changelog
 
+## [1.12.0] - 2026-08-05
+
+### Fixed
+- **Undo left the scene half-broken after running any builder tool.** Pressing Ctrl+Z after `Build HUD`, `Patch Title: Add Reset Button` or any of the other builders produced a scene where the GameObjects were still there but the serialized references pointing at them had reverted to null — visible, but wired to nothing. The cause was an asymmetry rather than a total absence of undo support: `SerializedObject.ApplyModifiedProperties()` records an undo step automatically, while `new GameObject()`, `AddComponent()` and `DestroyImmediate()` do not. Undoing therefore rolled back the wiring and left the objects behind. All fifteen scene-modifying menu entries now register their creations, deletions and component additions, and collapse the whole run into a single undo group, so one Ctrl+Z returns the scene to exactly its pre-run state.
+- **`Build CG Gallery` created a duplicate `FullViewPanel` on every run.** The full-view overlay is built as a *sibling* of `GalleryPanel`, but only `GalleryPanel` was removed before rebuilding, so each re-run stacked another full-screen overlay onto the canvas. Since re-running a builder is the documented way to redo its work, this made the tool actively unsafe to repeat.
+- **`Build Ending List` created a duplicate `EndingButton` on every run** for the same reason — the button was constructed unconditionally without removing the previous one.
+- **`play_particle` and `stop_particle` were listed in the command reference index but had no entries.** Both links in the contents pointed at anchors that did not exist anywhere in the document, so the two commands were effectively undocumented. Full entries have been written, including the five built-in presets (`sakura`, `snow`, `rain`, `firefly`, `dust`) and the `Resources/Particles/` prefab override.
+
+### Added
+- **`NovellaEditorUndo`** (`Editor/NovellaEditorUndo.cs`) — the helper the builders now go through. `Begin()` / `End(group, label)` bracket one tool run into a single undo group; `Created()`, `Destroy()`, `AddComponent<T>()`, `EnsureComponent<T>()` and `RecordHierarchy()` wrap the operations Unity does not track on its own. If you write your own builder, note two things: the group collapse in `End()` is what makes a single Ctrl+Z sufficient, and only the **root** of a freshly built hierarchy needs registering, since undoing its creation takes the children with it.
+- **A sample sound effect**, so `play_se` and `stop_se` can actually be heard. `Resources/Audio/SE/` shipped empty, which meant the two commands were the only ones in the demo that could not be tried. The scenario now plays the clip and then cuts it short with `stop_se` to show the difference.
+
+### Changed
+- The bundled scenario now exercises **30** of the 41 commands, up from 28, following the addition of `play_se` and `stop_se`.
+- The demo scenario no longer states a command count in its own dialogue. It announced itself as covering "all 43 commands" and printed a list headed "(42 commands)" that in fact contained 41 — figures that had gone stale twice over. It now refers to the main commands, and the hard-coded `v1.0` engine version has been dropped from its title and closing screens so the text does not need revisiting on every release.
+
 ## [1.11.0] - 2026-08-04
 
 ### Fixed

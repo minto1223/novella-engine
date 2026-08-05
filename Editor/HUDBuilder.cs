@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using Novella.UI;
+using Novella.Editor;
 
 public class HUDBuilder
 {
@@ -15,12 +16,15 @@ public class HUDBuilder
         var cameraRoot = canvas.transform.Find("CameraRoot");
         var buildParent = cameraRoot != null ? cameraRoot : canvas.transform;
 
-        var existing = buildParent.Find("HUDPanel");
-        if (existing != null) Object.DestroyImmediate(existing.gameObject);
+        int undoGroup = NovellaEditorUndo.Begin();
 
-        // HUDPanel
+        var existing = buildParent.Find("HUDPanel");
+        if (existing != null) NovellaEditorUndo.Destroy(existing.gameObject);
+
+        // HUDPanel（9つのボタンはこのルートごと消えるためUndo登録はルートのみ）
         var panel = new GameObject("HUDPanel");
         panel.transform.SetParent(buildParent, false);
+        NovellaEditorUndo.Created(panel);
         var panelRect = panel.AddComponent<RectTransform>();
         panelRect.anchorMin = new Vector2(1, 0);
         panelRect.anchorMax = new Vector2(1, 0);
@@ -80,9 +84,9 @@ public class HUDBuilder
         if (novellaManager != null)
         {
             var existingHud = novellaManager.GetComponent<HUDController>();
-            if (existingHud != null) Object.DestroyImmediate(existingHud);
+            if (existingHud != null) NovellaEditorUndo.Destroy(existingHud);
 
-            var hud = novellaManager.AddComponent<HUDController>();
+            var hud = NovellaEditorUndo.AddComponent<HUDController>(novellaManager);
             var so = new SerializedObject(hud);
 
             so.FindProperty("_hudPanel").objectReferenceValue = panel;
@@ -132,6 +136,8 @@ public class HUDBuilder
 
             so.ApplyModifiedProperties();
         }
+
+        NovellaEditorUndo.End(undoGroup, "Novella: Build HUD");
 
         UnityEditor.SceneManagement.EditorSceneManager.MarkSceneDirty(
             UnityEngine.SceneManagement.SceneManager.GetActiveScene());

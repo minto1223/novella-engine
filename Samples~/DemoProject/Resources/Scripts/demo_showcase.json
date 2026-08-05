@@ -1,5 +1,5 @@
 {
-  "title": "Novella Engine v1.0 - Full Command Showcase",
+  "title": "Novella Engine - Command Showcase",
   "commands": [
     {
       "type": "fade",
@@ -9,7 +9,7 @@
     },
     {
       "type": "show_title",
-      "text": "Novella Engine v1.0\nFull Command Showcase",
+      "text": "Novella Engine\nCommand Showcase",
       "duration": 3.0,
       "order": -1
     },
@@ -32,7 +32,7 @@
     },
     {
       "type": "say",
-      "text": "Novella Engine v1.0 -- 全43コマンドのショーケースデモへようこそ。",
+      "text": "Novella Engine -- 主要コマンドのショーケースデモへようこそ。",
       "order": -1
     },
     {
@@ -1060,8 +1060,34 @@
       "order": -1
     },
     {
+      "type": "play_se",
+      "clip": "和太鼓でドン",
+      "volume": 1.0,
+      "order": -1
+    },
+    {
       "type": "say",
       "text": "stop_se: 再生中のSEを即時停止",
+      "order": -1
+    },
+    {
+      "type": "play_se",
+      "clip": "和太鼓でドン",
+      "volume": 1.0,
+      "order": -1
+    },
+    {
+      "type": "wait",
+      "duration": 0.3,
+      "order": -1
+    },
+    {
+      "type": "stop_se",
+      "order": -1
+    },
+    {
+      "type": "say",
+      "text": "↑ 鳴らして0.3秒後に stop_se で切りました",
       "order": -1
     },
     {
@@ -1236,7 +1262,7 @@
     {
       "type": "say",
       "character": "桜",
-      "text": "Novella Engine v1.0 -- 全43コマンドのショーケースでした。",
+      "text": "Novella Engine -- 主要コマンドのショーケースでした。",
       "clip": "demo_023",
       "order": -1
     },
@@ -1266,7 +1292,7 @@
     },
     {
       "type": "say",
-      "text": "=== Novella Engine v1.0 ===\nコマンド一覧 (42種):\nsay / show_bg / show_char / hide_char / move_char\nwait / play_bgm / stop_bgm / fade_bgm / play_se / stop_se\nplay_voice / stop_voice / set_volume / set_flag / add_flag\nlabel / jump / jump_if / jump_unless / choice / next_script\nshake / flash / fade / show_title / zoom / pan / reset_camera\nken_burns / stop_ken_burns / input_text / play_particle / stop_particle\nset_language / play_movie / stop_movie / calc / set_mode / clear / end",
+      "text": "=== Novella Engine ===\nコマンド一覧 (41種):\nsay / show_bg / show_char / hide_char / move_char\nwait / play_bgm / stop_bgm / fade_bgm / play_se / stop_se\nplay_voice / stop_voice / set_volume / set_flag / add_flag\nlabel / jump / jump_if / jump_unless / choice / next_script\nshake / flash / fade / show_title / zoom / pan / reset_camera\nken_burns / stop_ken_burns / input_text / play_particle / stop_particle\nset_language / play_movie / stop_movie / calc / set_mode / clear / end",
       "order": -1
     },
     {

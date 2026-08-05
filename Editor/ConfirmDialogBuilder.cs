@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using Novella.UI;
+using Novella.Editor;
 
 /// <summary>
 /// Novella > Rebuild Confirm Dialog
@@ -19,7 +20,11 @@ public class ConfirmDialogBuilder
         var canvas = GameObject.Find("NovellaCanvas");
         if (canvas == null) { Debug.LogError("[Novella] NovellaCanvas が見つかりません。"); return; }
 
+        int undoGroup = NovellaEditorUndo.Begin();
+
         EnsureExists(canvas.transform);
+
+        NovellaEditorUndo.End(undoGroup, "Novella: Rebuild Confirm Dialog");
 
         UnityEditor.SceneManagement.EditorSceneManager.MarkSceneDirty(
             UnityEngine.SceneManagement.SceneManager.GetActiveScene());
@@ -67,11 +72,13 @@ public class ConfirmDialogBuilder
         var font = AssetDatabase.LoadAssetAtPath<TMP_FontAsset>(FontPath);
 
         if (existingPanel != null)
-            Object.DestroyImmediate(existingPanel.gameObject);
+            NovellaEditorUndo.Destroy(existingPanel.gameObject);
 
         // --- 全画面オーバーレイ ---
+        // 子はこのルートごと消えるため、Undo登録はルート1つで足りる
         var panelGO = new GameObject("ConfirmDialog");
         panelGO.transform.SetParent(canvasTransform, false);
+        NovellaEditorUndo.Created(panelGO);
         var panelRect = panelGO.AddComponent<RectTransform>();
         panelRect.anchorMin = Vector2.zero;
         panelRect.anchorMax = Vector2.one;
@@ -120,9 +127,8 @@ public class ConfirmDialogBuilder
         panelGO.SetActive(false);
 
         // --- コンポーネント配線 ---
-        var controller = novellaManager.GetComponent<ConfirmDialogController>();
-        if (controller == null)
-            controller = novellaManager.AddComponent<ConfirmDialogController>();
+        // 載せ先は既存GameObject（NovellaManager等）なのでUndo経由で追加する
+        var controller = NovellaEditorUndo.EnsureComponent<ConfirmDialogController>(novellaManager);
 
         var so = new SerializedObject(controller);
         so.FindProperty("_panel").objectReferenceValue = panelGO;

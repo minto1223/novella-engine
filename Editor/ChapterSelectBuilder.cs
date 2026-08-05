@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using Novella.UI;
+using Novella.Editor;
 
 /// <summary>
 /// Novella > Build Chapter Select
@@ -21,12 +22,15 @@ public class ChapterSelectBuilder
 
         var font = AssetDatabase.LoadAssetAtPath<TMP_FontAsset>(FontPath);
 
+        int undoGroup = NovellaEditorUndo.Begin();
+
         // --- ChapterSelectPanel ---
         var existingPanel = canvas.transform.Find("ChapterSelectPanel");
-        if (existingPanel != null) Object.DestroyImmediate(existingPanel.gameObject);
+        if (existingPanel != null) NovellaEditorUndo.Destroy(existingPanel.gameObject);
 
         var panelGO = new GameObject("ChapterSelectPanel");
         panelGO.transform.SetParent(canvas.transform, false);
+        NovellaEditorUndo.Created(panelGO);
         var panelRect = panelGO.AddComponent<RectTransform>();
         panelRect.anchorMin = Vector2.zero;
         panelRect.anchorMax = Vector2.one;
@@ -111,9 +115,7 @@ public class ChapterSelectBuilder
         var titleManager = GameObject.Find("TitleManager");
         if (titleManager != null)
         {
-            var chapterUI = titleManager.GetComponent<ChapterSelectUIController>();
-            if (chapterUI == null)
-                chapterUI = titleManager.AddComponent<ChapterSelectUIController>();
+            var chapterUI = NovellaEditorUndo.EnsureComponent<ChapterSelectUIController>(titleManager);
 
             var so = new SerializedObject(chapterUI);
             so.FindProperty("_panel").objectReferenceValue = panelGO;
@@ -130,13 +132,14 @@ public class ChapterSelectBuilder
 
         // --- チャプター選択ボタンを TitleCanvas に追加 ---
         var existingBtn = canvas.transform.Find("ChapterSelectButton");
-        if (existingBtn != null) Object.DestroyImmediate(existingBtn.gameObject);
+        if (existingBtn != null) NovellaEditorUndo.Destroy(existingBtn.gameObject);
 
         var recollectionBtn = canvas.transform.Find("RecollectionButton");
         var quitBtn = canvas.transform.Find("QuitButton");
 
         var csBtnGO = new GameObject("ChapterSelectButton");
         csBtnGO.transform.SetParent(canvas.transform, false);
+        NovellaEditorUndo.Created(csBtnGO);
 
         var csBtnRect = csBtnGO.AddComponent<RectTransform>();
         if (recollectionBtn != null)
@@ -187,6 +190,8 @@ public class ChapterSelectBuilder
             tmSO.FindProperty("_chapterSelectButton").objectReferenceValue = csBtn;
             tmSO.ApplyModifiedProperties();
         }
+
+        NovellaEditorUndo.End(undoGroup, "Novella: Build Chapter Select");
 
         UnityEditor.SceneManagement.EditorSceneManager.MarkSceneDirty(
             UnityEngine.SceneManagement.SceneManager.GetActiveScene());

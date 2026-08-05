@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using Novella.UI;
+using Novella.Editor;
 
 /// <summary>
 /// Novella > Rebuild Settings Panel
@@ -28,6 +29,11 @@ public class SettingsPanelBuilder
 
         var font = AssetDatabase.LoadAssetAtPath<TMP_FontAsset>(FontPath);
 
+        int undoGroup = NovellaEditorUndo.Begin();
+
+        // 既存のSettingsCardを直接書き換える（レイアウト値・子の総入れ替え）ので階層ごと記録する
+        NovellaEditorUndo.RecordHierarchy(cardTr.gameObject, "Novella: Rebuild Settings Panel");
+
         // SettingsCard の RectTransform を全画面に設定
         var cardRect = cardTr.GetComponent<RectTransform>();
         cardRect.anchorMin = Vector2.zero;
@@ -37,8 +43,7 @@ public class SettingsPanelBuilder
         cardRect.offsetMax = Vector2.zero;
 
         // SettingsCard の VLG を正しく設定
-        var cardVLG = cardTr.GetComponent<VerticalLayoutGroup>();
-        if (cardVLG == null) cardVLG = cardTr.gameObject.AddComponent<VerticalLayoutGroup>();
+        var cardVLG = NovellaEditorUndo.EnsureComponent<VerticalLayoutGroup>(cardTr.gameObject);
         cardVLG.padding = new RectOffset(0, 0, 0, 0);
         cardVLG.spacing = 0;
         cardVLG.childControlWidth = true;
@@ -50,19 +55,22 @@ public class SettingsPanelBuilder
         var toDelete = new System.Collections.Generic.List<GameObject>();
         foreach (Transform child in cardTr)
             toDelete.Add(child.gameObject);
-        toDelete.ForEach(Object.DestroyImmediate);
+        toDelete.ForEach(go => NovellaEditorUndo.Destroy(go));
 
         // ConfirmDialogを確保（設定リセット確認用、UIパネルはCameraRootの外＝Canvas直下に置く）
         var confirmDialog = ConfirmDialogBuilder.EnsureExists(canvas.transform);
 
         // --- タイトル ---
-        var titleGO = MakeTMP(cardTr.gameObject, "SettingsTitle", "設定", 42, Color.white, TextAlignmentOptions.Center, font);
+        // SettingsCard直下に新規生成する塊は、それぞれルートとしてUndo登録する
+        var titleGO = NovellaEditorUndo.Created(
+            MakeTMP(cardTr.gameObject, "SettingsTitle", "設定", 42, Color.white, TextAlignmentOptions.Center, font));
         var titleLE = titleGO.AddComponent<LayoutElement>();
         titleLE.preferredHeight = 80;
 
         // --- タブボタン行 ---
         var tabRow = new GameObject("TabRow");
         tabRow.transform.SetParent(cardTr, false);
+        NovellaEditorUndo.Created(tabRow);
         var tabRowLE = tabRow.AddComponent<LayoutElement>();
         tabRowLE.preferredHeight = 60;
         tabRowLE.flexibleHeight = 0;
@@ -79,6 +87,7 @@ public class SettingsPanelBuilder
 
         // --- タブパネル: ゲーム設定 ---
         var (gameTabPanelGO, gameTabContent) = BuildTabContent(cardTr, "GameTabPanel");
+        NovellaEditorUndo.Created(gameTabPanelGO);
 
         MakeSectionHeader(gameTabContent, "テキスト", font);
         var textSpeedSlider   = BuildSliderRow(gameTabContent, "TextSpeedRow",   "テキスト速度", font);
@@ -94,6 +103,7 @@ public class SettingsPanelBuilder
 
         // --- タブパネル: サウンド設定 ---
         var (soundTabPanelGO, soundTabContent) = BuildTabContent(cardTr, "SoundTabPanel");
+        NovellaEditorUndo.Created(soundTabPanelGO);
 
         MakeSectionHeader(soundTabContent, "サウンド", font);
         var bgmVolumeSlider   = BuildSliderRow(soundTabContent, "BgmVolumeRow",  "BGM音量", font);
@@ -106,6 +116,7 @@ public class SettingsPanelBuilder
         // --- ボタン行 ---
         var btnRow = new GameObject("ButtonRow");
         btnRow.transform.SetParent(cardTr, false);
+        NovellaEditorUndo.Created(btnRow);
         var btnRowLE = btnRow.AddComponent<LayoutElement>();
         btnRowLE.preferredHeight = 60;
         btnRowLE.flexibleHeight = 0;
@@ -158,6 +169,8 @@ public class SettingsPanelBuilder
             so.FindProperty("_confirmDialog").objectReferenceValue    = confirmDialog;
             so.ApplyModifiedProperties();
         }
+
+        NovellaEditorUndo.End(undoGroup, "Novella: Rebuild Settings Panel");
 
         UnityEditor.SceneManagement.EditorSceneManager.MarkSceneDirty(
             UnityEngine.SceneManagement.SceneManager.GetActiveScene());

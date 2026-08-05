@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using Novella.UI;
+using Novella.Editor;
 
 /// <summary>
 /// Novella > Build CG Gallery
@@ -21,12 +22,15 @@ public class CGGalleryBuilder
 
         var font = AssetDatabase.LoadAssetAtPath<TMP_FontAsset>(FontPath);
 
+        int undoGroup = NovellaEditorUndo.Begin();
+
         // --- GalleryPanel ---
         var existingPanel = canvas.transform.Find("GalleryPanel");
-        if (existingPanel != null) Object.DestroyImmediate(existingPanel.gameObject);
+        if (existingPanel != null) NovellaEditorUndo.Destroy(existingPanel.gameObject);
 
         var panelGO = new GameObject("GalleryPanel");
         panelGO.transform.SetParent(canvas.transform, false);
+        NovellaEditorUndo.Created(panelGO);
         var panelRect = panelGO.AddComponent<RectTransform>();
         panelRect.anchorMin = Vector2.zero;
         panelRect.anchorMax = Vector2.one;
@@ -105,8 +109,13 @@ public class CGGalleryBuilder
         closeTxtRect.sizeDelta = Vector2.zero;
 
         // --- FullViewPanel (拡大表示用) ---
+        // GalleryPanelの兄弟として作るため、再実行時は自前で消さないと重複する
+        var existingFullView = canvas.transform.Find("FullViewPanel");
+        if (existingFullView != null) NovellaEditorUndo.Destroy(existingFullView.gameObject);
+
         var fullViewGO = new GameObject("FullViewPanel");
         fullViewGO.transform.SetParent(panelGO.transform.parent, false);
+        NovellaEditorUndo.Created(fullViewGO);
         var fvRect = fullViewGO.AddComponent<RectTransform>();
         fvRect.anchorMin = Vector2.zero;
         fvRect.anchorMax = Vector2.one;
@@ -149,9 +158,7 @@ public class CGGalleryBuilder
         var titleManager = GameObject.Find("TitleManager");
         if (titleManager != null)
         {
-            var galleryUI = titleManager.GetComponent<CGGalleryUIController>();
-            if (galleryUI == null)
-                galleryUI = titleManager.AddComponent<CGGalleryUIController>();
+            var galleryUI = NovellaEditorUndo.EnsureComponent<CGGalleryUIController>(titleManager);
 
             var so = new SerializedObject(galleryUI);
             so.FindProperty("_panel").objectReferenceValue = panelGO;
@@ -178,6 +185,7 @@ public class CGGalleryBuilder
 
             var galleryBtnGO = new GameObject("GalleryButton");
             galleryBtnGO.transform.SetParent(canvas.transform, false);
+            NovellaEditorUndo.Created(galleryBtnGO);
 
             var gbRect = galleryBtnGO.AddComponent<RectTransform>();
             if (quitBtn != null)
@@ -219,6 +227,8 @@ public class CGGalleryBuilder
                 tmSO.ApplyModifiedProperties();
             }
         }
+
+        NovellaEditorUndo.End(undoGroup, "Novella: Build CG Gallery");
 
         UnityEditor.SceneManagement.EditorSceneManager.MarkSceneDirty(
             UnityEngine.SceneManagement.SceneManager.GetActiveScene());

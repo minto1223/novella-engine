@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using Novella.UI;
+using Novella.Editor;
 
 /// <summary>
 /// Novella > Patch Menu: Add Title Button
@@ -26,9 +27,11 @@ public class MenuPanelPatcher
 
         var font = AssetDatabase.LoadAssetAtPath<TMP_FontAsset>(FontPath);
 
+        int undoGroup = NovellaEditorUndo.Begin();
+
         // 既存のタイトルボタンがあれば削除
         var existing = menuCard.transform.Find("MenuTitleButton");
-        if (existing != null) Object.DestroyImmediate(existing.gameObject);
+        if (existing != null) NovellaEditorUndo.Destroy(existing.gameObject);
 
         // 既存ボタンのサイズを参考にする
         var refBtn = menuCard.transform.Find("MenuSaveButton");
@@ -39,9 +42,10 @@ public class MenuPanelPatcher
             if (refLE != null) btnHeight = refLE.preferredHeight;
         }
 
-        // ボタン作成
+        // ボタン作成（子のTextはこのルートごと消えるためUndo登録はルートのみ）
         var btnGO = new GameObject("MenuTitleButton");
         btnGO.transform.SetParent(menuCard.transform, false);
+        NovellaEditorUndo.Created(btnGO);
 
         var rect = btnGO.AddComponent<RectTransform>();
         var img = btnGO.AddComponent<Image>();
@@ -86,6 +90,8 @@ public class MenuPanelPatcher
                 so.ApplyModifiedProperties();
             }
         }
+
+        NovellaEditorUndo.End(undoGroup, "Novella: Patch Menu Title Button");
 
         UnityEditor.SceneManagement.EditorSceneManager.MarkSceneDirty(
             UnityEngine.SceneManagement.SceneManager.GetActiveScene());

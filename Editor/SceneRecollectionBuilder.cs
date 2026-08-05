@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using Novella.UI;
+using Novella.Editor;
 
 /// <summary>
 /// Novella > Build Scene Recollection
@@ -21,12 +22,15 @@ public class SceneRecollectionBuilder
 
         var font = AssetDatabase.LoadAssetAtPath<TMP_FontAsset>(FontPath);
 
+        int undoGroup = NovellaEditorUndo.Begin();
+
         // --- RecollectionPanel ---
         var existingPanel = canvas.transform.Find("RecollectionPanel");
-        if (existingPanel != null) Object.DestroyImmediate(existingPanel.gameObject);
+        if (existingPanel != null) NovellaEditorUndo.Destroy(existingPanel.gameObject);
 
         var panelGO = new GameObject("RecollectionPanel");
         panelGO.transform.SetParent(canvas.transform, false);
+        NovellaEditorUndo.Created(panelGO);
         var panelRect = panelGO.AddComponent<RectTransform>();
         panelRect.anchorMin = Vector2.zero;
         panelRect.anchorMax = Vector2.one;
@@ -111,9 +115,7 @@ public class SceneRecollectionBuilder
         var titleManager = GameObject.Find("TitleManager");
         if (titleManager != null)
         {
-            var recollUI = titleManager.GetComponent<SceneRecollectionUIController>();
-            if (recollUI == null)
-                recollUI = titleManager.AddComponent<SceneRecollectionUIController>();
+            var recollUI = NovellaEditorUndo.EnsureComponent<SceneRecollectionUIController>(titleManager);
 
             var so = new SerializedObject(recollUI);
             so.FindProperty("_panel").objectReferenceValue = panelGO;
@@ -130,13 +132,14 @@ public class SceneRecollectionBuilder
 
         // --- 回想ボタンを TitleCanvas に追加 ---
         var existingBtn = canvas.transform.Find("RecollectionButton");
-        if (existingBtn != null) Object.DestroyImmediate(existingBtn.gameObject);
+        if (existingBtn != null) NovellaEditorUndo.Destroy(existingBtn.gameObject);
 
         var galleryBtn = canvas.transform.Find("GalleryButton");
         var quitBtn = canvas.transform.Find("QuitButton");
 
         var recBtnGO = new GameObject("RecollectionButton");
         recBtnGO.transform.SetParent(canvas.transform, false);
+        NovellaEditorUndo.Created(recBtnGO);
 
         var rbRect = recBtnGO.AddComponent<RectTransform>();
         // GalleryButtonの下、QuitButtonの上に配置
@@ -188,6 +191,8 @@ public class SceneRecollectionBuilder
             tmSO.FindProperty("_recollectionButton").objectReferenceValue = rbBtn;
             tmSO.ApplyModifiedProperties();
         }
+
+        NovellaEditorUndo.End(undoGroup, "Novella: Build Scene Recollection");
 
         UnityEditor.SceneManagement.EditorSceneManager.MarkSceneDirty(
             UnityEngine.SceneManagement.SceneManager.GetActiveScene());

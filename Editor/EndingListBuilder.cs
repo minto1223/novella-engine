@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using Novella.UI;
+using Novella.Editor;
 
 public class EndingListBuilder
 {
@@ -17,12 +18,15 @@ public class EndingListBuilder
 
         var font = AssetDatabase.LoadAssetAtPath<TMP_FontAsset>(FontPath);
 
+        int undoGroup = NovellaEditorUndo.Begin();
+
         // --- EndingListPanel ---
         var existing = canvas.transform.Find("EndingListPanel");
-        if (existing != null) Object.DestroyImmediate(existing.gameObject);
+        if (existing != null) NovellaEditorUndo.Destroy(existing.gameObject);
 
         var panelGO = new GameObject("EndingListPanel");
         panelGO.transform.SetParent(canvas.transform, false);
+        NovellaEditorUndo.Created(panelGO);
         var panelRect = panelGO.AddComponent<RectTransform>();
         panelRect.anchorMin = Vector2.zero;
         panelRect.anchorMax = Vector2.one;
@@ -111,9 +115,7 @@ public class EndingListBuilder
         var titleManager = GameObject.Find("TitleManager");
         if (titleManager == null) titleManager = GameObject.Find("TitleCanvas");
 
-        EndingListUIController controller = titleManager.GetComponent<EndingListUIController>();
-        if (controller == null)
-            controller = titleManager.AddComponent<EndingListUIController>();
+        var controller = NovellaEditorUndo.EnsureComponent<EndingListUIController>(titleManager);
 
         var so = new SerializedObject(controller);
         so.FindProperty("_panel").objectReferenceValue = panelGO;
@@ -130,10 +132,14 @@ public class EndingListBuilder
             var tmSO = new SerializedObject(tm);
             tmSO.FindProperty("_endingListUI").objectReferenceValue = controller;
 
-            // Endings ボタンを追加
+            // Endings ボタンを追加（再実行時に重複しないよう既存を先に消す）
             var btnContainer = canvas.transform.Find("ButtonContainer") ?? canvas.transform;
+            var existingEndingBtn = btnContainer.Find("EndingButton");
+            if (existingEndingBtn != null) NovellaEditorUndo.Destroy(existingEndingBtn.gameObject);
+
             var endingBtnGO = new GameObject("EndingButton");
             endingBtnGO.transform.SetParent(btnContainer, false);
+            NovellaEditorUndo.Created(endingBtnGO);
             var endingBtnRect = endingBtnGO.AddComponent<RectTransform>();
             endingBtnRect.sizeDelta = new Vector2(300, 60);
 
@@ -150,6 +156,8 @@ public class EndingListBuilder
             tmSO.FindProperty("_endingListButton").objectReferenceValue = endingBtn;
             tmSO.ApplyModifiedProperties();
         }
+
+        NovellaEditorUndo.End(undoGroup, "Novella: Build Ending List");
 
         UnityEditor.SceneManagement.EditorSceneManager.MarkSceneDirty(
             UnityEngine.SceneManagement.SceneManager.GetActiveScene());

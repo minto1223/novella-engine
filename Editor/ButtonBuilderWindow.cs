@@ -334,6 +334,8 @@ public class ButtonBuilderWindow : EditorWindow
     // =========================================================
     private void RemoveButton(ButtonEntry entry)
     {
+        int undoGroup = Novella.Editor.NovellaEditorUndo.Begin();
+
         // コントローラーの参照をクリア
         if (_tab == 0)
         {
@@ -362,9 +364,14 @@ public class ButtonBuilderWindow : EditorWindow
         if (entry.button != null)
         {
             string name = entry.button.name;
-            DestroyImmediate(entry.button.gameObject);
+            Novella.Editor.NovellaEditorUndo.Destroy(entry.button.gameObject);
+            Novella.Editor.NovellaEditorUndo.End(undoGroup, $"Novella: Remove {name}");
             EditorSceneManager.MarkSceneDirty(EditorSceneManager.GetActiveScene());
             Debug.Log($"[Novella] {name} を削除しました。");
+        }
+        else
+        {
+            Novella.Editor.NovellaEditorUndo.End(undoGroup, "Novella: Remove Button");
         }
     }
 
@@ -381,12 +388,16 @@ public class ButtonBuilderWindow : EditorWindow
 
         var font = AssetDatabase.LoadAssetAtPath<TMP_FontAsset>(FontPath);
 
+        int undoGroup = Novella.Editor.NovellaEditorUndo.Begin();
+
         string btnName = funcName.Replace(" ", "") + "Button";
         var existing = parent.Find(btnName);
-        if (existing != null) DestroyImmediate(existing.gameObject);
+        if (existing != null) Novella.Editor.NovellaEditorUndo.Destroy(existing.gameObject);
 
+        // 子のTextはこのルートごと消えるためUndo登録はルートのみ
         var go = new GameObject(btnName);
         go.transform.SetParent(parent, false);
+        Novella.Editor.NovellaEditorUndo.Created(go);
 
         var rt = go.AddComponent<RectTransform>();
         rt.sizeDelta = GetReferenceSize(parent);
@@ -446,6 +457,8 @@ public class ButtonBuilderWindow : EditorWindow
         }
 
         WireButton(btn, funcName);
+
+        Novella.Editor.NovellaEditorUndo.End(undoGroup, $"Novella: Add {btnName}");
 
         EditorUtility.SetDirty(parent.gameObject);
         EditorSceneManager.MarkSceneDirty(parent.gameObject.scene);
