@@ -1,5 +1,10 @@
 # Changelog
 
+## [1.13.1] - 2026-08-05
+
+### Fixed
+- **`Runtime/Fonts.meta` was committed with an empty `guid:` field** and had been that way since it was added on 2026-07-11, so every release from 1.3.1 onward shipped it. Unity reports `The .meta file Assets/.../Fonts.meta does not have a valid GUID and its corresponding Asset file will be ignored` on import and on every build. The font asset inside carries its own valid meta, so `NotoSansJP SDF` still imported and text still rendered — the practical effect was the folder not being tracked as an asset plus a warning on each build — but a malformed meta in a read-only package directory is not something a user can clean up themselves. The folder now has a valid GUID.
+
 ## [1.13.0] - 2026-08-05
 
 ### Fixed
