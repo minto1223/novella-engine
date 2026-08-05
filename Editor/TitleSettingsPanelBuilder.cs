@@ -12,7 +12,6 @@ using Novella.Editor;
 /// </summary>
 public class TitleSettingsPanelBuilder
 {
-    private const string FontPath = "Assets/font_1_kokugl_1.asset";
 
     [MenuItem("Novella/Rebuild Title Settings Panel")]
     public static void Build()
@@ -23,7 +22,7 @@ public class TitleSettingsPanelBuilder
         var titleManager = GameObject.Find("TitleManager");
         if (titleManager == null) { Debug.LogError("[Novella] TitleManager が見つかりません。"); return; }
 
-        var font = AssetDatabase.LoadAssetAtPath<TMP_FontAsset>(FontPath);
+        var font = NovellaEditorFont.Load();
 
         int undoGroup = NovellaEditorUndo.Begin();
 

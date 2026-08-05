@@ -1,5 +1,6 @@
 #if UNITY_EDITOR
 using UnityEditor;
+using UnityEditor.Build;
 using UnityEngine;
 
 namespace Novella.Editor
@@ -9,7 +10,6 @@ namespace Novella.Editor
         [MenuItem("Novella/Configure Android Settings")]
         public static void ConfigureAndroid()
         {
-            PlayerSettings.companyName = PlayerSettings.companyName;
             PlayerSettings.defaultInterfaceOrientation = UIOrientation.LandscapeLeft;
             PlayerSettings.allowedAutorotateToLandscapeLeft = true;
             PlayerSettings.allowedAutorotateToLandscapeRight = true;
@@ -18,7 +18,7 @@ namespace Novella.Editor
 
             PlayerSettings.Android.minSdkVersion = AndroidSdkVersions.AndroidApiLevel24;
             PlayerSettings.Android.targetSdkVersion = (AndroidSdkVersions)33;
-            PlayerSettings.SetScriptingBackend(BuildTargetGroup.Android, ScriptingImplementation.IL2CPP);
+            PlayerSettings.SetScriptingBackend(NamedBuildTarget.Android, ScriptingImplementation.IL2CPP);
             PlayerSettings.Android.targetArchitectures = AndroidArchitecture.ARM64;
 
             Debug.Log("[Novella] Android settings configured: Landscape, IL2CPP, ARM64, API 24+");
@@ -55,7 +55,7 @@ namespace Novella.Editor
             PlayerSettings.allowedAutorotateToPortrait = false;
             PlayerSettings.allowedAutorotateToPortraitUpsideDown = false;
 
-            PlayerSettings.SetScriptingBackend(BuildTargetGroup.iOS, ScriptingImplementation.IL2CPP);
+            PlayerSettings.SetScriptingBackend(NamedBuildTarget.iOS, ScriptingImplementation.IL2CPP);
             PlayerSettings.iOS.targetDevice = iOSTargetDevice.iPhoneAndiPad;
 
             Debug.Log("[Novella] iOS settings configured: Landscape, IL2CPP, iPhone+iPad");

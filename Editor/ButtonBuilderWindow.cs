@@ -81,7 +81,6 @@ public class ButtonBuilderWindow : EditorWindow
     // ---- 削除モード パラメータ ----
     private int _removeIndex = 0;
 
-    private const string FontPath = "Assets/font_1_kokugl_1.asset";
 
     [MenuItem("Novella/Button Builder")]
     public static void Open()
@@ -386,7 +385,7 @@ public class ButtonBuilderWindow : EditorWindow
         Transform parent = ResolveParent();
         if (parent == null) return;
 
-        var font = AssetDatabase.LoadAssetAtPath<TMP_FontAsset>(FontPath);
+        var font = Novella.Editor.NovellaEditorFont.Load();
 
         int undoGroup = Novella.Editor.NovellaEditorUndo.Begin();
 

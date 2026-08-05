@@ -14,7 +14,6 @@ using Novella.Editor;
 public class SavePanelBuilder
 {
     private const string PrefabPath   = "Assets/Novella/Prefabs/SaveSlot.prefab";
-    private const string FontPath     = "Assets/font_1_kokugl_1.asset";
 
     // SaveCard の VLG padding に合わせたグリッドセルサイズ
     // 1920 - 40(L) - 40(R) = 1840px、2列 spacing16 → (1840-16)/2 = 912
@@ -48,7 +47,7 @@ public class SavePanelBuilder
     // =========================================================
     private static GameObject BuildSaveSlotPrefab()
     {
-        var font = AssetDatabase.LoadAssetAtPath<TMP_FontAsset>(FontPath);
+        var font = NovellaEditorFont.Load();
 
         var slot = new GameObject("SaveSlot");
         slot.AddComponent<RectTransform>();

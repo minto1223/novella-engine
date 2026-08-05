@@ -14,7 +14,6 @@ using Novella.Editor;
 /// </summary>
 public class TitleResetButtonPatcher
 {
-    private const string FontPath = "Assets/font_1_kokugl_1.asset";
 
     [MenuItem("Novella/Patch Title: Add Reset Button")]
     public static void Patch()
@@ -33,7 +32,7 @@ public class TitleResetButtonPatcher
             return;
         }
 
-        var font = AssetDatabase.LoadAssetAtPath<TMP_FontAsset>(FontPath);
+        var font = NovellaEditorFont.Load();
 
         int undoGroup = NovellaEditorUndo.Begin();
 

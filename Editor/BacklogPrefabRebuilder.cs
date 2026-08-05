@@ -208,7 +208,7 @@ namespace Novella.Editor
 
             // フォント取得
             TMP_FontAsset font = null;
-            var fontAsset = AssetDatabase.LoadAssetAtPath<TMP_FontAsset>("Assets/font_1_kokugl_1.asset");
+            var fontAsset = NovellaEditorFont.Load();
             if (fontAsset != null) font = fontAsset;
 
             // BacklogPanelにVLGがなければ追加（SearchBar + ScrollView を縦に並べる）

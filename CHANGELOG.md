@@ -1,5 +1,21 @@
 # Changelog
 
+## [1.13.0] - 2026-08-05
+
+### Fixed
+- **Every builder tool produced tofu text in an installed package.** All fourteen editor tools loaded their font from the hard-coded path `Assets/font_1_kokugl_1.asset` — a font that has never been part of this package and only ever existed in the development project. In any project that installed Novella through UPM the lookup returned null, TMP fell back to its built-in Latin-only font, and every label the builders generated rendered as boxes. 1.8.2 fixed the font references baked into the shipped prefabs and scenes, but the text these tools *create at run time* was never covered. Fonts are now resolved through `NovellaEditorFont`, which tries the project path first and then locates the bundled `NotoSansJP SDF` by name, so it works whether the package sits under `Assets/` or `Packages/`.
+- **`Add Save Panel Paging` never applied a font at all.** It looked under `Assets/TextMesh Pro/Resources/Fonts & Materials/`, where the font was not stored, so the load silently returned null on every run regardless of how the project was set up.
+- **Saving in the Script Editor ran an asset import in the middle of IMGUI rendering.** `SaveScript()` is invoked straight from an `OnGUI` button and called `AssetDatabase.Refresh()` on the spot, which can trip Unity's internal `kDontSaveInEditor` assertion. The reimport is now deferred with `EditorApplication.delayCall`, and it imports only the file that was written instead of refreshing the entire database — which also removes the full asset scan that happened on every save.
+- `Configure Android Settings` / `Configure iOS Settings` used the obsolete `PlayerSettings.SetScriptingBackend(BuildTargetGroup, …)` overload, which warns on Unity 6 and is scheduled for removal. Both now pass `NamedBuildTarget`.
+
+### Changed
+- **The development project and the package now use the same font.** The engine was developed against `font_1_kokugl_1` while the package shipped `NotoSansJP SDF`, so what the author saw in the editor was never quite what an installed project rendered — the "line height differs by roughly 1.45x, overflow unverified" caveat carried since 1.8.2 came directly out of that split. Both sides are on Noto now and the caveat is resolved.
+- Material instances baked into the sample scenes were still named `font_1_kokugl_1 Material (Instance)`. The references had already been repointed at Noto, so this was cosmetic, but the name is corrected.
+- The demo scenario drops six commands: two "you should not get here" jump markers, a closing line, the command listing, a fade and a credit line.
+
+### Removed
+- **`Tools~/fix-sample-fonts.ps1`.** It existed to rewrite kokugl font references into Noto whenever scenes were synced from the development project. With both projects on the same font asset and the same GUID there is nothing left to rewrite, and keeping it would document a workflow step that no longer applies.
+
 ## [1.12.0] - 2026-08-05
 
 ### Fixed

@@ -12,7 +12,6 @@ using Novella.Editor;
 /// </summary>
 public class MenuPanelPatcher
 {
-    private const string FontPath = "Assets/font_1_kokugl_1.asset";
 
     [MenuItem("Novella/Patch Menu: Add Title Button")]
     public static void Patch()
@@ -25,7 +24,7 @@ public class MenuPanelPatcher
             return;
         }
 
-        var font = AssetDatabase.LoadAssetAtPath<TMP_FontAsset>(FontPath);
+        var font = NovellaEditorFont.Load();
 
         int undoGroup = NovellaEditorUndo.Begin();
 

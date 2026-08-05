@@ -12,7 +12,6 @@ using Novella.Editor;
 /// </summary>
 public class SettingsPanelBuilder
 {
-    private const string FontPath = "Assets/font_1_kokugl_1.asset";
 
     [MenuItem("Novella/Rebuild Settings Panel")]
     public static void Build()
@@ -27,7 +26,7 @@ public class SettingsPanelBuilder
         var cardTr = panelTr.Find("SettingsCard");
         if (cardTr == null) { Debug.LogError("[Novella] SettingsCard が見つかりません。"); return; }
 
-        var font = AssetDatabase.LoadAssetAtPath<TMP_FontAsset>(FontPath);
+        var font = NovellaEditorFont.Load();
 
         int undoGroup = NovellaEditorUndo.Begin();
 

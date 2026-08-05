@@ -574,6 +574,31 @@ public class ScriptEditorWindow : EditorWindow
         }
     }
 
+    /// <summary>
+    /// 書き出したファイルのインポートを、GUIの描画が終わってから行う。
+    ///
+    /// 保存はOnGUI内のボタンから呼ばれるため、その場で AssetDatabase.Refresh() を叩くと
+    /// IMGUIの描画途中でアセットインポートが走り、Unity内部で
+    /// 「Assertion failed on expression: '!(o->TestHideFlag(Object::kDontSaveInEditor) ...'」
+    /// が出る。EditorApplication.delayCall に逃がせば描画完了後に実行される。
+    ///
+    /// あわせて全体 Refresh() ではなく書き換えた1ファイルだけを ImportAsset する
+    /// （全アセット走査は保存のたびに数秒止まる原因になる）。
+    /// </summary>
+    private static void ReimportAfterGUI(string absoluteOrProjectPath)
+    {
+        string p = absoluteOrProjectPath.Replace('\\', '/');
+        int idx = p.IndexOf("/Assets/", System.StringComparison.Ordinal);
+        if (idx >= 0) p = p.Substring(idx + 1);           // 絶対パス → "Assets/..." に正規化
+        else if (!p.StartsWith("Assets/", System.StringComparison.Ordinal)) p = null;
+
+        EditorApplication.delayCall += () =>
+        {
+            if (p != null) AssetDatabase.ImportAsset(p, ImportAssetOptions.ForceUpdate);
+            else AssetDatabase.Refresh();
+        };
+    }
+
     private void SaveScript()
     {
         if (_script == null || _selectedScript < 0) return;
@@ -585,9 +610,10 @@ public class ScriptEditorWindow : EditorWindow
             DefaultValueHandling = DefaultValueHandling.Ignore
         };
         string json = JsonConvert.SerializeObject(_script, settings);
-        File.WriteAllText(_scriptPaths[_selectedScript], json);
+        string savedPath = _scriptPaths[_selectedScript];
+        File.WriteAllText(savedPath, json);
         _dirty = false;
-        AssetDatabase.Refresh();
+        ReimportAfterGUI(savedPath);
         Debug.Log($"[Novella] Saved: {_scriptNames[_selectedScript]}");
     }
 
@@ -614,7 +640,7 @@ public class ScriptEditorWindow : EditorWindow
             DefaultValueHandling = DefaultValueHandling.Ignore
         };
         File.WriteAllText(path, JsonConvert.SerializeObject(newScript, settings));
-        AssetDatabase.Refresh();
+        ReimportAfterGUI(path);
         RefreshScriptList();
 
         int idx = _scriptPaths.IndexOf(path);

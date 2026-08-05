@@ -953,11 +953,6 @@
       "order": -1
     },
     {
-      "type": "say",
-      "text": "(ここには来ないはず)",
-      "order": -1
-    },
-    {
       "type": "jump",
       "target": "after_jump_test",
       "order": -1
@@ -1002,11 +997,6 @@
     {
       "type": "label",
       "label": "unless_skipped",
-      "order": -1
-    },
-    {
-      "type": "say",
-      "text": "(ここには来ないはず)",
       "order": -1
     },
     {
@@ -1267,13 +1257,6 @@
       "order": -1
     },
     {
-      "type": "say",
-      "character": "桜",
-      "text": "このエンジンで素敵な{rb:物語,ものがたり}を作ってくださいね！",
-      "clip": "demo_024",
-      "order": -1
-    },
-    {
       "type": "hide_char",
       "character": "sakura",
       "value": "slide_down",
@@ -1288,22 +1271,6 @@
       "type": "fade",
       "duration": 2.0,
       "value": "out",
-      "order": -1
-    },
-    {
-      "type": "say",
-      "text": "=== Novella Engine ===\nコマンド一覧 (41種):\nsay / show_bg / show_char / hide_char / move_char\nwait / play_bgm / stop_bgm / fade_bgm / play_se / stop_se\nplay_voice / stop_voice / set_volume / set_flag / add_flag\nlabel / jump / jump_if / jump_unless / choice / next_script\nshake / flash / fade / show_title / zoom / pan / reset_camera\nken_burns / stop_ken_burns / input_text / play_particle / stop_particle\nset_language / play_movie / stop_movie / calc / set_mode / clear / end",
-      "order": -1
-    },
-    {
-      "type": "fade",
-      "duration": 0.5,
-      "value": "in",
-      "order": -1
-    },
-    {
-      "type": "say",
-      "text": "Credit: 立ち絵素材 - わたおきば (wataokiba.net)",
       "order": -1
     },
     {

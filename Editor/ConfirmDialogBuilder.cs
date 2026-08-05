@@ -12,7 +12,6 @@ using Novella.Editor;
 /// </summary>
 public class ConfirmDialogBuilder
 {
-    private const string FontPath = "Assets/font_1_kokugl_1.asset";
 
     [MenuItem("Novella/Rebuild Confirm Dialog")]
     public static void Build()
@@ -69,7 +68,7 @@ public class ConfirmDialogBuilder
                 return existingController;
         }
 
-        var font = AssetDatabase.LoadAssetAtPath<TMP_FontAsset>(FontPath);
+        var font = NovellaEditorFont.Load();
 
         if (existingPanel != null)
             NovellaEditorUndo.Destroy(existingPanel.gameObject);

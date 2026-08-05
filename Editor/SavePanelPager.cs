@@ -11,7 +11,9 @@ public static class SavePanelPager
     [MenuItem("Novella/Add Save Panel Paging")]
     public static void AddPaging()
     {
-        var font = AssetDatabase.LoadAssetAtPath<TMP_FontAsset>("Assets/TextMesh Pro/Resources/Fonts & Materials/font_1_kokugl_1.asset");
+        // 旧実装は "Assets/TextMesh Pro/Resources/Fonts & Materials/..." を見ていたが
+        // そこにフォントは置かれておらず、常にnullが返っていた
+        var font = NovellaEditorFont.Load();
 
         int undoGroup = NovellaEditorUndo.Begin();
 

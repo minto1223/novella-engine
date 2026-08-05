@@ -12,7 +12,6 @@ using Novella.Editor;
 /// </summary>
 public class ChapterSelectBuilder
 {
-    private const string FontPath = "Assets/font_1_kokugl_1.asset";
 
     [MenuItem("Novella/Build Chapter Select")]
     public static void Build()
@@ -20,7 +19,7 @@ public class ChapterSelectBuilder
         var canvas = GameObject.Find("TitleCanvas");
         if (canvas == null) { Debug.LogError("[Novella] TitleCanvas が見つかりません。TitleSceneを開いてください。"); return; }
 
-        var font = AssetDatabase.LoadAssetAtPath<TMP_FontAsset>(FontPath);
+        var font = NovellaEditorFont.Load();
 
         int undoGroup = NovellaEditorUndo.Begin();
 
