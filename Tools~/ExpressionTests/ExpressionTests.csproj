@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net9.0</TargetFramework>
+    <LangVersion>9</LangVersion>
+    <Nullable>disable</Nullable>
+    <AssemblyName>ExpressionTests</AssemblyName>
+    <RootNamespace>Novella.Tests</RootNamespace>
+  </PropertyGroup>
+
+  <!-- パッケージ本体のソースを直接コンパイルする（コピーを持たない） -->
+  <ItemGroup>
+    <Compile Include="../../Runtime/Core/NovellaExpression.cs" />
+    <Compile Include="../../Runtime/Core/FlagManager.cs" />
+    <Compile Include="../../Runtime/Commands/CalcCommandHandler.cs" />
+  </ItemGroup>
+
+</Project>

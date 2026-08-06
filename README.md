@@ -123,6 +123,17 @@ Assets/
 | 入力 | `input_text` |
 | システム | `wait`, `next_script`, `set_language`, `play_movie`, `stop_movie`, `end` |
 
+### 条件式
+
+`jump_if` / `jump_unless` / `choice.condition` / `calc` では、括弧・論理演算・比較・整数の四則演算を組み合わせた式が書けます。比較や計算の両辺にフラグを置けます。
+
+```json
+{ "type": "jump_if", "label": "(rich OR noble) AND !wanted", "target": "vip_route" }
+{ "type": "calc", "target": "damage", "value": "=atk * 2 - def" }
+```
+
+書式の詳細は [Documentation~/command-reference.md](Documentation~/command-reference.md#条件式の書式) を参照してください。
+
 ## サンプル
 
 主要30コマンドを通しで確認できるデモシナリオ（`Demo Project`）が同梱されています。**パッケージを追加しただけでは`Assets`に入らないため、以下の手順で別途インポートしてください。**

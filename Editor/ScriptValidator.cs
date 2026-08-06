@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Newtonsoft.Json;
+using Novella.Core;
 using UnityEditor;
 using UnityEngine;
 
@@ -128,6 +129,36 @@ namespace Novella.Editor
                     {
                         if (!string.IsNullOrEmpty(choice.Target))
                             referencedLabels.Add(choice.Target);
+
+                        if (!string.IsNullOrEmpty(choice.Condition)
+                            && !NovellaExpression.TryEvaluate(choice.Condition, null, out _, out string choiceError))
+                        {
+                            Debug.LogWarning($"[Novella Validator] {fileName}:{line} - 条件式を解釈できません: \"{choice.Condition}\" ({choiceError})");
+                            warnings++;
+                        }
+                    }
+                }
+
+                // 条件式の構文チェック（jump_if / jump_unless は label に条件を書く）
+                if ((cmd.Type == "jump_if" || cmd.Type == "jump_unless") && !string.IsNullOrEmpty(cmd.Label)
+                    && !NovellaExpression.TryEvaluate(cmd.Label, null, out _, out string condError))
+                {
+                    Debug.LogWarning($"[Novella Validator] {fileName}:{line} - 条件式を解釈できません: \"{cmd.Label}\" ({condError})");
+                    warnings++;
+                }
+
+                // calc の値の構文チェック（先頭の演算子を除いた部分が式）
+                if (cmd.Type == "calc" && !string.IsNullOrEmpty(cmd.Value))
+                {
+                    string calcExpr = cmd.Value.Trim();
+                    if (calcExpr.Length >= 2 && "+-*/%=".IndexOf(calcExpr[0]) >= 0)
+                        calcExpr = calcExpr.Substring(1).Trim();
+
+                    if (calcExpr.Length > 0
+                        && !NovellaExpression.TryEvaluate(calcExpr, null, out _, out string calcError))
+                    {
+                        Debug.LogWarning($"[Novella Validator] {fileName}:{line} - 計算式を解釈できません: \"{cmd.Value}\" ({calcError})");
+                        warnings++;
                     }
                 }
 

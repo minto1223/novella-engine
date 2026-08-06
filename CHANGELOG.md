@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.14.0] - 2026-08-06
+
+### Added
+- **Conditions and `calc` values are now parsed as real expressions.** The previous evaluator split the string on ` OR ` and then ` AND `, and each remaining piece had to be exactly one `flag operator literal` triple. That meant no parentheses, no way to compare two flags against each other, and no arithmetic anywhere — `hp > mp` compared the flag `hp` against the literal string `mp`, and `(a AND b) OR c` could not be written at all. Conditions now go through a recursive-descent parser supporting parentheses, `AND`/`OR`/`NOT` (with `&&`/`||`/`!` as synonyms), the six comparison operators, integer `+ - * / %`, unary minus and quoted string literals, with flags usable on **both** sides of any operator.
+- `calc` accepts an expression after the operator, so `{ "value": "=atk * 2 - def" }` and `{ "value": "+reward * bonus" }` work. It also gained `%` for the compound form.
+- `Validate Scripts` now checks that every condition and `calc` value parses, so an unclosed parenthesis is reported before the scenario is run rather than at the moment the branch is reached.
+- `Tools~/ExpressionTests` — a `dotnet run` regression suite for the evaluator that compiles the shipped sources directly rather than a copy. It runs without opening Unity, and its first section asserts that every legacy condition form produces the same result under both the new parser and the old evaluator.
+
+### Changed
+- An expression the parser cannot understand is no longer a hard failure: the engine logs a warning naming the expression and the syntax error, then falls back to the old evaluator, so scenarios written against the previous behaviour keep running. Every legacy form was checked against both implementations and produces identical results.
+- Two deliberate differences from the old evaluator, both in cases the old one arguably got wrong: `==` now compares numerically when both sides parse as integers (`"05" == 5` is true where it used to be false), and an unquoted word on the right-hand side resolves to a flag's value when a flag of that name exists (`route == alice` compares against the *value* of `alice` if you have defined it). Words with no matching flag still compare as plain text, which is what keeps the common `route == alice` idiom working. Quote the right-hand side when you mean it as text.
+- Dividing by zero inside an expression leaves the left-hand value untouched and logs a warning, matching what `calc` already did for `"/0"`.
+
 ## [1.13.1] - 2026-08-05
 
 ### Fixed

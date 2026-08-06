@@ -46,11 +46,37 @@ namespace Novella.Core
         /// 条件式を評価する。
         /// "flag" → IsTrue, "!flag" → !IsTrue,
         /// "flag==val", "flag!=val", "flag>=n", "flag<=n", "flag>n", "flag&lt;n"
-        /// AND / OR で複合条件を記述可能（AND優先、左から評価）。
+        /// AND / OR / 括弧で複合条件を記述可能。右辺にフラグや計算式も書ける。
         /// 例: "affection>=10 AND route==alice"
         /// 例: "has_key OR has_lockpick"
+        /// 例: "(hp - potion > 10) AND !poisoned"
+        /// 詳しい構文は <see cref="NovellaExpression"/> を参照。
         /// </summary>
         public bool EvaluateCondition(string condition)
+        {
+            if (string.IsNullOrEmpty(condition)) return true;
+
+            if (NovellaExpression.TryEvaluateBool(condition, Get, out bool result, out string error))
+                return result;
+
+            // 式として解釈できなかった場合は従来方式で評価する（後方互換）
+            Debug.LogWarning($"[Novella] 条件式を解釈できませんでした: \"{condition}\" ({error})。従来方式で再評価します。");
+            return EvaluateLegacy(condition);
+        }
+
+        /// <summary>
+        /// 式を評価して文字列値を得る。フラグ参照つきの計算式に使う。
+        /// </summary>
+        public bool TryEvaluateExpression(string expression, out string value, out string error)
+        {
+            return NovellaExpression.TryEvaluate(expression, Get, out value, out error);
+        }
+
+        // ---------------------------------------------------------------
+        // 従来の条件評価（式パーサで解釈できなかったときのフォールバック）
+        // ---------------------------------------------------------------
+
+        private bool EvaluateLegacy(string condition)
         {
             if (string.IsNullOrEmpty(condition)) return true;
 
@@ -61,7 +87,7 @@ namespace Novella.Core
             if (orParts.Length > 1)
             {
                 foreach (var part in orParts)
-                    if (EvaluateCondition(part)) return true;
+                    if (EvaluateLegacy(part)) return true;
                 return false;
             }
 
@@ -70,7 +96,7 @@ namespace Novella.Core
             if (andParts.Length > 1)
             {
                 foreach (var part in andParts)
-                    if (!EvaluateCondition(part)) return false;
+                    if (!EvaluateLegacy(part)) return false;
                 return true;
             }
 
