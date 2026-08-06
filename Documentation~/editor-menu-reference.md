@@ -336,6 +336,8 @@ JSONシナリオファイルをCSV形式に変換します。
 - 存在しないBGMの参照（`play_bgm` → `Resources/Audio/BGM/`）
 - 存在しないSEの参照（`play_se` → `Resources/Audio/SE/`）
 - 存在しないボイスの参照（`play_voice` → `Resources/Audio/Voice/`）
+- 解釈できない条件式（`jump_if` / `jump_unless` / `choice.condition`）— 括弧の閉じ忘れなど
+- 解釈できない計算式（`calc` の `value`）
 
 出力例:
 ```
