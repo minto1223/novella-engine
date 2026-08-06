@@ -49,7 +49,6 @@
 - `ConfirmDialogBuilder.EnsureExists(canvas, host)` — an overload that takes the GameObject to host the controller. The previous version always looked for `NovellaManager`, so it could not be used on a title screen.
 
 ### Removed
-- **`MobileTouchHandler` and `SafeAreaAdapter`.** Both shipped with the package but were never attached to anything in the demo scenes, were referenced by no other code, and had no documentation explaining how to use them — so the "mobile support: SafeArea, touch input" bullet in the README promised behaviour that no installed project ever got. Touch input still works: the engine advances on `Input.GetMouseButtonDown(0)`, which Unity raises for taps. The README bullet was removed along with the components.
 - **`ChapterList.asset` and `chapter01_csv.csv` from the demo sample.** The chapter list held an empty `Chapters` array — a leftover from consolidating the demo into a single scenario — and the CSV was the last remnant of the deleted `chapter01`. `ChapterSelectUIController` already falls back safely when `_chapterList` is null, and the demo title scene's reference has been cleared accordingly.
 - **`CharDef_New.asset`** from the demo sample — an unreferenced character definition left at its default creation name.
 
@@ -206,5 +205,4 @@
 - UI theme system (ScriptableObject)
 - Custom UI extension via interfaces
 - Localization (JSON-based)
-- Mobile support (SafeArea, touch)
 - Movie playback
