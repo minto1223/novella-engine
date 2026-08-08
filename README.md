@@ -11,6 +11,7 @@ Unity 6 向けのビジュアルノベルエンジンです。JSON/CSV スクリ
 - [コマンド一覧](#コマンド一覧)
 - [サンプル](#サンプル)
 - [Editorメニュー（Novella）](#editorメニューnovella) — 全30項目の早見表と詳細
+- [付録: シーンを手動でセットアップする](#付録-シーンを手動でセットアップする)
 - [ライセンス](#ライセンス)
 
 ## 特徴
@@ -54,22 +55,26 @@ https://github.com/minto1223/novella-engine.git
 https://github.com/minto1223/novella-engine.git#v1.1.0
 ```
 
+導入後、**続けて `Demo Project` サンプルのインポートが必要です**（シーンはパッケージを追加しただけでは `Assets` に入りません）。手順は下記クイックスタートを参照してください。
+
 ## クイックスタート
 
-### 1. シーンのセットアップ
+### 1. Demo Project をインポートする
 
-1. 新しいシーンを作成
-2. 空の GameObject を作成し `NovellaManager` と名前を付ける
-3. `NovellaEngine` コンポーネントをアタッチ
-4. 同じ GameObject に以下のコンポーネントもアタッチ:
-   - `MessageWindowController`
-   - `BackgroundController`
-   - `CharacterDisplayController`
-   - `AudioController`
-   - `ChoiceUIController`
-   - `BacklogUIController`
-   - `MenuUIController`
-5. NovellaEngine の各フィールドにコンポーネントを設定
+**パッケージを追加しただけでは `Assets` にシーンが入りません。** まず下記の手順でサンプルをインポートしてください。動作するタイトル画面とゲーム画面が手に入り、そのまま再生できます。
+
+1. Unity エディタで `Window > Package Manager` を開く
+2. 左側のパッケージ一覧から `Novella Visual Novel Engine` を選択
+3. 右側パネル上部の `Samples` タブをクリック
+4. `Demo Project` の行にある `Import` ボタンをクリック
+5. `Assets/Samples/Novella Visual Novel Engine/<version>/Demo Project/` にシナリオ・立ち絵・BGM/ボイス一式と `Scenes/TitleScene.unity` / `Scenes/SampleScene.unity` がコピーされる
+6. `Scenes/TitleScene.unity` をダブルクリックで開き、そのまま Play するとデモが再生される
+
+> Import はパッケージキャッシュ内のファイルをコピーするだけなので、追加のダウンロードは発生しません。
+
+**独自のゲームを作る場合も、この `TitleScene` / `SampleScene` を複製して中身を差し替えるのが最短です。** タイトル画面（`TitleManager`）とゲーム画面（`NovellaEngine`）は Inspector 上の参照配線が多く、複製して使うほうが確実です。ボタンの追加・削除は `Novella > Button Builder`、各種パネルの再生成は `Novella > Rebuild ...` メニューから行えます。
+
+シーンを一から組みたい場合は[付録: シーンを手動でセットアップする](#付録-シーンを手動でセットアップする)を参照してください。
 
 ### 2. スクリプトの作成
 
@@ -136,16 +141,17 @@ Assets/
 
 ## サンプル
 
-主要30コマンドを通しで確認できるデモシナリオ（`Demo Project`）が同梱されています。**パッケージを追加しただけでは`Assets`に入らないため、以下の手順で別途インポートしてください。**
+`Demo Project` には主要30コマンドを通しで確認できるデモシナリオ一式が入っています。
 
-1. Unity エディタで `Window > Package Manager` を開く
-2. 左側のパッケージ一覧から `Novella Visual Novel Engine` を選択
-3. 右側パネル上部の `Samples` タブをクリック
-4. `Demo Project` の行にある `Import` ボタンをクリック
-5. `Assets/Samples/Novella Visual Novel Engine/<version>/Demo Project/` にシナリオ・立ち絵・BGM/ボイス一式、および`Scenes/TitleScene.unity` / `Scenes/SampleScene.unity` がコピーされる
-6. `Scenes/TitleScene.unity` をダブルクリックで開き、そのままPlayすればデモが再生できる
+| 内容 | 場所（インポート後） |
+|------|--------------------|
+| タイトル画面・ゲーム画面のシーン | `Scenes/TitleScene.unity` / `Scenes/SampleScene.unity` |
+| デモシナリオ（JSON） | `Resources/Scripts/demo_showcase.json` |
+| 立ち絵・背景 | `Resources/Characters/` / `Resources/Backgrounds/` |
+| BGM・SE・ボイス | `Resources/Audio/` |
+| キャラクター定義・UIテーマ・ボタンスタイル | `Data/` |
 
-> Import操作はパッケージキャッシュ内のファイルをコピーするだけなので、追加のダウンロードは発生しません。
+インポート手順は[クイックスタート](#1-demo-project-をインポートする)を参照してください。
 
 ## Editorメニュー（Novella）
 
@@ -183,6 +189,26 @@ Unity Editor上部のメニューバーに **Novella** メニューが表示さ�
 | | [Build Android](Documentation~/editor-menu-reference.md#novella--build-android) | Androidビルド |
 | | [Configure iOS Settings](Documentation~/editor-menu-reference.md#novella--configure-ios-settings) | iOS設定自動化 |
 | | [Build iOS](Documentation~/editor-menu-reference.md#novella--build-ios) | iOS用Xcodeプロジェクト生成 |
+
+## 付録: シーンを手動でセットアップする
+
+`Demo Project` のシーンを複製せず、ゲーム画面を一から組む場合の手順です。
+
+1. 新しいシーンを作成
+2. 空の GameObject を作成し `NovellaManager` と名前を付ける
+3. `NovellaEngine` コンポーネントをアタッチ
+4. 同じ GameObject に以下のコンポーネントもアタッチ:
+   - `MessageWindowController`
+   - `BackgroundController`
+   - `CharacterDisplayController`
+   - `AudioController`
+   - `ChoiceUIController`
+   - `BacklogUIController`
+   - `MenuUIController`
+5. NovellaEngine の各フィールドにコンポーネントを設定
+6. Canvas を作成し、`Novella > Build HUD` などのビルダーメニューで UI を生成
+
+なお**タイトル画面（`TitleManager`）を一から生成するメニューは用意していません。** タイトル画面が必要な場合は `Demo Project` の `TitleScene` を複製してご利用ください。
 
 ## ライセンス
 
